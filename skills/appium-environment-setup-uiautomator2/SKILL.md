@@ -65,7 +65,6 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    command -v adb
    adb version
    echo "$ANDROID_HOME"
-   echo "$ANDROID_SDK_ROOT"
    ls "$ANDROID_HOME/emulator/emulator"
    test -x "$ANDROID_HOME/emulator/emulator" && echo "emulator binary: OK"
    ```

@@ -66,34 +66,28 @@ Prepares a working Android automation environment for Appium by validating Java,
    macOS:
    ```bash
    export ANDROID_HOME="$HOME/Library/Android/sdk"
-   export ANDROID_SDK_ROOT="$ANDROID_HOME"
    export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
    echo "$ANDROID_HOME"
-   echo "$ANDROID_SDK_ROOT"
    command -v adb
    ls "$ANDROID_HOME/emulator/emulator"
    ```
    Linux:
    ```bash
    export ANDROID_HOME="$HOME/Android/Sdk"
-   export ANDROID_SDK_ROOT="$ANDROID_HOME"
    export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
    echo "$ANDROID_HOME"
-   echo "$ANDROID_SDK_ROOT"
    command -v adb
    ls "$ANDROID_HOME/emulator/emulator"
    ```
    Windows PowerShell (persist for current user):
    ```powershell
    [Environment]::SetEnvironmentVariable('ANDROID_HOME', "$env:LOCALAPPDATA\Android\Sdk", 'User')
-   [Environment]::SetEnvironmentVariable('ANDROID_SDK_ROOT', "$env:LOCALAPPDATA\Android\Sdk", 'User')
    $androidPaths = "$env:LOCALAPPDATA\Android\Sdk\platform-tools;$env:LOCALAPPDATA\Android\Sdk\cmdline-tools\latest\bin"
    $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
    if ($currentPath -notlike "*$androidPaths*") {
      [Environment]::SetEnvironmentVariable('Path', "$currentPath;$androidPaths", 'User')
    }
    $env:ANDROID_HOME = [Environment]::GetEnvironmentVariable('ANDROID_HOME', 'User')
-   $env:ANDROID_SDK_ROOT = [Environment]::GetEnvironmentVariable('ANDROID_SDK_ROOT', 'User')
    ```
 
 4. **Accept SDK licenses and install required packages**
