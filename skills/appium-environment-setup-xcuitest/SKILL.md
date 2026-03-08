@@ -14,7 +14,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
 ## Decision Logic
 - If host OS is not macOS: stop and tell the user this skill only supports macOS.
 - If Xcode is missing or command line tools are unconfigured: install/configure them before continuing.
-- If Node.js major version is `< 20`: install/upgrade Node.js to an active LTS version.
+- If current Node.js does not satisfy `engines.node` for both `appium` and `appium-xcuitest-driver`: install/upgrade Node.js to a compatible active LTS version.
 - If npm health checks fail (`npm doctor`, `npm ping`): resolve npm environment issues before driver setup.
 - If Appium CLI or `xcuitest` driver is missing: install them via Appium CLI.
 - If global npm install is blocked: install Appium locally and use `npx appium` commands.
@@ -35,6 +35,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    xcodebuild -version
    xcode-select -p
    ```
+   If `node` is missing, install a compatible active LTS release and re-run the commands.
    If npm health checks fail, resolve issues before continuing.
 
 2. **Install Appium npm command (global or local fallback) and XCUITest driver**
@@ -52,13 +53,16 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    npx appium driver list --installed
    ```
 
-3. **Validate Appium npm commands**
+3. **Validate Appium npm commands and Node compatibility (after driver setup)**
    ```bash
    appium -v
    appium driver list --installed
    npx appium -v
    npx appium driver list --installed
+   npm view appium engines --json
+   npm view appium-xcuitest-driver engines --json
    ```
+   If current Node.js does not satisfy the reported `engines.node` ranges, install/upgrade Node.js to a compatible active LTS version and re-run the setup checks.
 
 4. **Verify Xcode command line setup and license**
    If needed:

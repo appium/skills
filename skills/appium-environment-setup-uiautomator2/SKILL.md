@@ -13,7 +13,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 
 ## Decision Logic
 - If the host OS is not macOS, Linux, or Windows: stop and ask the user to use a supported OS.
-- If Node.js major version is `< 20`: install/upgrade Node.js to an active LTS version.
+- If current Node.js does not satisfy `engines.node` for both `appium` and `appium-uiautomator2-driver`: install/upgrade Node.js to a compatible active LTS version.
 - If npm health checks fail (`npm doctor`, `npm ping`): resolve npm environment issues before driver setup.
 - If Appium CLI is not installed: install `appium` globally.
 - If global npm install is blocked: install Appium locally and use `npx appium` commands.
@@ -42,7 +42,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    npm ping
    npm doctor
    ```
-   If `node` is missing or outdated, install a current LTS release and re-run the commands.
+   If `node` is missing, install a compatible active LTS release and re-run the commands.
    If npm checks fail, resolve npm environment issues before continuing.
 
 2. **Install Appium npm command (global or local fallback)**
@@ -60,13 +60,26 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    npx appium driver list --installed
    ```
 
-3. **Validate Appium npm commands**
+3. **Validate Appium npm commands and Node compatibility (after driver setup)**
+   macOS/Linux:
    ```bash
    appium -v
    appium driver list --installed
    npx appium -v
    npx appium driver list --installed
+   npm view appium engines --json
+   npm view appium-uiautomator2-driver engines --json
    ```
+   Windows PowerShell:
+   ```powershell
+   appium -v
+   appium driver list --installed
+   npx appium -v
+   npx appium driver list --installed
+   npm view appium engines --json
+   npm view appium-uiautomator2-driver engines --json
+   ```
+   If current Node.js does not satisfy the reported `engines.node` ranges, install/upgrade Node.js to a compatible active LTS version and re-run the setup checks.
 
 4. **Run Android environment prerequisite skill**
    Before UiAutomator2 doctor checks, execute `appium-android-environment-setup` and do not continue until it passes completion criteria.
