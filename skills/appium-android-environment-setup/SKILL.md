@@ -2,7 +2,7 @@
 name: "appium-android-environment-setup"
 description: "Prepare and validate Android SDK, Java, and device tooling for Appium Android drivers"
 metadata:
-  last_modified: "Mon, 09 Mar 2026 10:10:00 GMT"
+  last_modified: "Mon, 09 Mar 2026 11:20:00 GMT"
 
 ---
 # appium-android-environment-setup
@@ -22,6 +22,9 @@ Prepares a working Android automation environment for Appium by validating Java,
 - If `JAVA_HOME` is unset/empty or the `JAVA_HOME` path does not exist: run step 3 before Android SDK package/license commands.
 - If `adb` is missing: install `platform-tools` via `sdkmanager`.
 - If emulator binary is missing under `ANDROID_HOME/emulator/emulator` (or Windows equivalent): install emulator packages.
+- Prepare emulator instances using the latest stable system-image version by default.
+- Use host-optimized emulator architecture (native architecture first, then fallback architecture).
+- Skip step 7 emulator preparation if at least one device is already connected or at least one emulator instance already exists.
 - If required SDK packages are missing: install them and re-run checks.
 
 ## Instructions
@@ -178,16 +181,61 @@ Prepares a working Android automation environment for Appium by validating Java,
    Test-Path "$env:ANDROID_HOME\emulator\emulator.exe"
    ```
 
-7. **Optional emulator checks (if no physical device is connected)**
-   macOS/Linux:
+7. **Optional emulator instance preparation (if no physical device is connected and no emulator exists)**
+   Skip step 7 when either of the following is true:
+   - At least one device is already connected (`adb devices` shows a `device` entry)
+   - At least one emulator instance already exists (`emulator -list-avds` is non-empty)
+
+   Prepare an emulator instance using the latest stable system-image version and host-optimized architecture only when both are false.
+   macOS/Linux (prefer native architecture first, then fallback):
    ```bash
-   command -v emulator
+   ARCH=$(uname -m)
+   if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
+     PRIMARY_ARCH="arm64-v8a"
+     FALLBACK_ARCH="x86_64"
+   else
+     PRIMARY_ARCH="x86_64"
+     FALLBACK_ARCH="arm64-v8a"
+   fi
+   LATEST_API=$(sdkmanager --list | grep -o "system-images;android-[0-9]\+;google_apis;${PRIMARY_ARCH}" | sed 's/.*android-\([0-9]\+\).*/\1/' | sort -n | tail -1)
+   IMAGE_ARCH="$PRIMARY_ARCH"
+   if [ -z "$LATEST_API" ]; then
+     LATEST_API=$(sdkmanager --list | grep -o "system-images;android-[0-9]\+;google_apis;${FALLBACK_ARCH}" | sed 's/.*android-\([0-9]\+\).*/\1/' | sort -n | tail -1)
+     IMAGE_ARCH="$FALLBACK_ARCH"
+   fi
+   IMAGE="system-images;android-${LATEST_API};google_apis;${IMAGE_ARCH}"
+   sdkmanager "$IMAGE"
+   echo "no" | avdmanager create avd -n "api${LATEST_API}-google-${IMAGE_ARCH}" -k "$IMAGE"
    emulator -list-avds
    ```
-   Windows PowerShell:
+   Windows PowerShell (prefer x86_64, fallback arm64-v8a):
    ```powershell
-   Get-Command emulator.exe -ErrorAction SilentlyContinue
+   $primaryArch = "x86_64"
+   $fallbackArch = "arm64-v8a"
+   $matches = sdkmanager.bat --list | Select-String "system-images;android-[0-9]+;google_apis;$primaryArch"
+   $imageArch = $primaryArch
+   if (-not $matches) {
+     $matches = sdkmanager.bat --list | Select-String "system-images;android-[0-9]+;google_apis;$fallbackArch"
+     $imageArch = $fallbackArch
+   }
+   $latestApi = ($matches | ForEach-Object { [int]([regex]::Match($_.Line, 'android-(\d+)').Groups[1].Value) } | Sort-Object)[-1]
+   $image = "system-images;android-$latestApi;google_apis;$imageArch"
+   sdkmanager.bat $image
+   cmd /c "echo no| avdmanager.bat create avd -n api$latestApi-google-$imageArch -k $image"
    emulator.exe -list-avds
+   ```
+   Report version details in the task result:
+   - macOS/Linux:
+   ```bash
+   emulator -version
+   emulator -list-avds
+   if command -v sdkmanager >/dev/null 2>&1; then sdkmanager --list | grep "system-images;android-" | head -n 20; fi
+   ```
+   - Windows PowerShell:
+   ```powershell
+   emulator.exe -version
+   emulator.exe -list-avds
+   if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { sdkmanager.bat --list | Select-String "system-images;android-" | Select-Object -First 20 }
    ```
 
 8. **Completion criteria**
@@ -197,6 +245,7 @@ Prepares a working Android automation environment for Appium by validating Java,
    - Emulator binary exists under `ANDROID_HOME/emulator/emulator` (or `%ANDROID_HOME%\emulator\emulator.exe` on Windows)
    - Required SDK packages are installed (`platform-tools`, one platform, one build-tools version)
    - Android environment checks pass without requiring a connected device
+   - Latest stable emulator/system-image version is prepared with host-optimized architecture only when no connected devices and no existing emulators are present; otherwise step 7 is skipped and current version details are reported in the task result
 
 ## Constraints
 - Always use detect-first behavior and install only missing components.
