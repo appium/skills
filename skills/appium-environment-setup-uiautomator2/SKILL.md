@@ -2,7 +2,7 @@
 name: "appium-environment-setup-uiautomator2"
 description: "Set up and validate a UiAutomator2 Appium environment on Android"
 metadata:
-  last_modified: "Sun, 08 Mar 2026 07:30:00 GMT"
+  last_modified: "Mon, 09 Mar 2026 11:40:00 GMT"
 
 ---
 # appium-uiautomator2-environment-setup
@@ -17,6 +17,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 - Use global npm/Appium commands by default (`npm install -g appium`, `appium ...`).
 - Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
 - If Android SDK prerequisites are missing (`adb`, emulator binary, SDK packages): run `appium-android-environment-setup` first.
+- Always include host device/emulator inventory in the final skill result (connected devices, emulator version, and AVD list).
 - If the `uiautomator2` driver is not installed: install it via Appium CLI.
 - If install returns "already installed", ignore the error and continue (or run driver update).
 - If `appium driver doctor uiautomator2` reports missing dependencies: resolve each missing item and re-run doctor.
@@ -81,13 +82,28 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    if (Test-Path "$env:ANDROID_HOME\emulator\emulator.exe") { "emulator binary: OK" }
    ```
 
-6. **Run Appium doctor for UiAutomator2 and fix in a loop**
+6. **Report connected devices and emulator inventory in task result**
+   macOS/Linux:
+   ```bash
+   adb devices -l
+   "$ANDROID_HOME/emulator/emulator" -version
+   "$ANDROID_HOME/emulator/emulator" -list-avds
+   ```
+   Windows PowerShell:
+   ```powershell
+   adb.exe devices -l
+   & "$env:ANDROID_HOME\emulator\emulator.exe" -version
+   & "$env:ANDROID_HOME\emulator\emulator.exe" -list-avds
+   ```
+   In the result summary, explicitly state whether emulator preparation was skipped because either connected devices already existed or one/more AVDs already existed.
+
+7. **Run Appium doctor for UiAutomator2 and fix in a loop**
    ```bash
    appium driver doctor uiautomator2
    ```
    If doctor reports issues, apply targeted fixes and re-run until mandatory checks pass.
 
-7. **Start Appium server smoke test**
+8. **Start Appium server smoke test**
    ```bash
    appium server
    ```
@@ -113,12 +129,14 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
     }
     ```
 
-8. **Agent completion criteria**
+9. **Agent completion criteria**
    Mark the skill complete only when all are true:
    - `appium driver list --installed` includes `uiautomator2`
    - `appium -v` succeeds
    - `appium driver doctor uiautomator2` has no failing mandatory checks
    - `appium-android-environment-setup` completion criteria are satisfied
+   - task result includes connected-device output (`adb devices -l`) and emulator inventory (`emulator -version`, `emulator -list-avds`)
+   - task result explicitly states whether emulator preparation was skipped (and why)
    - `curl -s http://127.0.0.1:4723/status` returns a successful status response
    - Appium server logs show startup/readiness successfully after the curl check
    - Appium server logs include `Available drivers:` with a `uiautomator2` entry
