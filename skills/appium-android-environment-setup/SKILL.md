@@ -2,7 +2,7 @@
 name: "appium-android-environment-setup"
 description: "Prepare and validate Android SDK, Java, and device tooling for Appium Android drivers"
 metadata:
-  last_modified: "Sun, 08 Mar 2026 00:00:00 GMT"
+  last_modified: "Sun, 08 Mar 2026 08:05:00 GMT"
 
 ---
 # appium-android-environment-setup
@@ -16,7 +16,7 @@ Prepares a working Android automation environment for Appium by validating Java,
 - If host OS is Linux: use package manager + `$HOME/Android/Sdk` conventions.
 - If host OS is Windows: use Android SDK tools with persistent user environment variables.
 - If `java` or `javac` is missing: install a supported JDK and configure `JAVA_HOME`.
-- If `sdkmanager` is missing: continue if Android SDK is already provisioned and `adb` + emulator binary checks pass.
+- If `ANDROID_HOME` is unset/empty or the `ANDROID_HOME` path does not exist: run step 2 to install command-line tools and create the SDK path.
 - If `adb` is missing: install `platform-tools` via `sdkmanager`.
 - If emulator binary is missing under `ANDROID_HOME/emulator/emulator` (or Windows equivalent): install emulator packages.
 - If required SDK packages are missing: install them and re-run checks.
@@ -43,7 +43,16 @@ Prepares a working Android automation environment for Appium by validating Java,
    Test-Path "$env:ANDROID_HOME\emulator\emulator.exe"
    ```
 
-2. **Install Android command-line tools when `sdkmanager` is missing**
+2. **Install Android command-line tools when `ANDROID_HOME` path is missing**
+   Trigger checks:
+   - macOS/Linux:
+   ```bash
+   [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME" ] || echo "run step 2"
+   ```
+   - Windows PowerShell:
+   ```powershell
+   if (-not $env:ANDROID_HOME -or -not (Test-Path $env:ANDROID_HOME)) { "run step 2" }
+   ```
    macOS/Homebrew example:
    ```bash
    brew install --cask android-commandlinetools
