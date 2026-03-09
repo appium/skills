@@ -2,7 +2,7 @@
 name: "appium-environment-setup-xcuitest"
 description: "Set up and validate an XCUITest Appium environment on macOS"
 metadata:
-  last_modified: "Sun, 08 Mar 2026 06:30:00 GMT"
+  last_modified: "Sun, 08 Mar 2026 07:30:00 GMT"
 
 ---
 # appium-xcuitest-environment-setup
@@ -15,7 +15,8 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
 - If Xcode is missing or command line tools are unconfigured: install/configure them before continuing.
 - If current Node.js does not satisfy `engines.node` for both `appium` and `appium-xcuitest-driver`: install/upgrade Node.js to a compatible active LTS version.
 - If Appium CLI or `xcuitest` driver is missing: install them via Appium CLI.
-- If global npm install is blocked: install Appium locally and use `npx appium` commands.
+- Use global npm/Appium commands by default (`npm install -g appium`, `appium ...`).
+- Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
 - If install returns "already installed", ignore the error and continue (or run driver update).
 - If `appium driver doctor xcuitest` reports missing dependencies: fix each reported dependency and re-run doctor.
 
@@ -28,27 +29,18 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    ```
    If `node` is missing, install a compatible active LTS release and re-run the commands.
 
-2. **Install Appium npm command (global or local fallback) and XCUITest driver**
+2. **Install Appium npm command and XCUITest driver**
    ```bash
    npm install -g appium
    appium driver install xcuitest || appium driver update xcuitest
    appium driver list --installed
    ```
    If the install command fails only because `xcuitest` is already installed, continue and do not stop preparation.
-   If global install is restricted, use local install:
-   ```bash
-   npm init -y
-   npm install --save-dev appium
-   npx appium driver install xcuitest || npx appium driver update xcuitest
-   npx appium driver list --installed
-   ```
 
 3. **Validate Appium npm commands and Node compatibility (after driver setup)**
    ```bash
    appium -v
    appium driver list --installed
-   npx appium -v
-   npx appium driver list --installed
    npm view appium engines --json
    npm view appium-xcuitest-driver engines --json
    ```
@@ -86,10 +78,6 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    ```bash
    appium driver doctor xcuitest
    ```
-   Also validate local-install command path when relevant:
-   ```bash
-   npx appium driver doctor xcuitest
-   ```
    Resolve each failing mandatory check, then re-run until the doctor output is clean.
 
 7. **Start Appium server smoke test**
@@ -103,15 +91,6 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    ```
    First confirm `/status` responds successfully from `curl`.
    Then confirm readiness from server logs and ensure the `Available drivers:` block contains `xcuitest` (for example: `- xcuitest@10.23.3 (automationName 'XCUITest')`).
-   If using local Appium install:
-   ```bash
-   npx appium server
-   ```
-   Keep this server process running in Terminal A.
-   In Terminal B, run:
-   ```bash
-   curl -s http://127.0.0.1:4723/status
-   ```
    After smoke validation, clean up the running Appium server:
    - In Terminal A, stop the server with `Ctrl+C`.
    - Verify no leftover Appium server process (Terminal B):
@@ -122,7 +101,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
 8. **Agent completion criteria**
    Mark the skill complete only when all are true:
    - `appium driver list --installed` includes `xcuitest`
-   - at least one Appium npm command mode works (`appium` or `npx appium`)
+   - `appium -v` succeeds
    - `appium driver doctor xcuitest` has no failing mandatory checks
    - `curl -s http://127.0.0.1:4723/status` returns a successful status response
    - Appium server logs show startup/readiness successfully after the curl check
@@ -131,6 +110,8 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
 
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.
+- Use global npm/Appium commands as the default execution mode.
+- Use `npx appium` only if the user explicitly asks for local execution.
 - Always re-run `appium driver doctor xcuitest` after every fix.
 - Treat optional doctor warnings as non-blocking.
 - Ask the user before installing optional dependencies, and install them only when explicitly needed.

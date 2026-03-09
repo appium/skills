@@ -2,7 +2,7 @@
 name: "appium-environment-setup-uiautomator2"
 description: "Set up and validate a UiAutomator2 Appium environment on Android"
 metadata:
-  last_modified: "Sun, 08 Mar 2026 06:30:00 GMT"
+  last_modified: "Sun, 08 Mar 2026 07:30:00 GMT"
 
 ---
 # appium-uiautomator2-environment-setup
@@ -14,7 +14,8 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 - If the host OS is not macOS, Linux, or Windows: stop and ask the user to use a supported OS.
 - If current Node.js does not satisfy `engines.node` for both `appium` and `appium-uiautomator2-driver`: install/upgrade Node.js to a compatible active LTS version.
 - If Appium CLI is not installed: install `appium` globally.
-- If global npm install is blocked: install Appium locally and use `npx appium` commands.
+- Use global npm/Appium commands by default (`npm install -g appium`, `appium ...`).
+- Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
 - If Android SDK prerequisites are missing (`adb`, emulator binary, SDK packages): run `appium-android-environment-setup` first.
 - If the `uiautomator2` driver is not installed: install it via Appium CLI.
 - If install returns "already installed", ignore the error and continue (or run driver update).
@@ -34,28 +35,19 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    ```
    If `node` is missing, install a compatible active LTS release and re-run the commands.
 
-2. **Install Appium npm command (global or local fallback)**
+2. **Install Appium npm command**
    ```bash
    npm install -g appium
    appium driver install uiautomator2 || appium driver update uiautomator2
    appium driver list --installed
    ```
    If the install command fails only because `uiautomator2` is already installed, continue and do not stop preparation.
-   If global install is not allowed, use project-local installation:
-   ```bash
-   npm init -y
-   npm install --save-dev appium
-   npx appium driver install uiautomator2 || npx appium driver update uiautomator2
-   npx appium driver list --installed
-   ```
 
 3. **Validate Appium npm commands and Node compatibility (after driver setup)**
    macOS/Linux:
    ```bash
    appium -v
    appium driver list --installed
-   npx appium -v
-   npx appium driver list --installed
    npm view appium engines --json
    npm view appium-uiautomator2-driver engines --json
    ```
@@ -63,8 +55,6 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    ```powershell
    appium -v
    appium driver list --installed
-   npx appium -v
-   npx appium driver list --installed
    npm view appium engines --json
    npm view appium-uiautomator2-driver engines --json
    ```
@@ -95,10 +85,6 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    ```bash
    appium driver doctor uiautomator2
    ```
-   Also validate local-install command path when relevant:
-   ```bash
-   npx appium driver doctor uiautomator2
-   ```
    If doctor reports issues, apply targeted fixes and re-run until mandatory checks pass.
 
 7. **Start Appium server smoke test**
@@ -112,15 +98,6 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    ```
    First confirm `/status` responds successfully from `curl`.
    Then confirm startup/readiness from server logs and ensure the `Available drivers:` block contains `uiautomator2` (for example: `- uiautomator2@7.0.0 (automationName 'UiAutomator2')`).
-   If using local Appium install:
-   ```bash
-   npx appium server
-   ```
-   Keep this server process running in Terminal A.
-   In Terminal B, run:
-   ```bash
-   curl -s http://127.0.0.1:4723/status
-   ```
    After smoke validation, clean up the running Appium server:
    - In Terminal A, stop the server with `Ctrl+C`.
     - Verify no leftover Appium server process (Terminal B, macOS/Linux):
@@ -139,7 +116,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 8. **Agent completion criteria**
    Mark the skill complete only when all are true:
    - `appium driver list --installed` includes `uiautomator2`
-   - at least one Appium npm command mode works (`appium` or `npx appium`)
+   - `appium -v` succeeds
    - `appium driver doctor uiautomator2` has no failing mandatory checks
    - `appium-android-environment-setup` completion criteria are satisfied
    - `curl -s http://127.0.0.1:4723/status` returns a successful status response
@@ -149,6 +126,8 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 
 ## Constraints
 - Always run `appium driver doctor uiautomator2` after each environment change.
+- Use global npm/Appium commands as the default execution mode.
+- Use `npx appium` only if the user explicitly asks for local execution.
 - Do not skip Android prerequisite validation; rely on `appium-android-environment-setup` for source-of-truth checks.
 - Use shell-appropriate commands (`bash` for macOS/Linux, PowerShell/cmd for Windows).
 - Treat optional doctor warnings as non-blocking.
