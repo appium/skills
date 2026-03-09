@@ -67,7 +67,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    ```
    Then ensure license and first-launch tasks are complete (use privilege escalation only if prompted/required):
    ```bash
-   xcodebuild -license accept
+   sudo xcodebuild -license accept
    xcodebuild -runFirstLaunch
    ```
 
