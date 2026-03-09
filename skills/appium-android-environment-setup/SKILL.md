@@ -2,7 +2,7 @@
 name: "appium-android-environment-setup"
 description: "Prepare and validate Android SDK, Java, and device tooling for Appium Android drivers"
 metadata:
-  last_modified: "Sun, 08 Mar 2026 08:05:00 GMT"
+  last_modified: "Mon, 09 Mar 2026 09:00:00 GMT"
 
 ---
 # appium-android-environment-setup
@@ -16,6 +16,7 @@ Prepares a working Android automation environment for Appium by validating Java,
 - If host OS is Linux: use package manager + `$HOME/Android/Sdk` conventions.
 - If host OS is Windows: use Android SDK tools with persistent user environment variables.
 - If `java` or `javac` is missing: install a supported JDK and configure `JAVA_HOME`.
+- If the user wants official Android tooling setup flow: install Android Studio from the official site first, then use SDK Manager from Android Studio.
 - If `ANDROID_HOME` is unset/empty or the `ANDROID_HOME` path does not exist: run step 2 to install command-line tools and create the SDK path.
 - If `adb` is missing: install `platform-tools` via `sdkmanager`.
 - If emulator binary is missing under `ANDROID_HOME/emulator/emulator` (or Windows equivalent): install emulator packages.
@@ -43,7 +44,7 @@ Prepares a working Android automation environment for Appium by validating Java,
    Test-Path "$env:ANDROID_HOME\emulator\emulator.exe"
    ```
 
-2. **Install Android command-line tools when `ANDROID_HOME` path is missing**
+2. **Install Android SDK tooling when `ANDROID_HOME` path is missing**
    Trigger checks:
    - macOS/Linux:
    ```bash
@@ -53,19 +54,28 @@ Prepares a working Android automation environment for Appium by validating Java,
    ```powershell
    if (-not $env:ANDROID_HOME -or -not (Test-Path $env:ANDROID_HOME)) { "run step 2" }
    ```
-   macOS/Homebrew example:
+   Option A (official Android Studio flow, recommended when user requests official-site setup):
+   - Download Android Studio from `https://developer.android.com/studio`.
+   - Complete first launch and install SDK components from SDK Manager.
+   - Use platform default SDK path after setup:
+     - macOS: `$HOME/Library/Android/sdk`
+     - Linux: `$HOME/Android/Sdk`
+     - Windows: `%LOCALAPPDATA%\Android\Sdk`
+
+   Option B (CLI tools only):
+   - macOS/Homebrew example:
    ```bash
    brew install --cask android-commandlinetools
    mkdir -p "$HOME/Library/Android/sdk/cmdline-tools/latest"
    cp -R /opt/homebrew/share/android-commandlinetools/* "$HOME/Library/Android/sdk/cmdline-tools/latest/"
    ```
-   Linux example (Debian/Ubuntu-style prerequisites + cmdline tools placement):
+   - Linux example (Debian/Ubuntu-style prerequisites + cmdline tools placement):
    ```bash
    sudo apt-get update
    sudo apt-get install -y unzip wget openjdk-17-jdk
    mkdir -p "$HOME/Android/Sdk/cmdline-tools/latest"
    ```
-   Windows example (PowerShell, after extracting Android command-line tools zip):
+   - Windows example (PowerShell, after extracting Android command-line tools zip):
    ```powershell
    New-Item -ItemType Directory -Force "$env:LOCALAPPDATA\Android\Sdk\cmdline-tools\latest"
    ```
