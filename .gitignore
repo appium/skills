@@ -17,3 +17,4 @@ coverage/
 # Validation output from the validate-skill command
 validation/
 
+.vscode/
