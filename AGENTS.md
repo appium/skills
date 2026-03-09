@@ -19,13 +19,13 @@ This file defines how AI agents should execute the skills in this repository.
 
 ### Android + UiAutomator2
 
-1. `appium-node-environment-setup`
+1. `node-environment-setup`
 2. `appium-android-environment-setup`
 3. `appium-environment-setup-uiautomator2`
 
 ### iOS + XCUITest (macOS only)
 
-1. `appium-node-environment-setup`
+1. `node-environment-setup`
 2. `appium-environment-setup-xcuitest`
 
 ## Completion Policy
@@ -45,7 +45,7 @@ Use this as a starting prompt for an AI agent:
 ```text
 Use this repository's skills to prepare Android + UiAutomator2.
 Follow exactly, in order:
-1) skills/appium-node-environment-setup/SKILL.md
+1) skills/node-environment-setup/SKILL.md
 2) skills/appium-android-environment-setup/SKILL.md
 3) skills/appium-environment-setup-uiautomator2/SKILL.md
 
@@ -70,7 +70,7 @@ Use this as a starting prompt for an AI agent:
 ```text
 Use this repository's skills to prepare macOS + XCUITest.
 Follow exactly, in order:
-1) skills/appium-node-environment-setup/SKILL.md
+1) skills/node-environment-setup/SKILL.md
 2) skills/appium-environment-setup-xcuitest/SKILL.md
 
 Rules:

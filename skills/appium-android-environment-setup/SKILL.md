@@ -2,7 +2,6 @@
 name: "appium-android-environment-setup"
 description: "Prepare and validate Android SDK, Java, and device tooling for Appium Android drivers"
 metadata:
-  model: "GPT-5.3-Codex"
   last_modified: "Sun, 08 Mar 2026 00:00:00 GMT"
 
 ---

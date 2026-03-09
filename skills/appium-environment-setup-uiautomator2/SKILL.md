@@ -2,8 +2,7 @@
 name: "appium-environment-setup-uiautomator2"
 description: "Set up and validate a UiAutomator2 Appium environment on Android"
 metadata:
-  model: "GPT-5.3-Codex"
-  last_modified: "Sun, 08 Mar 2026 00:00:00 GMT"
+  last_modified: "Sun, 08 Mar 2026 06:30:00 GMT"
 
 ---
 # appium-uiautomator2-environment-setup
@@ -14,7 +13,6 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 ## Decision Logic
 - If the host OS is not macOS, Linux, or Windows: stop and ask the user to use a supported OS.
 - If current Node.js does not satisfy `engines.node` for both `appium` and `appium-uiautomator2-driver`: install/upgrade Node.js to a compatible active LTS version.
-- If npm health checks fail (`npm doctor`, `npm ping`): resolve npm environment issues before driver setup.
 - If Appium CLI is not installed: install `appium` globally.
 - If global npm install is blocked: install Appium locally and use `npx appium` commands.
 - If Android SDK prerequisites are missing (`adb`, emulator binary, SDK packages): run `appium-android-environment-setup` first.
@@ -28,18 +26,13 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    ```bash
    node -v
    npm -v
-   npm ping
-   npm doctor
    ```
    Windows PowerShell:
    ```powershell
    node -v
    npm -v
-   npm ping
-   npm doctor
    ```
    If `node` is missing, install a compatible active LTS release and re-run the commands.
-   If npm checks fail, resolve npm environment issues before continuing.
 
 2. **Install Appium npm command (global or local fallback)**
    ```bash
@@ -146,7 +139,6 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 8. **Agent completion criteria**
    Mark the skill complete only when all are true:
    - `appium driver list --installed` includes `uiautomator2`
-   - npm environment is healthy (`npm doctor` without blocking failures)
    - at least one Appium npm command mode works (`appium` or `npx appium`)
    - `appium driver doctor uiautomator2` has no failing mandatory checks
    - `appium-android-environment-setup` completion criteria are satisfied
@@ -157,7 +149,6 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 
 ## Constraints
 - Always run `appium driver doctor uiautomator2` after each environment change.
-- Always validate npm environment (`npm doctor`) before driver installation.
 - Do not skip Android prerequisite validation; rely on `appium-android-environment-setup` for source-of-truth checks.
 - Use shell-appropriate commands (`bash` for macOS/Linux, PowerShell/cmd for Windows).
 - Treat optional doctor warnings as non-blocking.
