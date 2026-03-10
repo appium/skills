@@ -15,6 +15,7 @@ This file defines how AI agents should execute the skills in this repository.
 - Prefer user-space installs and local project fallbacks when permissions are restricted.
 - Use global npm/Appium commands by default (`npm -g`, `appium`).
 - Use local execution (`npx appium`) only when the user explicitly asks for a local mode.
+- Use `environment-setup-ffmpeg` as a shared optional dependency across drivers only when the user explicitly requests FFmpeg-related setup.
 - If output is incomplete/truncated, rerun only that step and capture logs.
 
 ## Recommended Skill Order
@@ -30,6 +31,10 @@ This file defines how AI agents should execute the skills in this repository.
 1. `node-environment-setup`
 2. `android-environment-setup`
 3. `environment-setup-espresso`
+
+### Shared Optional Skill
+
+1. `environment-setup-ffmpeg` (run only when user explicitly requests FFmpeg-related capabilities)
 
 ### iOS + XCUITest (macOS only)
 

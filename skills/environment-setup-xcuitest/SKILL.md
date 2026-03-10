@@ -2,7 +2,7 @@
 name: "environment-setup-xcuitest"
 description: "Set up and validate an XCUITest Appium environment on macOS"
 metadata:
-  last_modified: "Mon, 09 Mar 2026 12:10:00 GMT"
+  last_modified: "Mon, 09 Mar 2026 13:10:00 GMT"
 
 ---
 # appium-xcuitest-environment-setup
@@ -17,6 +17,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
 - If Appium CLI or `xcuitest` driver is missing: install them via Appium CLI.
 - Use global npm/Appium commands by default (`npm install -g appium`, `appium ...`).
 - Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
+- If the user explicitly requests media features that require FFmpeg: run `environment-setup-ffmpeg` before final validation.
 - If install returns "already installed", ignore the error and continue (or run driver update).
 - If `appium driver doctor xcuitest` reports missing dependencies: fix each reported dependency and re-run doctor.
 
@@ -73,6 +74,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
 
 5. **Optional helper tools**
    Install additional iOS helper tools only if the user explicitly requests capabilities that require them.
+   - For FFmpeg-related capabilities, run `environment-setup-ffmpeg`.
 
 6. **Run Appium doctor for XCUITest and fix in a loop**
    ```bash

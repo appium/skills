@@ -2,7 +2,7 @@
 name: "environment-setup-espresso"
 description: "Set up and validate an Espresso Appium environment on Android"
 metadata:
-  last_modified: "Mon, 09 Mar 2026 12:30:00 GMT"
+  last_modified: "Mon, 09 Mar 2026 13:10:00 GMT"
 
 ---
 # appium-espresso-environment-setup
@@ -17,6 +17,7 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
 - Use global npm/Appium commands by default (`npm install -g appium`, `appium ...`).
 - Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
 - If Android SDK prerequisites are missing (`adb`, emulator binary, SDK packages): run `android-environment-setup` first.
+- If the user explicitly requests media features that require FFmpeg: run `environment-setup-ffmpeg` before final validation.
 - Always include host device/emulator inventory in the final skill result (connected devices, emulator version, and AVD list).
 - If the `espresso` driver is not installed: install it via Appium CLI.
 - If install returns "already installed", ignore the error and continue (or run driver update).
@@ -96,6 +97,9 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    & "$env:ANDROID_HOME\emulator\emulator.exe" -list-avds
    ```
    In the result summary, explicitly state whether emulator preparation was skipped because either connected devices already existed or one/more AVDs already existed.
+
+   Optional shared dependency:
+   - If the user explicitly requests FFmpeg-related capability, run `environment-setup-ffmpeg` before continuing.
 
 7. **Run Appium doctor for Espresso and fix in a loop**
    ```bash
