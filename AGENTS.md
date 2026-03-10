@@ -25,6 +25,12 @@ This file defines how AI agents should execute the skills in this repository.
 2. `android-environment-setup`
 3. `environment-setup-uiautomator2`
 
+### Android + Espresso
+
+1. `node-environment-setup`
+2. `android-environment-setup`
+3. `environment-setup-espresso`
+
 ### iOS + XCUITest (macOS only)
 
 1. `node-environment-setup`
@@ -53,8 +59,26 @@ Follow exactly, in order:
 3) skills/environment-setup-uiautomator2/SKILL.md
 
 Rules:
+  1) Start Appium server in Terminal A (`appium server`) and keep it running.
+  2) In Terminal B run `curl -s http://127.0.0.1:4723/status` and confirm success.
+  3) In Terminal A logs confirm `Available drivers:` contains `uiautomator2`.
+  4) In Terminal A stop Appium with `Ctrl+C`, then in Terminal B run `pgrep -fl "appium.*server" || echo "no appium server process"`.
+```
+
+### Template: Espresso
+
+Use this as a starting prompt for an AI agent:
+
+```text
+Use this repository's skills to prepare Android + Espresso.
+Follow exactly, in order:
+1) skills/node-environment-setup/SKILL.md
+2) skills/android-environment-setup/SKILL.md
+3) skills/environment-setup-espresso/SKILL.md
+
+Rules:
 - Run one step at a time.
-- Treat `appium driver doctor uiautomator2` required fixes as blocking.
+- Treat `appium driver doctor espresso` required fixes as blocking.
 - Optional warnings are non-blocking.
 - Ask before installing optional dependencies.
 - Do not use sudo unless I explicitly ask.
@@ -62,7 +86,7 @@ Rules:
 - Smoke test sequence:
   1) Start Appium server in Terminal A (`appium server`) and keep it running.
   2) In Terminal B run `curl -s http://127.0.0.1:4723/status` and confirm success.
-  3) In Terminal A logs confirm `Available drivers:` contains `uiautomator2`.
+  3) In Terminal A logs confirm `Available drivers:` contains `espresso`.
   4) In Terminal A stop Appium with `Ctrl+C`, then in Terminal B run `pgrep -fl "appium.*server" || echo "no appium server process"`.
 ```
 
