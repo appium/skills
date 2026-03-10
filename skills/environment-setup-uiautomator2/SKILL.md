@@ -2,7 +2,7 @@
 name: "environment-setup-uiautomator2"
 description: "Set up and validate a UiAutomator2 Appium environment on Android"
 metadata:
-  last_modified: "Mon, 09 Mar 2026 13:10:00 GMT"
+  last_modified: "Mon, 09 Mar 2026 13:35:00 GMT"
 
 ---
 # appium-uiautomator2-environment-setup
@@ -18,6 +18,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 - Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
 - If Android SDK prerequisites are missing (`adb`, emulator binary, SDK packages): run `android-environment-setup` first.
 - If the user explicitly requests media features that require FFmpeg: run `environment-setup-ffmpeg` before final validation.
+- If the user explicitly requests automatic bundletool setup: run `environment-setup-bundletool` before final validation.
 - Always include host device/emulator inventory in the final skill result (connected devices, emulator version, and AVD list).
 - If the `uiautomator2` driver is not installed: install it via Appium CLI.
 - If install returns "already installed", ignore the error and continue (or run driver update).
@@ -100,6 +101,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 
    Optional shared dependency:
    - If the user explicitly requests FFmpeg-related capability, run `environment-setup-ffmpeg` before continuing.
+   - If the user explicitly requests bundletool installation, run `environment-setup-bundletool` before continuing.
 
 7. **Run Appium doctor for UiAutomator2 and fix in a loop**
    ```bash
