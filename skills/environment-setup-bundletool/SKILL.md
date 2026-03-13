@@ -2,7 +2,7 @@
 name: "environment-setup-bundletool"
 description: "Install and validate bundletool.jar from GitHub releases for optional UiAutomator2/Espresso capabilities"
 metadata:
-  last_modified: "Mon, 09 Mar 2026 13:35:00 GMT"
+   last_modified: "Thu, 12 Mar 2026 03:25:00 GMT"
 
 ---
 # environment-setup-bundletool
@@ -27,8 +27,9 @@ Installs and validates `bundletool.jar` from official GitHub releases so Android
    Windows PowerShell:
    ```powershell
    [System.Environment]::OSVersion.VersionString
-   Get-Command bundletool.jar -ErrorAction SilentlyContinue
-   if (Get-Command bundletool.jar -ErrorAction SilentlyContinue) { java -jar (Get-Command bundletool.jar).Path version }
+   $btPath = ($env:Path -split ';' | Where-Object { $_ -and (Test-Path (Join-Path $_ 'bundletool.jar')) } | ForEach-Object { Join-Path $_ 'bundletool.jar' } | Select-Object -First 1)
+   $btPath
+   if ($btPath) { java -jar $btPath version }
    ```
 
 2. **Download latest `bundletool-all-*.jar` when missing**
@@ -65,9 +66,10 @@ Installs and validates `bundletool.jar` from official GitHub releases so Android
    ```
    Windows PowerShell:
    ```powershell
-   $bt = Get-Command bundletool.jar -ErrorAction SilentlyContinue
-   $bt.Path
-   java -jar $bt.Path version
+   $btPath = ($env:Path -split ';' | Where-Object { $_ -and (Test-Path (Join-Path $_ 'bundletool.jar')) } | ForEach-Object { Join-Path $_ 'bundletool.jar' } | Select-Object -First 1)
+   if (-not $btPath) { throw "bundletool.jar not found in PATH directories" }
+   $btPath
+   java -jar $btPath version
    ```
 
 4. **Report task result**

@@ -2,7 +2,7 @@
 name: "environment-setup-node"
 description: "Prepare and validate Node.js and npm environment"
 metadata:
-   last_modified: "Mon, 09 Mar 2026 14:30:00 GMT"
+   last_modified: "Thu, 12 Mar 2026 03:25:00 GMT"
 
 ---
 # environment-setup-node
@@ -24,11 +24,34 @@ Prepares a stable Node.js and npm environment by validating the active Node runt
    command -v fnm || true
    command -v asdf || true
    ```
+   Windows PowerShell:
+   ```powershell
+   Get-Command fnm -ErrorAction SilentlyContinue
+   Get-Command nvm -ErrorAction SilentlyContinue
+   Get-Command winget -ErrorAction SilentlyContinue
+   ```
    Prefer this order when available: `fnm` / `nvm` / `asdf`.
-   If none is available, ask the user whether to proceed with a version manager setup first (recommended) or continue with current system Node.
+   If none is available on Windows, install `fnm` non-interactively and continue:
+   ```powershell
+   winget install Schniz.fnm --accept-source-agreements --accept-package-agreements
+   ```
+   Then initialize `fnm` in the current shell:
+   ```powershell
+   $fnmDir = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe"
+   if (Test-Path $fnmDir) { $env:PATH = "$fnmDir;$env:PATH" }
+   fnm env --shell powershell | Invoke-Expression
+   fnm install --lts
+   fnm use lts-latest
+   fnm default lts-latest
+   ```
 
 2. **Verify Node and npm availability**
    ```bash
+   node -v
+   npm -v
+   ```
+   Windows PowerShell:
+   ```powershell
    node -v
    npm -v
    ```
@@ -37,11 +60,19 @@ Prepares a stable Node.js and npm environment by validating the active Node runt
    ```bash
    npm ping
    ```
+   Windows PowerShell:
+   ```powershell
+   npm ping
+   ```
    Ensure connectivity succeeds before continuing.
 
 4. **Validate active Node runtime details**
    ```bash
    node -p 'process.versions.node'
+   ```
+   Windows PowerShell:
+   ```powershell
+   node -p "process.versions.node"
    ```
    Confirm the runtime is an active LTS release; if not, switch Node version using the detected version manager.
 
