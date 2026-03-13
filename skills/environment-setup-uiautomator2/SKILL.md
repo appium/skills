@@ -2,7 +2,7 @@
 name: "environment-setup-uiautomator2"
 description: "Set up and validate a UiAutomator2 Appium environment on Android"
 metadata:
-   last_modified: "Thu, 12 Mar 2026 03:25:00 GMT"
+   last_modified: "Thu, 12 Mar 2026 03:45:00 GMT"
 
 ---
 # appium-uiautomator2-environment-setup
@@ -36,7 +36,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    node -v
    npm -v
    ```
-   If `node` is missing, install a compatible active LTS release and re-run the commands.
+   If `node` is missing, run `environment-setup-node` first (including Windows PowerShell profile bootstrap), then open a new terminal or run `. $PROFILE`, and re-run the commands.
 
 2. **Install Appium npm command**
    ```bash
