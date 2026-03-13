@@ -2,7 +2,7 @@
 name: "environment-setup-android"
 description: "Prepare and validate Android SDK, Java, and device tooling for Appium Android drivers"
 metadata:
-  last_modified: "Mon, 09 Mar 2026 14:30:00 GMT"
+  last_modified: "Thu, 12 Mar 2026 00:00:00 GMT"
 
 ---
 # environment-setup-android
@@ -12,14 +12,16 @@ Prepares a working Android automation environment for Appium by validating Java,
 
 ## Decision Logic
 - If host OS is unsupported for Android SDK setup: stop and ask the user to switch to macOS, Linux, or Windows.
-- If host OS is macOS: prioritize Android Studio app setup (`/Applications/Android Studio.app`) for both `ANDROID_HOME` (`$HOME/Library/Android/sdk`) and `JAVA_HOME` (Android Studio JBR).
-- If host OS is macOS and Android Studio app is not present: use Homebrew-based setup for SDK tools and Java.
+- If `java -version` and `javac -version` already succeed: keep the existing Java setup and do not reconfigure `JAVA_HOME`.
+- If host OS is macOS and Java setup is needed (fresh environment): use Android Studio app setup (`/Applications/Android Studio.app`) as the primary method for both `ANDROID_HOME` (`$HOME/Library/Android/sdk`) and `JAVA_HOME` (Android Studio JBR), then fallback to Homebrew if Android Studio is unavailable.
+- If host OS is Linux and Java setup is needed (fresh environment): use Android Studio bundled JBR as the primary method when Android Studio is installed, then fallback to distro/package-manager OpenJDK.
+- If host OS is Windows and Java setup is needed (fresh environment): use Android Studio bundled JBR as the primary method when Android Studio is installed, then fallback to a JDK package install.
 - If host OS is Linux: use package manager + `$HOME/Android/Sdk` conventions.
 - If host OS is Windows: use Android SDK tools with persistent user environment variables.
-- If `java` or `javac` is missing: install a supported JDK and configure `JAVA_HOME`.
+- If `java` or `javac` is missing: run step 3 to install/configure Java.
 - If the user wants official Android tooling setup flow: install Android Studio from the official site first, then use SDK Manager from Android Studio.
 - If `ANDROID_HOME` is unset/empty or the `ANDROID_HOME` path does not exist: run step 2 to install command-line tools and create the SDK path.
-- If `JAVA_HOME` is unset/empty or the `JAVA_HOME` path does not exist: run step 3 before Android SDK package/license commands.
+- If Java tooling is missing or broken (`java`/`javac` checks fail): run step 3 before Android SDK package/license commands.
 - If `adb` is missing: install `platform-tools` via `sdkmanager`.
 - If emulator binary is missing under `ANDROID_HOME/emulator/emulator` (or Windows equivalent): install emulator packages.
 - Prepare emulator instances using the latest stable system-image version by default.
@@ -85,43 +87,97 @@ Prepares a working Android automation environment for Appium by validating Java,
    New-Item -ItemType Directory -Force "$env:LOCALAPPDATA\Android\Sdk\cmdline-tools\latest"
    ```
 
-3. **Configure `JAVA_HOME` when `JAVA_HOME` path is missing**
+3. **Configure Java for fresh environments (skip if Java already works)**
    Trigger checks:
    - macOS/Linux:
    ```bash
-   [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ] || echo "run step 3"
+   if command -v java >/dev/null 2>&1 && command -v javac >/dev/null 2>&1; then
+     java -version >/dev/null 2>&1 && javac -version >/dev/null 2>&1 && echo "Java already available; skip step 3" || echo "run step 3"
+   else
+     echo "run step 3"
+   fi
    ```
    - Windows PowerShell:
    ```powershell
-   if (-not $env:JAVA_HOME -or -not (Test-Path $env:JAVA_HOME)) { "run step 3" }
+   if ((Get-Command java.exe -ErrorAction SilentlyContinue) -and (Get-Command javac.exe -ErrorAction SilentlyContinue)) {
+     java -version *> $null
+     if ($LASTEXITCODE -eq 0) {
+       javac -version *> $null
+       if ($LASTEXITCODE -eq 0) { "Java already available; skip step 3" } else { "run step 3" }
+     } else { "run step 3" }
+   } else { "run step 3" }
    ```
-   macOS (priority: Android Studio JBR, fallback: Homebrew JDK 21):
+   macOS primary method for fresh setup (Android Studio bundled JBR):
    ```bash
    if [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
      export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+     export PATH="$JAVA_HOME/bin:$PATH"
+     java -version
+     javac -version
    else
-     brew install --cask temurin
-     export JAVA_HOME="$(/usr/libexec/java_home -v 21)"
+     echo "Android Studio JBR not found; use fallback method below"
    fi
+   ```
+   macOS fallback method (only when Android Studio is not installed):
+   ```bash
+   brew install --cask temurin
+   export JAVA_HOME="$(/usr/libexec/java_home -v 21)"
    export PATH="$JAVA_HOME/bin:$PATH"
    java -version
    javac -version
    ```
-   Linux (OpenJDK 21 example):
+   Linux primary method for fresh setup (Android Studio bundled JBR):
+   ```bash
+   if [ -d "$HOME/android-studio/jbr" ]; then
+     export JAVA_HOME="$HOME/android-studio/jbr"
+   elif [ -d "/opt/android-studio/jbr" ]; then
+     export JAVA_HOME="/opt/android-studio/jbr"
+   elif [ -d "/usr/local/android-studio/jbr" ]; then
+     export JAVA_HOME="/usr/local/android-studio/jbr"
+   else
+     echo "Android Studio JBR not found; use fallback method below"
+   fi
+   if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
+     export PATH="$JAVA_HOME/bin:$PATH"
+     java -version
+     javac -version
+   fi
+   ```
+   Linux fallback method (OpenJDK 21 example):
    ```bash
    export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
    export PATH="$JAVA_HOME/bin:$PATH"
    java -version
    javac -version
    ```
-   Windows PowerShell (persist for current user):
+   Windows primary method for fresh setup (Android Studio bundled JBR, persist for current user):
    ```powershell
-   [Environment]::SetEnvironmentVariable('JAVA_HOME', "$env:LOCALAPPDATA\Programs\Android Studio\jbr", 'User')
-   $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
-   if ($currentPath -notlike "*$env:LOCALAPPDATA\Programs\Android Studio\jbr\bin*") {
-     [Environment]::SetEnvironmentVariable('Path', "$currentPath;$env:LOCALAPPDATA\Programs\Android Studio\jbr\bin", 'User')
+   $studioJbr = "$env:LOCALAPPDATA\Programs\Android Studio\jbr"
+   if (Test-Path $studioJbr) {
+     [Environment]::SetEnvironmentVariable('JAVA_HOME', $studioJbr, 'User')
+     $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+     if ($currentPath -notlike "*$studioJbr\bin*") {
+       [Environment]::SetEnvironmentVariable('Path', "$currentPath;$studioJbr\bin", 'User')
+     }
+     $env:JAVA_HOME = [Environment]::GetEnvironmentVariable('JAVA_HOME', 'User')
+     java -version
+     javac -version
+   } else {
+     "Android Studio JBR not found; use fallback method below"
    }
-   $env:JAVA_HOME = [Environment]::GetEnvironmentVariable('JAVA_HOME', 'User')
+   ```
+   Windows fallback method (only when Android Studio is not installed):
+   ```powershell
+   winget install -e --id EclipseAdoptium.Temurin.21.JDK
+   $jdkRoot = Get-ChildItem "C:\Program Files\Eclipse Adoptium" -Directory -ErrorAction SilentlyContinue | Sort-Object Name -Descending | Select-Object -First 1
+   if ($jdkRoot) {
+     [Environment]::SetEnvironmentVariable('JAVA_HOME', $jdkRoot.FullName, 'User')
+     $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+     if ($currentPath -notlike "*$($jdkRoot.FullName)\\bin*") {
+       [Environment]::SetEnvironmentVariable('Path', "$currentPath;$($jdkRoot.FullName)\\bin", 'User')
+     }
+     $env:JAVA_HOME = [Environment]::GetEnvironmentVariable('JAVA_HOME', 'User')
+   }
    java -version
    javac -version
    ```
@@ -244,6 +300,8 @@ Prepares a working Android automation environment for Appium by validating Java,
    - `adb` is executable from `PATH`
    - Emulator binary exists under `ANDROID_HOME/emulator/emulator` (or `%ANDROID_HOME%\emulator\emulator.exe` on Windows)
    - Required SDK packages are installed (`platform-tools`, one platform, one build-tools version)
+    - Existing Java setup is preserved when Java already works (no forced reconfiguration)
+    - On fresh setup, Android Studio bundled JBR is used as `JAVA_HOME` when Android Studio is present (macOS/Linux/Windows)
    - Android environment checks pass without requiring a connected device
    - Latest stable emulator/system-image version is prepared with host-optimized architecture only when no connected devices and no existing emulators are present; otherwise step 7 is skipped and current version details are reported in the task result
 
