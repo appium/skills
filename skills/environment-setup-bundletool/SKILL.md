@@ -2,7 +2,7 @@
 name: "environment-setup-bundletool"
 description: "Install and validate bundletool.jar from GitHub releases for optional UiAutomator2/Espresso capabilities"
 metadata:
-   last_modified: "Thu, 12 Mar 2026 03:25:00 GMT"
+  last_modified: "Thu, 12 Mar 2026 03:25:00 GMT"
 
 ---
 # environment-setup-bundletool

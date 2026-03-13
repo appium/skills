@@ -224,8 +224,8 @@ Prepares a working Android automation environment for Appium by validating Java,
    ```
    Windows PowerShell:
    ```powershell
-    if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { cmd /c "(for /l %i in (1,1,200) do @echo y)| sdkmanager.bat --licenses" }
-    if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { sdkmanager.bat "platform-tools" "build-tools;34.0.0" "platforms;android-34" "emulator" }
+   if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { cmd /c "(for /l %i in (1,1,200) do @echo y)| sdkmanager.bat --licenses" }
+   if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { sdkmanager.bat "platform-tools" "build-tools;34.0.0" "platforms;android-34" "emulator" }
    ```
     If license acceptance still fails in headless CI-like runs, pre-seed license hashes and retry package install:
     ```powershell

@@ -2,7 +2,7 @@
 name: "environment-setup-uiautomator2"
 description: "Set up and validate a UiAutomator2 Appium environment on Android"
 metadata:
-   last_modified: "Thu, 12 Mar 2026 03:55:00 GMT"
+  last_modified: "Thu, 12 Mar 2026 03:55:00 GMT"
 
 ---
 # appium-uiautomator2-environment-setup
