@@ -1,6 +1,6 @@
 # Appium Agent Skills
 
-This repository contains AI Agent skills for preparing Appium driver environments.
+This repository contains AI Agent skills for preparing Appium driver environments and troubleshooting common driver failures.
 
 NOTE: This repository is currently in development.
 
@@ -15,6 +15,7 @@ NOTE: This repository is currently in development.
 | [environment-setup-uiautomator2](skills/environment-setup-uiautomator2/SKILL.md) | Prepares and validates an Android + UiAutomator2 Appium environment |
 | [environment-setup-espresso](skills/environment-setup-espresso/SKILL.md) | Prepares and validates an Android + Espresso Appium environment |
 | [environment-setup-xcuitest](skills/environment-setup-xcuitest/SKILL.md) | Prepares and validates a macOS + XCUITest Appium environment |
+| [appium-troubleshooting](skills/appium-troubleshooting/SKILL.md) | Troubleshoots common UiAutomator2 and XCUITest startup, WebDriverAgent, and element lookup failures |
 
 ## Reliable Execution Notes
 
@@ -24,8 +25,9 @@ NOTE: This repository is currently in development.
 - Treat Appium doctor as the source of truth for pass/fail (`0 required fixes needed`).
 - For FFmpeg-dependent capabilities, run the optional shared skill `environment-setup-ffmpeg` only when explicitly requested.
 - For bundletool-dependent capabilities, run the optional shared skill `environment-setup-bundletool` only when explicitly requested.
+- For startup, WDA, or locator failures after setup is complete, use `appium-troubleshooting` and load only the relevant platform reference files.
 
 ## Agent Instructions
 
 - See [AGENTS.md](AGENTS.md) for strict execution rules and copy-paste prompt templates.
-- Use the template matching your target (`uiautomator2`, `espresso`, or `xcuitest`) and run skills in the documented order.
+- Use the template matching your target (`uiautomator2`, `espresso`, `xcuitest`, or `troubleshooting`) and run skills in the documented order.

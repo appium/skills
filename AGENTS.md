@@ -43,6 +43,11 @@ This file defines how AI agents should execute the skills in this repository.
 1. `environment-setup-node`
 2. `environment-setup-xcuitest`
 
+### Troubleshooting
+
+1. If prerequisites or doctor checks are failing, run the relevant environment setup skill first.
+2. Then run `appium-troubleshooting` and load only the platform reference files that match the symptom.
+
 ## Completion Policy
 
 A skill is complete only when its own completion criteria in `SKILL.md` are satisfied.
@@ -119,6 +124,25 @@ Rules:
   2) In Terminal B run `curl -s http://127.0.0.1:4723/status` and confirm success.
   3) In Terminal A logs confirm `Available drivers:` contains `xcuitest`.
   4) In Terminal A stop Appium with `Ctrl+C`, then in Terminal B run `pgrep -fl "appium.*server" || echo "no appium server process"`.
+```
+
+### Template: Troubleshooting
+
+Use this as a starting prompt for an AI agent:
+
+```text
+Use this repository's troubleshooting skill to diagnose an Appium failure.
+Follow this order:
+1) If setup or doctor output is failing, run the matching environment setup skill first.
+2) skills/appium-troubleshooting/SKILL.md
+
+Rules:
+- Run one step at a time.
+- Re-run the smallest failing check after each fix.
+- Treat Appium doctor required fixes as blocking.
+- Prefer the official Appium references bundled with the troubleshooting skill before using discuss.appium.io.
+- Use discuss.appium.io only when the official references do not explain the exact stack trace or symptom.
+- Show command output for each step.
 ```
 
 ## Notes for Tooling Integrations
