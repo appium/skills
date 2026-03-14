@@ -170,8 +170,8 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
      -destination generic/platform=iOS \
      -allowProvisioningUpdates \
      -allowProvisioningDeviceRegistration \
-      PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
-      DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
+     PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
+     DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
      CODE_SIGN_STYLE=Automatic \
      CODE_SIGN_IDENTITY="$SIGN_ID"
 
@@ -298,25 +298,11 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    provisioning profile/certificate, launch it once, and complete all trust prompts.
    This pre-trust step reduces WDA launch blocking on first run.
 
-6. **Run Preinstalled WDA** *(optional — improves session start time)*
-   Install WDA once on the device and reuse it across sessions without `xcodebuild`.
+6. **Run Appium XCUITest with Prepared WDA** *(choose one mode only)*
+   Use one mode below as an example. Do not run all modes.
 
-    For free-account or enterprise-profile setups, complete the step 5 pre-trust
-    recommendation first (sample app signed with the same profile/certificate).
-
-   After preparing and verifying WDA in steps 4–5, install the `.app` on the device
-   using any 3rd-party device tool (ask before installing: ios-deploy, go-ios,
-   pymobiledevice3, tidevice), or set `appium:prebuiltWDAPath` to let the driver
-   install it each session:
-   ```json
-   {
-     "appium:usePreinstalledWDA": true,
-     "appium:prebuiltWDAPath": "/abs/path/to/WebDriverAgentRunner-Runner.app",
-     "appium:updatedWDABundleId": "com.yourteam.WebDriverAgentRunner"
-   }
-   ```
-
-   **Launch the session with preinstalled WDA:**
+   **Mode A — Reuse preinstalled WDA**
+   Install WDA once and reuse it across sessions without running `xcodebuild` each time.
    ```json
    {
      "platformName": "ios",
@@ -326,14 +312,12 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
      "appium:updatedWDABundleId": "com.yourteam.WebDriverAgentRunner"
    }
    ```
-   If launch fails with `Failed to start the preinstalled WebDriverAgent` and repeated
-   `ECONNREFUSED 127.0.0.1:8100`, rebuild the app from step 4 iOS/tvOS 17+ flow
-   (`rm -rf Frameworks/` + re-sign), reinstall, then retry.
-
-   Known behavior with `go-ios` tooling on newer iOS versions:
-   - `ios install` and `ios apps` can show tunnel-agent warnings while still succeeding.
-   - Treat explicit `installation successful` / listed bundle ID as the success signal.
-   If the WDA bundle ID has no `.xctrunner` suffix (e.g. set by a 3rd-party install tool):
+   Notes:
+   - For free-account or enterprise-profile setups, complete the step 5 pre-trust
+     recommendation first.
+   - If launch fails with repeated `ECONNREFUSED 127.0.0.1:8100`, rebuild from the
+     iOS/tvOS 17+ flow in step 4 (`rm -rf Frameworks/` + re-sign), reinstall, then retry.
+   - If the installed WDA bundle ID has no `.xctrunner` suffix:
    ```json
    {
      "appium:usePreinstalledWDA": true,
@@ -342,39 +326,21 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    }
    ```
 
-7. **Run Prebuilt WDA** *(optional — improves session start time)*
-   Use the WDA `.app` prepared in step 4 to skip `xcodebuild build-for-testing` at
-   session start.
+   **Mode B — Use prebuilt WDA app/xctestrun artifacts**
+   Skip build work at session time by using previously prepared artifacts.
 
-   **Option A (primary) — Point directly at the `.app` from step 4:**
+   Option B1: Signed `.app` artifact
    ```json
    {
+     "platformName": "ios",
+     "appium:automationName": "xcuitest",
+     "appium:udid": "<device-udid>",
      "appium:usePreinstalledWDA": true,
      "appium:prebuiltWDAPath": "/path/to/signed/WebDriverAgentRunner-Runner.app"
    }
    ```
 
-   **Option B — Use the `.xctestrun` output from step 4 Option 2:**
-   Build with a device-targeted destination to produce a compatible `.xctestrun`:
-   ```bash
-   xcodebuild build-for-testing \
-     -project "$APPIUM_HOME_DIR"/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent/WebDriverAgent.xcodeproj \
-     -derivedDataPath wda_build \
-     -scheme WebDriverAgentRunner \
-     -destination "platform=iOS,id=<device-udid>" \
-     -allowProvisioningUpdates \
-     -allowProvisioningDeviceRegistration \
-     PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
-     DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
-     CODE_SIGN_STYLE=Automatic \
-     CODE_SIGN_IDENTITY="Apple Development"
-   ```
-
-   If Appium expects `WebDriverAgentRunner_iphoneos-arm64.xctestrun` but build output
-   is SDK-suffixed (for example `WebDriverAgentRunner_iphoneos26.2-arm64.xctestrun`),
-   copy/rename it to the expected filename in the same `Build/Products` directory.
-
-   Then reference the build products directory:
+   Option B2: `.xctestrun` artifact
    ```json
    {
      "platformName": "ios",
@@ -384,36 +350,26 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
      "appium:bootstrapPath": "/abs/path/to/appium_wda_ios/Build/Products"
    }
    ```
+   If Appium expects `WebDriverAgentRunner_iphoneos-arm64.xctestrun` but build output
+   is SDK-suffixed, copy/rename it to the expected filename in the same directory.
 
-   Validation note:
-   - Option B was verified to start a real-device session successfully after
-     device-targeted build and `.xctestrun` filename normalization.
-
-8. **Attach to a Running WDA** *(optional — fully self-managed WDA lifecycle)*
-   Start WDA on the device externally, then have the XCUITest driver attach to it.
-   This skips all WDA build/install logic inside the driver.
-
-   1. Start the WDA process on the device (via Xcode, xcodebuild, or a 3rd-party tool).
-   2. Determine the reachable WDA URL:
-      - Direct network access: `http://<device-ip>:8100`
-      - USB port-forward to localhost: `http://localhost:8100`
-   3. Pass the URL in the session capability:
+   **Mode C — Attach to already running WDA**
+   Start WDA externally (Xcode/xcodebuild/tooling), then point Appium at it.
    ```json
    {
      "platformName": "ios",
      "appium:automationName": "xcuitest",
      "appium:udid": "<device-udid>",
-     "appium:deviceName": "iPhone",
-     "appium:platformVersion": "18.0",
-     "appium:webDriverAgentUrl": "http://<device-ip>:8100"
+     "appium:webDriverAgentUrl": "http://<device-ip-or-localhost>:8100"
    }
    ```
-   If the remote WDA port differs from the local forwarded port, add:
-   ```json
-   {
-     "appium:wdaRemotePort": 8100
-   }
-   ```
+   If the remote WDA port differs from local forwarding, add `appium:wdaRemotePort`.
+
+   **Skill report requirement:**
+   - In the final skill report, print at least one copy-paste-ready capabilities JSON
+     snippet for the mode that was validated.
+   - Include one additional capabilities snippet as a fallback hint (for example,
+     preinstalled mode and attach mode).
 
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.
@@ -427,16 +383,16 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
   pymobiledevice3, tidevice, ios-app-signer, etc.).
 - For steps that require physical interaction with the device (Trust popup, Developer
   Mode toggle), pause and provide the exact on-device instruction.
-- Steps 6–8 are optional performance improvements; the default xcodebuild-per-session
-  flow is valid and does not require them.
+- Step 6 contains optional runtime modes; validate one mode only. The default
+  xcodebuild-per-session flow is still valid.
 
 ## Agent completion criteria
 Mark the skill complete only when all of the following are true:
 - Connected device is visible in `xcrun xctrace list devices` output.
 - A signed WDA `.app` has been prepared using one of the Options in step 4.
 - `codesign --verify --deep --strict` on the prepared WDA exits cleanly (step 5 passes).
-- At least one WDA deployment method is confirmed working:
-  - Default: `xcodebuild`-based install succeeds, OR
-  - Preinstalled: `appium:usePreinstalledWDA` session starts successfully, OR
-  - Prebuilt: `appium:prebuiltWDAPath` / `appium:useXctestrunFile` session starts, OR
-  - Attach: `appium:webDriverAgentUrl` session starts successfully.
+- At least one WDA runtime mode from step 6 is confirmed working (or default
+  xcodebuild-per-session install succeeds).
+- Final skill report includes capability hints:
+  - one copy-paste JSON capabilities snippet for the validated mode, and
+  - one additional fallback snippet.
