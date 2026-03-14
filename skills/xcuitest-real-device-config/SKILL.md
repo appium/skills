@@ -170,8 +170,8 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
      -destination generic/platform=iOS \
      -allowProvisioningUpdates \
      -allowProvisioningDeviceRegistration \
-     PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
-    DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
+      PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
+      DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
      CODE_SIGN_STYLE=Automatic \
      CODE_SIGN_IDENTITY="$SIGN_ID"
 
@@ -200,9 +200,9 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    appium_wda_ios/Build/Products/Debug-iphoneos/WebDriverAgentRunner-Runner.app
    ```
 
-  **iOS 17+ / tvOS 17+:** The package embeds XCTest runtime artifacts that must be
-  removed before the device can launch WDA with its own local XCTest runtime. After
-  the build, remove the same artifacts as the GitHub release package and re-sign:
+    **iOS 17+ / tvOS 17+:** The package embeds XCTest runtime artifacts that must be
+    removed before the device can launch WDA with its own local XCTest runtime. After
+    the build, remove the same artifacts as the GitHub release package and re-sign:
    ```bash
    WDA_APP="appium_wda_ios/Build/Products/Debug-iphoneos/WebDriverAgentRunner-Runner.app"
 
@@ -248,10 +248,10 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    - Change `com.facebook.WebDriverAgentRunner` to a bundle ID covered by your profile.
    - Build and install: **Product → Test** on the connected device.
 
-  **iOS 17+ / tvOS 17+ (all Option 3 sub-options):**
-  The Xcode-built package contains the same XCTest runtime artifacts as other WDA
-  bundles. Remove `Frameworks/XC*.framework`, `Frameworks/Testing.framework`, and
-  `Frameworks/libXCTestSwiftSupport.dylib`, then re-sign before installation:
+    **iOS 17+ / tvOS 17+ (all Option 3 sub-options):**
+    The Xcode-built package contains the same XCTest runtime artifacts as other WDA
+    bundles. Remove `Frameworks/XC*.framework`, `Frameworks/Testing.framework`, and
+    `Frameworks/libXCTestSwiftSupport.dylib`, then re-sign before installation:
    ```bash
    WDA_APP=~/Library/Developer/Xcode/DerivedData/WebDriverAgent-*/Build/Products/Debug-iphoneos/WebDriverAgentRunner-Runner.app
 
@@ -301,8 +301,8 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
 6. **Run Preinstalled WDA** *(optional — improves session start time)*
    Install WDA once on the device and reuse it across sessions without `xcodebuild`.
 
-  For free-account or enterprise-profile setups, complete the step 5 pre-trust
-  recommendation first (sample app signed with the same profile/certificate).
+    For free-account or enterprise-profile setups, complete the step 5 pre-trust
+    recommendation first (sample app signed with the same profile/certificate).
 
    After preparing and verifying WDA in steps 4–5, install the `.app` on the device
    using any 3rd-party device tool (ask before installing: ios-deploy, go-ios,
