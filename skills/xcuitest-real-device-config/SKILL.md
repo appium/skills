@@ -161,7 +161,7 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
 
    # Must: inspect the selected certificate subject and OU
    # security find-certificate -c "Apple Development: you@example.com" -p | openssl x509 -noout -subject
-   # subject=UID=UID, CN=Apple Development: you@example.com (USER_TEAM_ID_PAID_ACCOUNT), OU=USER_TEAM_ID_FREE_ACCOUNT, O=your, C=US
+   # subject=UID=UID, CN=Apple Development: you@example.com (USER_TEAM_ID_PAID_ACCOUNT), OU=USER_TEAM_ID_FREE_ACCOUNT, O=your name, C=US
 
    # iOS/iPadOS
    xcodebuild clean build-for-testing \
