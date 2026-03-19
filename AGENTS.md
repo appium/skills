@@ -43,6 +43,12 @@ This file defines how AI agents should execute the skills in this repository.
 1. `environment-setup-node`
 2. `environment-setup-xcuitest`
 
+### iOS + XCUITest + Real Device (macOS only)
+
+1. `environment-setup-node`
+2. `environment-setup-xcuitest`
+3. `xcuitest-real-device-config`
+
 ### Troubleshooting
 
 1. If prerequisites or doctor checks are failing, run the relevant environment setup skill first.
@@ -124,6 +130,32 @@ Rules:
   2) In Terminal B run `curl -s http://127.0.0.1:4723/status` and confirm success.
   3) In Terminal A logs confirm `Available drivers:` contains `xcuitest`.
   4) In Terminal A stop Appium with `Ctrl+C`, then in Terminal B run `pgrep -fl "appium.*server" || echo "no appium server process"`.
+```
+
+### Template: XCUITest Real Device
+
+Use this as a starting prompt for an AI agent:
+
+```text
+Use this repository's skills to prepare macOS + XCUITest for a real iOS/tvOS device.
+Follow exactly, in order:
+1) skills/environment-setup-node/SKILL.md
+2) skills/environment-setup-xcuitest/SKILL.md
+3) skills/xcuitest-real-device-config/SKILL.md
+
+Rules:
+- Run one step at a time.
+- Complete environment-setup-xcuitest before starting xcuitest-real-device-config.
+- Ask before installing optional 3rd-party device tools (ios-deploy, go-ios, pymobiledevice3, tidevice).
+- Do not use sudo unless I explicitly ask.
+- For steps requiring physical device interaction (Trust popup, Developer Mode toggle), pause and give the exact on-device instruction.
+- Show command output for each step.
+- When the WDA bundle is modified after signing (frameworks removed for iOS 17+), always re-sign with `codesign` before installing.
+- Completion criteria:
+  1) Device is visible in `xcrun xctrace list devices`.
+  2) A provisioning profile approach has been fully applied (no code-signing errors on WDA install).
+  3) If any WDA bundle was modified, `codesign --verify --verbose` confirms a valid signature.
+  4) At least one WDA deployment method is confirmed working (default xcodebuild, preinstalled, prebuilt, or attach).
 ```
 
 ### Template: Troubleshooting

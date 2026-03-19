@@ -1,8 +1,6 @@
 # Appium Agent Skills
 
-This repository contains AI Agent skills for preparing Appium driver environments and troubleshooting common driver failures.
-
-NOTE: This repository is currently in development.
+This repository contains AI Agent skills for helping with Appium automation, including environment setup, real-device configuration, and troubleshooting common failures.
 
 ## Available Skills
 
@@ -16,6 +14,7 @@ NOTE: This repository is currently in development.
 | [environment-setup-espresso](skills/environment-setup-espresso/SKILL.md) | Prepares and validates an Android + Espresso Appium environment |
 | [environment-setup-xcuitest](skills/environment-setup-xcuitest/SKILL.md) | Prepares and validates a macOS + XCUITest Appium environment |
 | [appium-troubleshooting](skills/appium-troubleshooting/SKILL.md) | Troubleshoots UiAutomator2 or XCUITest failures with driver-scoped flows and required validation checks (`appium -v`, installed drivers, doctor output, and minimal repro re-run evidence) |
+| [xcuitest-real-device-config](skills/xcuitest-real-device-config/SKILL.md) | Prepare a real iOS/tvOS device for Appium XCUITest automation |
 
 ## Reliable Execution Notes
 
@@ -31,4 +30,4 @@ NOTE: This repository is currently in development.
 ## Agent Instructions
 
 - See [AGENTS.md](AGENTS.md) for strict execution rules and copy-paste prompt templates.
-- Use the template matching your target (`uiautomator2`, `espresso`, `xcuitest`, or `troubleshooting`) and run skills in the documented order.
+- Use the template matching your target (`uiautomator2`, `espresso`, `xcuitest`, `xcuitest real device`, or `troubleshooting`) and run skills in the documented order.
