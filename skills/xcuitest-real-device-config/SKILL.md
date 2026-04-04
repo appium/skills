@@ -102,10 +102,35 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    Download [`resigner`](https://github.com/KazuCocoa/resigner) from its
    [releases page](https://github.com/KazuCocoa/resigner/releases). It handles profile
    embedding, optional bundle ID remapping, and signing in one step for any account type.
+   Select the archive that matches the host machine architecture:
+   ```bash
+   ARCH="$(uname -m)"
+   case "$ARCH" in
+     arm64) RESIGNER_ARCHIVE="darwin-arm64.tar.gz" ;;
+     x86_64) RESIGNER_ARCHIVE="darwin-amd64.tar.gz" ;;
+     *) echo "Unsupported macOS arch: $ARCH"; exit 1 ;;
+   esac
 
-   Export your signing certificate as a `.p12` from Keychain Access:
-   - Open **Keychain Access** → locate your Apple Development certificate (the one with a private key).
-   - Right-click → **Export** → choose **Personal Information Exchange (.p12)** → set an export password.
+   tar xzf "$RESIGNER_ARCHIVE"
+   # binary is at: darwin-*/resigner
+   ```
+
+   Export your signing certificate as a `.p12`. Use either method:
+
+   **GUI (Keychain Access):** locate your Apple Development certificate (the one with a
+   private key) → right-click → **Export** → choose **Personal Information Exchange
+   (.p12)** → set an export password.
+
+   **CLI (login keychain):**
+   ```bash
+   P12_PASS="<choose-a-password>"
+   security export \
+     -k ~/Library/Keychains/login.keychain-db \
+     -t identities \
+     -f pkcs12 \
+     -P "$P12_PASS" \
+     -o ~/sign/mysign.p12
+   ```
 
    Inspect the downloaded package to confirm current bundle IDs and signing state:
    ```bash
@@ -114,23 +139,34 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    ```
    The prebuilt package uses `com.facebook.WebDriverAgentRunner` as its root bundle ID.
 
-   Decode your provisioning profile to confirm its allowed bundle identifier:
+  Decode your provisioning profile to confirm its allowed bundle identifier.
+  For free accounts (always specific-ID profiles), the output includes a `TEAMID.`
+  prefix and you must strip it to get `TARGET_BUNDLE_ID`. For paid accounts, do this
+  strip step only when using a specific-ID profile; if using `*`, `TARGET_BUNDLE_ID`
+  is not needed because remap flags are omitted.
    ```bash
-   security cms -D -i /path/to/profile.mobileprovision > /tmp/profile.plist
+   PROFILES_DIR="/path/to/profiles-directory"   # resigner --profile takes a directory
+   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > /tmp/profile.plist
+    # output example: TEAMID1234.com.example.wda  ->  TARGET_BUNDLE_ID=com.example.wda
    /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" /tmp/profile.plist
+    /usr/libexec/PlistBuddy -c "Print :ExpirationDate" /tmp/profile.plist
+
+    APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" /tmp/profile.plist)
+    TARGET_BUNDLE_ID="${APP_ID#*.}"   # remove TEAMID. prefix if present
    ```
 
-   Run `resigner` to embed the profile and sign. Include `--bundle-id-remap` flags only
-   when your profile app identifier is not a true wildcard (`*`):
+   Run `resigner` to embed the profile and sign. `--profile` accepts a **directory**
+   path; resigner selects the matching profile automatically. Include `--bundle-id-remap`
+   flags only when your profile app identifier is not a true wildcard (`*`):
    ```bash
-   TARGET_BUNDLE_ID="<bundle-id-covered-by-your-profile>"  # e.g. com.yourname.wda
+   TARGET_BUNDLE_ID="<bundle-id-covered-by-your-profile>"  # strip the TEAMID. prefix
    # Omit the --bundle-id-remap lines ONLY if your profile app identifier is exactly `*`
    # Partial wildcards (e.g. io.appium.* or com.example.*) still require --bundle-id-remap
 
    resigner \
      --p12-file "<path-to-your.p12>" \
      --p12-password "<p12-password>" \
-     --profile "<path-to-your.mobileprovision>" \
+     --profile "$PROFILES_DIR" \
      --force \
      --bundle-id-remap "com.facebook.WebDriverAgentRunner=${TARGET_BUNDLE_ID}" \
      --bundle-id-remap "com.facebook.WebDriverAgentRunner.xctrunner=${TARGET_BUNDLE_ID}" \
@@ -157,10 +193,27 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
      `~/Library/Developer/Xcode/UserData/Provisioning Profiles/`.
    - System-cached profiles from manual downloads are under
      `~/Library/MobileDevice/Provisioning Profiles/`.
+   - **Expired profiles are rejected** by `resigner` as "not usable".
+   - Always confirm profile validity before running:
+   ```bash
+   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > /tmp/profile.plist
+   /usr/libexec/PlistBuddy -c "Print :ExpirationDate" /tmp/profile.plist
+   date
+   ```
 
    > **Offline note (iOS 16+):** If the device has no reliable internet at test time,
    > set up an offline provisioning profile first. Follow the steps in the
    > [Appium issue comment](https://github.com/appium/appium/issues/18378#issuecomment-1482678074).
+
+    > **Fast prebuilt workflow (verified):** Use `resigner --inspect` first to get the
+    > source bundle IDs (`com.facebook.WebDriverAgentRunner*`), then derive
+    > `TARGET_BUNDLE_ID` from the non-expired provisioning profile's
+    > `Entitlements:application-identifier` (strip `TEAMID.`). Remap all WDA bundle IDs
+    > to that exact target ID and sign in one run.
+    >
+    > If re-signing fails with "unable to find usable provisioning profile", the usual
+    > causes are: expired profile, profile not matching the remapped target ID, or team/
+    > certificate mismatch.
 
    Proceed to step 5 to verify the signature.
 
@@ -182,17 +235,24 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
      `WebDriverAgentRunner` naming as needed.
    - Paid Apple Developer: ask the user for the expected production/testing bundle ID
      and matching team ID for their org.
-   - Do not hardcode personal prefixes (for example, `com.kazucocoa`) in reusable docs;
+   - Do not hardcode personal prefixes (for example, `com.example.personal`) in reusable docs;
      treat those as environment-specific examples only.
 
    ```bash
    BUNDLE_ID="<user-provided.bundle.id>"
-   DEVELOPMENT_TEAM="<USER_TEAM_ID>"   # 10-character team ID from the user's Apple account. USER_TEAM_ID_PAID_ACCOUNT is for a paid account, USER_TEAM_ID_FREE_ACCOUNT is for a free account
+  # Prefer deriving values from the selected profile for repeatable automation:
+  # PROFILE_PATH="/path/to/<profile>.mobileprovision"
+  # security cms -D -i "$PROFILE_PATH" > /tmp/profile.plist
+  # DEVELOPMENT_TEAM=$(/usr/libexec/PlistBuddy -c "Print :TeamIdentifier:0" /tmp/profile.plist)
+  # APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" /tmp/profile.plist)
+  # BUNDLE_ID="${APP_ID#*.}"   # remove TEAMID. prefix if present
+
+  DEVELOPMENT_TEAM="<USER_TEAM_ID>"   # 10-character team ID from the user's Apple account
    SIGN_ID="Apple Development"         # or the full identity string from security find-identity
 
    # Must: inspect the selected certificate subject and OU
    # security find-certificate -c "Apple Development: you@example.com" -p | openssl x509 -noout -subject
-   # subject=UID=UID, CN=Apple Development: you@example.com (USER_TEAM_ID_PAID_ACCOUNT), OU=USER_TEAM_ID_FREE_ACCOUNT, O=your name, C=US
+  # subject=UID=UID, CN=Apple Development: you@example.com (TEAMID), OU=TEAMID, O=your name, C=US
 
    # iOS/iPadOS
    xcodebuild clean build-for-testing \
