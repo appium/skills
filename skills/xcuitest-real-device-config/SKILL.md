@@ -139,11 +139,11 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    ```
    The prebuilt package uses `com.facebook.WebDriverAgentRunner` as its root bundle ID.
 
-  Decode your provisioning profile to confirm its allowed bundle identifier.
-  For free accounts (always specific-ID profiles), the output includes a `TEAMID.`
-  prefix and you must strip it to get `TARGET_BUNDLE_ID`. For paid accounts, do this
-  strip step only when using a specific-ID profile; if using `*`, `TARGET_BUNDLE_ID`
-  is not needed because remap flags are omitted.
+   Decode your provisioning profile to confirm its allowed bundle identifier.
+   For free accounts (always specific-ID profiles), the output includes a `TEAMID.`
+   prefix and you must strip it to get `TARGET_BUNDLE_ID`. For paid accounts, do this
+   strip step only when using a specific-ID profile; if using `*`, `TARGET_BUNDLE_ID`
+   is not needed because remap flags are omitted.
    ```bash
    PROFILES_DIR="/path/to/profiles-directory"   # resigner --profile takes a directory
    security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > /tmp/profile.plist
