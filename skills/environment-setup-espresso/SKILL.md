@@ -49,7 +49,7 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    ```bash
    npm install -g appium
    appium driver install espresso || appium driver update espresso
-   appium driver list --installed
+   appium driver list --installed --json || appium driver list --installed
    ```
    If the install command fails only because `espresso` is already installed, continue and do not stop preparation.
 
@@ -57,14 +57,14 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    macOS/Linux:
    ```bash
    appium -v
-   appium driver list --installed
+   appium driver list --installed --json || appium driver list --installed
    npm view appium engines --json
    npm view appium-espresso-driver engines --json
    ```
    Windows PowerShell:
    ```powershell
    appium -v
-   appium driver list --installed
+   appium driver list --installed --json; if ($LASTEXITCODE -ne 0) { appium driver list --installed }
    npm view appium engines --json
    npm view appium-espresso-driver engines --json
    ```
@@ -169,7 +169,7 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
 
 9. **Agent completion criteria**
    Mark the skill complete only when all are true:
-   - `appium driver list --installed` includes `espresso`
+   - `appium driver list --installed --json` includes `espresso` (fallback to `appium driver list --installed` if `--json` is unsupported)
    - `appium -v` succeeds
    - `appium driver doctor espresso` has no failing mandatory checks
    - `environment-setup-android` completion criteria are satisfied

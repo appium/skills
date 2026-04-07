@@ -34,14 +34,14 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    ```bash
    npm install -g appium
    appium driver install xcuitest || appium driver update xcuitest
-   appium driver list --installed
+   appium driver list --installed --json || appium driver list --installed
    ```
    If the install command fails only because `xcuitest` is already installed, continue and do not stop preparation.
 
 3. **Validate Appium npm commands and Node compatibility (after driver setup)**
    ```bash
    appium -v
-   appium driver list --installed
+   appium driver list --installed --json || appium driver list --installed
    npm view appium engines --json
    npm view appium-xcuitest-driver engines --json
    ```
@@ -102,7 +102,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
 
 8. **Agent completion criteria**
    Mark the skill complete only when all are true:
-   - `appium driver list --installed` includes `xcuitest`
+   - `appium driver list --installed --json` includes `xcuitest` (fallback to `appium driver list --installed` if `--json` is unsupported)
    - `appium -v` succeeds
    - `appium driver doctor xcuitest` has no failing mandatory checks
    - `curl -s http://127.0.0.1:4723/status` returns a successful status response

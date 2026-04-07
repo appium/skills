@@ -49,7 +49,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    ```bash
    npm install -g appium
    appium driver install uiautomator2 || appium driver update uiautomator2
-   appium driver list --installed
+   appium driver list --installed --json || appium driver list --installed
    ```
    If the install command fails only because `uiautomator2` is already installed, continue and do not stop preparation.
 
@@ -57,14 +57,14 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
    macOS/Linux:
    ```bash
    appium -v
-   appium driver list --installed
+   appium driver list --installed --json || appium driver list --installed
    npm view appium engines --json
    npm view appium-uiautomator2-driver engines --json
    ```
    Windows PowerShell:
    ```powershell
    appium -v
-   appium driver list --installed
+   appium driver list --installed --json; if ($LASTEXITCODE -ne 0) { appium driver list --installed }
    npm view appium engines --json
    npm view appium-uiautomator2-driver engines --json
    ```
@@ -169,7 +169,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 
 9. **Agent completion criteria**
    Mark the skill complete only when all are true:
-   - `appium driver list --installed` includes `uiautomator2`
+   - `appium driver list --installed --json` includes `uiautomator2` (fallback to `appium driver list --installed` if `--json` is unsupported)
    - `appium -v` succeeds
    - `appium driver doctor uiautomator2` has no failing mandatory checks
    - `environment-setup-android` completion criteria are satisfied
