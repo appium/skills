@@ -8,7 +8,7 @@ metadata:
 # appium-xcuitest-environment-setup
 
 ## Goal
-Prepares a stable Appium XCUITest execution environment on macOS by validating Node.js and Appium installation, installing and validating Xcode toolchains, and iterating Appium doctor checks until required items pass.
+Prepares a stable Appium XCUITest execution environment on macOS by validating Node.js and Appium installation, installing and validating Xcode toolchains, and iterating Appium doctor checks until doctor reports `0 required fixes needed`.
 
 ## Decision Logic
 - If host OS is not macOS: stop and tell the user this skill only supports macOS.
@@ -84,6 +84,23 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    Use `0 required fixes needed` as the pass/fail gate. Optional warnings are non-blocking. Resolve required fixes, then re-run until this gate is met.
    For deterministic automation, parse the doctor output for that exact phrase instead of relying on visual formatting.
    `applesimutils` warnings are optional for basic simulator session creation, but recommended when you need permission-management helper APIs.
+   Bash gate example:
+   ```bash
+   DOCTOR_OUT="$(appium driver doctor xcuitest 2>&1)"
+   echo "$DOCTOR_OUT" | grep -q "0 required fixes needed" || { echo "$DOCTOR_OUT"; exit 1; }
+   echo "$DOCTOR_OUT" | grep -E "0 required fixes needed|optional fix"
+   ```
+   PowerShell gate example:
+   ```powershell
+   $doctorOut = appium driver doctor xcuitest 2>&1 | Out-String
+   if ($doctorOut -notmatch '0 required fixes needed') { throw "Doctor required fixes remain" }
+   $doctorOut | Select-String '0 required fixes needed|optional fix'
+   ```
+   AI-assisted fallback (only if exact phrase matching is inconclusive due output-format changes):
+   1. Re-run doctor once and capture full output (`appium driver doctor xcuitest 2>&1 | tee /tmp/appium-doctor-xcuitest.log`).
+   2. Ask an AI agent to classify required vs optional findings from the captured output.
+   3. Accept a pass only when the output clearly indicates zero required issues (for example: no required-fix section and no required-check failures).
+   4. If still ambiguous, mark status as `needs-manual-review` and do not mark the skill complete.
 
 7. **Optional simulator readiness preflight**
    Before smoke testing, you may verify simulator availability to reduce false failures in session creation:
@@ -118,6 +135,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    - `appium driver list --installed --json` includes `xcuitest` (fallback to `appium driver list --installed` if `--json` is unsupported)
    - `appium -v` succeeds
    - `appium driver doctor xcuitest` reports `0 required fixes needed` (optional warnings are allowed)
+   - task result includes the doctor summary line with required/optional fix counts
    - `curl -s http://127.0.0.1:4723/status` returns a successful status response
    - Appium server logs show startup/readiness successfully after the curl check, or (if banner logs are unavailable) readiness is confirmed by `/status` plus JSON driver listing that includes `xcuitest`
    - If logs are available, `Available drivers:` includes an `xcuitest` entry

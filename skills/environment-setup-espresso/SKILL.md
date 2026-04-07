@@ -2,7 +2,7 @@
 name: "environment-setup-espresso"
 description: "Set up and validate an Espresso Appium environment on Android"
 metadata:
-   last_modified: "Thu, 12 Mar 2026 03:55:00 GMT"
+   last_modified: "Mon, 06 Apr 2026 00:00:00 GMT"
 
 ---
 # appium-espresso-environment-setup
@@ -117,6 +117,23 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    ```
    Use `0 required fixes needed` as the pass/fail gate. Optional warnings are non-blocking. If required fixes remain, apply targeted fixes and re-run.
    For deterministic automation, parse the doctor output for that exact phrase instead of relying on visual formatting.
+   Bash gate example:
+   ```bash
+   DOCTOR_OUT="$(appium driver doctor espresso 2>&1)"
+   echo "$DOCTOR_OUT" | grep -q "0 required fixes needed" || { echo "$DOCTOR_OUT"; exit 1; }
+   echo "$DOCTOR_OUT" | grep -E "0 required fixes needed|optional fix"
+   ```
+   PowerShell gate example:
+   ```powershell
+   $doctorOut = appium driver doctor espresso 2>&1 | Out-String
+   if ($doctorOut -notmatch '0 required fixes needed') { throw "Doctor required fixes remain" }
+   $doctorOut | Select-String '0 required fixes needed|optional fix'
+   ```
+   AI-assisted fallback (only if exact phrase matching is inconclusive due output-format changes):
+   1. Re-run doctor once and capture full output (`appium driver doctor espresso 2>&1 | tee /tmp/appium-doctor-espresso.log`).
+   2. Ask an AI agent to classify required vs optional findings from the captured output.
+   3. Accept a pass only when the output clearly indicates zero required issues (for example: no required-fix section and no required-check failures).
+   4. If still ambiguous, mark status as `needs-manual-review` and do not mark the skill complete.
 
 8. **Start Appium server smoke test**
    ```bash
@@ -177,6 +194,7 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    - `appium driver list --installed --json` includes `espresso` (fallback to `appium driver list --installed` if `--json` is unsupported)
    - `appium -v` succeeds
    - `appium driver doctor espresso` reports `0 required fixes needed` (optional warnings are allowed)
+   - task result includes the doctor summary line with required/optional fix counts
    - `environment-setup-android` completion criteria are satisfied
    - task result includes connected-device output (`adb devices -l`) and emulator inventory (`emulator -version`, `emulator -list-avds`)
    - task result explicitly states whether emulator preparation was skipped (and why)
