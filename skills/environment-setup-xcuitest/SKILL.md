@@ -2,7 +2,7 @@
 name: "environment-setup-xcuitest"
 description: "Set up and validate an XCUITest Appium environment on macOS"
 metadata:
-  last_modified: "Mon, 09 Mar 2026 13:10:00 GMT"
+   last_modified: "Mon, 06 Apr 2026 00:00:00 GMT"
 
 ---
 # appium-xcuitest-environment-setup
@@ -36,6 +36,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    appium driver install xcuitest || appium driver update xcuitest
    appium driver list --installed --json || appium driver list --installed
    ```
+   Prefer `--json` output for machine-readable verification. Confirm an `xcuitest` key is present; only fallback to plain-text output when `--json` is unsupported.
    If the install command fails only because `xcuitest` is already installed, continue and do not stop preparation.
 
 3. **Validate Appium npm commands and Node compatibility (after driver setup)**
@@ -80,9 +81,18 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    ```bash
    appium driver doctor xcuitest
    ```
-   Resolve each failing mandatory check, then re-run until the doctor output is clean.
+   Use `0 required fixes needed` as the pass/fail gate. Optional warnings are non-blocking. Resolve required fixes, then re-run until this gate is met.
+   For deterministic automation, parse the doctor output for that exact phrase instead of relying on visual formatting.
+   `applesimutils` warnings are optional for basic simulator session creation, but recommended when you need permission-management helper APIs.
 
-7. **Start Appium server smoke test**
+7. **Optional simulator readiness preflight**
+   Before smoke testing, you may verify simulator availability to reduce false failures in session creation:
+   ```bash
+   xcrun simctl list devices
+   ```
+   If required by your flow, boot a target simulator before session creation.
+
+8. **Start Appium server smoke test**
    ```bash
    appium server
    ```
@@ -93,6 +103,9 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    ```
    First confirm `/status` responds successfully from `curl`.
    Then confirm readiness from server logs and ensure the `Available drivers:` block contains `xcuitest` (for example: `- xcuitest@10.23.3 (automationName 'XCUITest')`).
+   If startup banner logs are not available in your terminal integration, use this fallback verification path:
+   - `appium driver list --installed --json` includes `xcuitest`
+   - `/status` reports server readiness
    After smoke validation, clean up the running Appium server:
    - In Terminal A, stop the server with `Ctrl+C`.
    - Verify no leftover Appium server process (Terminal B):
@@ -100,14 +113,14 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    pgrep -fl "appium.*server" || echo "no appium server process"
    ```
 
-8. **Agent completion criteria**
+9. **Agent completion criteria**
    Mark the skill complete only when all are true:
    - `appium driver list --installed --json` includes `xcuitest` (fallback to `appium driver list --installed` if `--json` is unsupported)
    - `appium -v` succeeds
-   - `appium driver doctor xcuitest` has no failing mandatory checks
+   - `appium driver doctor xcuitest` reports `0 required fixes needed` (optional warnings are allowed)
    - `curl -s http://127.0.0.1:4723/status` returns a successful status response
-   - Appium server logs show startup/readiness successfully after the curl check
-   - Appium server logs include `Available drivers:` with an `xcuitest` entry
+   - Appium server logs show startup/readiness successfully after the curl check, or (if banner logs are unavailable) readiness is confirmed by `/status` plus JSON driver listing that includes `xcuitest`
+   - If logs are available, `Available drivers:` includes an `xcuitest` entry
    - Appium smoke-test server process is cleanly stopped after validation
 
 ## Constraints

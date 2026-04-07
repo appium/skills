@@ -59,7 +59,7 @@ Mark troubleshooting complete only when one of these is true:
 
 ## Constraints
 - Run commands one step at a time and re-run checks after each fix.
-- Treat Appium doctor required fixes as blocking.
+- Treat Appium doctor output `0 required fixes needed` as the pass/fail gate; optional warnings are non-blocking.
 - Use global `appium` command mode by default unless the user explicitly asks for local `npx appium`.
 - Prefer the official Appium driver docs referenced by this skill before using community answers.
 - Keep troubleshooting scoped to one driver path (`uiautomator2` or `xcuitest`) per run unless the user explicitly asks for cross-driver comparison.

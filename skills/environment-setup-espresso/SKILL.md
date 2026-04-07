@@ -8,7 +8,7 @@ metadata:
 # appium-espresso-environment-setup
 
 ## Goal
-Prepares a reliable Appium Espresso execution environment by installing Node.js and Appium prerequisites, configuring Android and Java dependencies, running Appium doctor checks, and iterating until all mandatory checks pass.
+Prepares a reliable Appium Espresso execution environment by installing Node.js and Appium prerequisites, configuring Android and Java dependencies, running Appium doctor checks, and iterating until doctor reports `0 required fixes needed`.
 
 ## Decision Logic
 - If the host OS is not macOS, Linux, or Windows: stop and ask the user to use a supported OS.
@@ -51,6 +51,7 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    appium driver install espresso || appium driver update espresso
    appium driver list --installed --json || appium driver list --installed
    ```
+   Prefer `--json` output for machine-readable verification. Confirm an `espresso` key is present; only fallback to plain-text output when `--json` is unsupported.
    If the install command fails only because `espresso` is already installed, continue and do not stop preparation.
 
 3. **Validate Appium npm commands and Node compatibility (after driver setup)**
@@ -114,7 +115,8 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    ```bash
    appium driver doctor espresso
    ```
-   If doctor reports issues, apply targeted fixes and re-run until mandatory checks pass.
+   Use `0 required fixes needed` as the pass/fail gate. Optional warnings are non-blocking. If required fixes remain, apply targeted fixes and re-run.
+   For deterministic automation, parse the doctor output for that exact phrase instead of relying on visual formatting.
 
 8. **Start Appium server smoke test**
    ```bash
@@ -148,6 +150,9 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    if (-not $ok) { throw "Appium /status did not become ready in time" }
    ```
    Then confirm startup/readiness from server logs and ensure the `Available drivers:` block contains `espresso` (for example: `- espresso@<version> (automationName 'Espresso')`).
+   If startup banner logs are not available in your terminal integration, use this fallback verification path:
+   - `appium driver list --installed --json` includes `espresso`
+   - `/status` reports server readiness
    Windows PowerShell log verification example:
    ```powershell
    Get-Content "$env:TEMP\appium-espresso-smoke.log" | Select-String "listener started|Available drivers:|espresso@"
@@ -171,13 +176,13 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    Mark the skill complete only when all are true:
    - `appium driver list --installed --json` includes `espresso` (fallback to `appium driver list --installed` if `--json` is unsupported)
    - `appium -v` succeeds
-   - `appium driver doctor espresso` has no failing mandatory checks
+   - `appium driver doctor espresso` reports `0 required fixes needed` (optional warnings are allowed)
    - `environment-setup-android` completion criteria are satisfied
    - task result includes connected-device output (`adb devices -l`) and emulator inventory (`emulator -version`, `emulator -list-avds`)
    - task result explicitly states whether emulator preparation was skipped (and why)
    - `/status` check returns a successful status response (`curl` on macOS/Linux, `Invoke-RestMethod` retry loop recommended on Windows)
-   - Appium server logs show startup/readiness successfully after the status check
-   - Appium server logs include `Available drivers:` with an `espresso` entry
+   - Appium server logs show startup/readiness successfully after the status check, or (if banner logs are unavailable) readiness is confirmed by `/status` plus JSON driver listing that includes `espresso`
+   - If logs are available, `Available drivers:` includes an `espresso` entry
    - Appium smoke-test server process is cleanly stopped after validation
 
 ## Constraints
