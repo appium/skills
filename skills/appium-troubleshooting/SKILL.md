@@ -30,7 +30,7 @@ Help the agent narrow a single-driver Appium failure into a small set of common 
 
 2. **Run baseline checks only when the error message alone is not enough**
    If the error text already points to a known issue, open the matching driver-specific official reference first and confirm the closest symptom before changing anything. Then collect what is needed:
-   - `appium -v` and `appium driver list --installed` — to confirm driver presence and version.
+   - `appium -v` and `appium driver list --installed --json` (fallback to `appium driver list --installed` if `--json` is unsupported) — to confirm driver presence and version.
    - UiAutomator2: `adb devices -l` and `appium driver doctor uiautomator2` — only if the error suggests a device connectivity or prerequisite problem.
    - XCUITest: `xcodebuild -version` and `appium driver doctor xcuitest` — only if the error suggests a build, signing, or toolchain problem.
    If any doctor or prerequisite check fails, switch to the matching setup skill before deeper troubleshooting. Use `references/community-search.md` only after the relevant official reference does not explain the exact stack trace or symptom.
@@ -59,7 +59,7 @@ Mark troubleshooting complete only when one of these is true:
 
 ## Constraints
 - Run commands one step at a time and re-run checks after each fix.
-- Treat Appium doctor required fixes as blocking.
+- Treat Appium doctor output `0 required fixes needed` as the pass/fail gate; optional warnings are non-blocking.
 - Use global `appium` command mode by default unless the user explicitly asks for local `npx appium`.
 - Prefer the official Appium driver docs referenced by this skill before using community answers.
 - Keep troubleshooting scoped to one driver path (`uiautomator2` or `xcuitest`) per run unless the user explicitly asks for cross-driver comparison.

@@ -41,7 +41,7 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
 1. **Verify prerequisite: environment-setup-xcuitest completed**
    ```bash
    appium -v
-   appium driver list --installed
+  appium driver list --installed --json || appium driver list --installed
    ```
    Confirm `xcuitest` appears in the installed driver list before continuing. If it is
    missing, complete `environment-setup-xcuitest` first.
