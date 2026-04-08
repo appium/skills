@@ -23,6 +23,7 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
 - If `appium driver doctor chromium` is supported and reports required fixes: resolve each required item and re-run doctor.
 - If doctor is not supported for `chromium` in the active Appium/driver version: use install/list/smoke checks as the completion gate.
 - If no supported Chromium-based browser is available (`chrome`/`chromium`/`msedge`): pause and ask the user which browser to automate and install.
+- If no supported Chromium-based browser is available and the user explicitly approves optional browser setup: install Chrome or Chromium with OS-native package tooling, then re-run browser availability checks.
 - If the user does not request a pinned chromedriver version and no chromedriver binary is present in the environment: run `appium driver run chromium install-chromedriver` before smoke validation.
 
 ## Instructions
@@ -79,6 +80,26 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    Get-Command msedge.exe -ErrorAction SilentlyContinue
    ```
    Confirm at least one Chromium-based browser is available and note the target browser in the result summary.
+
+   Optional browser setup (run only when the user explicitly requests it):
+   - macOS (Homebrew):
+   ```bash
+   brew install --cask google-chrome
+   # or
+   brew install --cask chromium
+   ```
+   - Linux (Debian/Ubuntu examples):
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium
+   ```
+   - Windows PowerShell (winget):
+   ```powershell
+   winget install --id Google.Chrome --exact --accept-source-agreements --accept-package-agreements
+   # or
+   winget install --id Hibbiki.Chromium --exact --accept-source-agreements --accept-package-agreements
+   ```
+   After installation, re-run the browser availability checks in this step.
 
 5. **Install chromedriver when missing (default) or pin it (on request)**
    If the user does not request a specific chromedriver version, first check whether a chromedriver binary is available:
@@ -158,6 +179,7 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    - if unsupported, result explicitly marks doctor status as `not-supported`
    - if no chromedriver binary was present initially and no pinned version was requested, task result includes successful execution of `appium driver run chromium install-chromedriver`
    - task result includes browser availability check and the selected browser target (`chrome`, `chromium`, or `msedge`)
+   - if optional browser setup was requested, task result includes browser install command(s) used and the post-install browser detection output
    - `/status` check returns a successful status response (`curl` on macOS/Linux, `Invoke-RestMethod` retry loop recommended on Windows)
    - Appium server logs show startup/readiness successfully after the status check, or readiness is confirmed by `/status` plus JSON driver listing that includes `chromium`
    - if logs are available, `Available drivers:` includes a `chromium` entry
