@@ -2,7 +2,7 @@
 name: "environment-setup-chromium"
 description: "Set up and validate an Appium Chromium Driver environment"
 metadata:
-   last_modified: "Wed, 08 Apr 2026 00:00:00 GMT"
+   last_modified: "Thu, 09 Apr 2026 00:00:00 GMT"
 
 ---
 # appium-chromium-environment-setup
@@ -24,6 +24,8 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
 - If doctor is not supported for `chromium` in the active Appium/driver version: use install/list/smoke checks as the completion gate.
 - If no supported Chromium-based browser is available (`chrome`/`chromium`/`msedge`): pause and ask the user which browser to automate and install.
 - If no supported Chromium-based browser is available and the user explicitly approves optional browser setup: install Chrome or Chromium with OS-native package tooling, then re-run browser availability checks.
+- If running inside WSL and browser install is requested: prefer distro package-manager installation as root in WSL (for example via `wsl -u root`) rather than user-space `.deb` extraction, because runtime shared-library dependencies are otherwise easy to miss.
+- If Chrome is present but fails to start with missing shared libraries (for example `libnspr4.so`): treat this as an incomplete Linux dependency install and fix with package-manager dependencies before continuing.
 - If the user does not request a pinned chromedriver version and no chromedriver binary is present in the environment: run `appium driver run chromium install-chromedriver` before smoke validation.
 - If the user explicitly targets Microsoft Edge: treat `msedgedriver` setup as a separate optional step, require a driver version matching the installed Edge build, and pass it through `appium:executable` because automatic chromedriver download does not cover Edge.
 
@@ -101,6 +103,12 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/edge stable main" | sudo tee /etc/apt/sources.list.d/microsoft-edge.list
    sudo apt-get update
    sudo apt-get install -y microsoft-edge-stable
+   ```
+   - WSL from Windows host (Debian/Ubuntu examples, no interactive sudo prompt):
+   ```powershell
+   wsl -u root -e bash -lc "apt-get update"
+   wsl -u root -e bash -lc "apt-get install -y libnspr4 libnss3 libxss1 libasound2t64 libatk-bridge2.0-0 libatk1.0-0 libcups2t64 libdrm2 libgbm1 libgtk-3-0 xdg-utils"
+   wsl -u root -e bash -lc "apt-get install -y google-chrome-stable || apt-get install -y chromium-browser || apt-get install -y chromium"
    ```
    - Windows PowerShell (winget):
    ```powershell
@@ -208,6 +216,14 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    - Verify no leftover Appium server process (Terminal B, macOS/Linux):
    ```bash
    pgrep -fl "appium.*server" || echo "no appium server process"
+   ```
+   If `pgrep` output appears to match only the check command itself, run a stricter verification:
+   ```bash
+   if ps -C node -o pid=,args= | grep -E 'appium.*server' > /dev/null; then
+      ps -C node -o pid=,args= | grep -E 'appium.*server'
+   else
+      echo "no appium server process"
+   fi
    ```
    - Verify no leftover Appium server process (Terminal B, Windows PowerShell):
    ```powershell
