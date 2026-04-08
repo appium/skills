@@ -33,6 +33,11 @@ This file defines how AI agents should execute the skills in this repository.
 2. `environment-setup-android`
 3. `environment-setup-espresso`
 
+### Desktop Chromium Browsers (Chrome/Chromium/Edge)
+
+1. `environment-setup-node`
+2. `environment-setup-chromium`
+
 ### Shared Optional Skill
 
 1. `environment-setup-ffmpeg` (run only when user explicitly requests FFmpeg-related capabilities)
@@ -129,6 +134,31 @@ Rules:
   1) Start Appium server in Terminal A (`appium server`) and keep it running.
   2) In Terminal B run `curl -s http://127.0.0.1:4723/status` and confirm success.
   3) In Terminal A logs confirm `Available drivers:` contains `xcuitest`.
+  4) In Terminal A stop Appium with `Ctrl+C`, then in Terminal B run `pgrep -fl "appium.*server" || echo "no appium server process"`.
+```
+
+### Template: Chromium
+
+Use this as a starting prompt for an AI agent:
+
+```text
+Use this repository's skills to prepare Appium Chromium Driver for desktop browser automation.
+Follow exactly, in order:
+1) skills/environment-setup-node/SKILL.md
+2) skills/environment-setup-chromium/SKILL.md
+
+Rules:
+- Run one step at a time.
+- If `appium driver doctor chromium` is supported, treat required fixes as blocking.
+- If doctor is not supported for `chromium`, use install/list/smoke checks as blocking gates.
+- Optional warnings are non-blocking.
+- Ask before installing optional dependencies.
+- Do not use sudo unless I explicitly ask.
+- Show command output for each step.
+- Smoke test sequence:
+  1) Start Appium server in Terminal A (`appium server`) and keep it running.
+  2) In Terminal B run `curl -s http://127.0.0.1:4723/status` and confirm success.
+  3) In Terminal A logs confirm `Available drivers:` contains `chromium`.
   4) In Terminal A stop Appium with `Ctrl+C`, then in Terminal B run `pgrep -fl "appium.*server" || echo "no appium server process"`.
 ```
 

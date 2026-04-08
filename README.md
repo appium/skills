@@ -12,6 +12,7 @@ This repository contains AI Agent skills for helping with Appium automation, inc
 | [environment-setup-bundletool](skills/environment-setup-bundletool/SKILL.md) | Optional shared bundletool.jar setup for UiAutomator2/Espresso app-bundle tooling |
 | [environment-setup-uiautomator2](skills/environment-setup-uiautomator2/SKILL.md) | Prepares and validates an Android + UiAutomator2 Appium environment |
 | [environment-setup-espresso](skills/environment-setup-espresso/SKILL.md) | Prepares and validates an Android + Espresso Appium environment |
+| [environment-setup-chromium](skills/environment-setup-chromium/SKILL.md) | Prepares and validates an Appium Chromium Driver environment for desktop Chromium-based browsers |
 | [environment-setup-xcuitest](skills/environment-setup-xcuitest/SKILL.md) | Prepares and validates a macOS + XCUITest Appium environment |
 | [appium-troubleshooting](skills/appium-troubleshooting/SKILL.md) | Troubleshoots UiAutomator2 or XCUITest failures with a driver-scoped workflow that starts from the failing symptom and re-checks the smallest reproduction after each fix |
 | [xcuitest-real-device-config](skills/xcuitest-real-device-config/SKILL.md) | Prepare a real iOS/tvOS device for Appium XCUITest automation |
@@ -29,4 +30,4 @@ This repository contains AI Agent skills for helping with Appium automation, inc
 ## Agent Instructions
 
 - See [AGENTS.md](AGENTS.md) for strict execution rules and copy-paste prompt templates.
-- Use the template matching your target (`uiautomator2`, `espresso`, `xcuitest`, `xcuitest real device`, or `troubleshooting`) and run skills in the documented order.
+- Use the template matching your target (`uiautomator2`, `espresso`, `chromium`, `xcuitest`, `xcuitest real device`, or `troubleshooting`) and run skills in the documented order.
