@@ -25,6 +25,7 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
 - If no supported Chromium-based browser is available (`chrome`/`chromium`/`msedge`): pause and ask the user which browser to automate and install.
 - If no supported Chromium-based browser is available and the user explicitly approves optional browser setup: install Chrome or Chromium with OS-native package tooling, then re-run browser availability checks.
 - If the user does not request a pinned chromedriver version and no chromedriver binary is present in the environment: run `appium driver run chromium install-chromedriver` before smoke validation.
+- If the user explicitly targets Microsoft Edge: treat `msedgedriver` setup as a separate optional step, require a driver version matching the installed Edge build, and pass it through `appium:executable` because automatic chromedriver download does not cover Edge.
 
 ## Instructions
 1. **Prepare Node.js + npm environment**
@@ -87,17 +88,27 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    brew install --cask google-chrome
    # or
    brew install --cask chromium
+   # or
+   brew install --cask microsoft-edge
    ```
    - Linux (Debian/Ubuntu examples):
    ```bash
    sudo apt-get update
    sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium
+   # Microsoft Edge example
+   curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+   sudo install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft.gpg
+   echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/edge stable main" | sudo tee /etc/apt/sources.list.d/microsoft-edge.list
+   sudo apt-get update
+   sudo apt-get install -y microsoft-edge-stable
    ```
    - Windows PowerShell (winget):
    ```powershell
    winget install --id Google.Chrome --exact --accept-source-agreements --accept-package-agreements
    # or
    winget install --id Hibbiki.Chromium --exact --accept-source-agreements --accept-package-agreements
+   # or
+   winget install --id Microsoft.Edge --exact --accept-source-agreements --accept-package-agreements
    ```
    After installation, re-run the browser availability checks in this step.
 
@@ -125,6 +136,43 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    ```powershell
    $env:CHROMEDRIVER_VERSION='131.0.6778.3'; appium driver run chromium install-chromedriver; Remove-Item Env:\CHROMEDRIVER_VERSION
    $env:CHROMEDRIVER_EXECUTABLE_DIR='C:\path\to\folder'; appium driver run chromium install-chromedriver; Remove-Item Env:\CHROMEDRIVER_EXECUTABLE_DIR
+   ```
+
+   Optional Edge WebDriver setup (run only when the user explicitly requests Microsoft Edge automation):
+   - Appium Chromium Driver does not autodownload `msedgedriver`.
+   - Download the Microsoft Edge WebDriver version matching the installed Edge build from the official Microsoft Edge WebDriver page:
+       `https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/`
+   - Verify the installed Edge version first:
+   macOS:
+   ```bash
+   defaults read "/Applications/Microsoft Edge.app/Contents/Info" CFBundleShortVersionString
+   ```
+   Linux:
+   ```bash
+   microsoft-edge --version
+   ```
+   Windows PowerShell:
+   ```powershell
+   (Get-Item "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe").VersionInfo.ProductVersion
+   ```
+   - After downloading and extracting `msedgedriver`, place it in a stable path and confirm it works:
+   macOS/Linux:
+   ```bash
+   chmod +x /path/to/msedgedriver
+   /path/to/msedgedriver --version
+   ```
+   Windows PowerShell:
+   ```powershell
+   & "C:\path\to\msedgedriver.exe" --version
+   ```
+   - For Edge sessions, pass the absolute driver path through capabilities:
+   ```json
+   {
+      "platformName": "macOS",
+      "browserName": "MicrosoftEdge",
+      "appium:automationName": "Chromium",
+      "appium:executable": "/absolute/path/to/msedgedriver"
+   }
    ```
 
 6. **Run Appium doctor for Chromium when supported**
@@ -178,6 +226,7 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    - if supported, `appium driver doctor chromium` reports `0 required fixes needed` (optional warnings are allowed)
    - if unsupported, result explicitly marks doctor status as `not-supported`
    - if no chromedriver binary was present initially and no pinned version was requested, task result includes successful execution of `appium driver run chromium install-chromedriver`
+   - if Microsoft Edge automation was explicitly requested, task result includes installed Edge version, `msedgedriver --version` output, and the absolute path intended for `appium:executable`
    - task result includes browser availability check and the selected browser target (`chrome`, `chromium`, or `msedge`)
    - if optional browser setup was requested, task result includes browser install command(s) used and the post-install browser detection output
    - `/status` check returns a successful status response (`curl` on macOS/Linux, `Invoke-RestMethod` retry loop recommended on Windows)
