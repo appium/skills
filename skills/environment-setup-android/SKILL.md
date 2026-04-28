@@ -2,7 +2,7 @@
 name: "environment-setup-android"
 description: "Prepare and validate Android SDK, Java, and device tooling for Appium Android drivers"
 metadata:
-  last_modified: "Thu, 12 Mar 2026 03:25:00 GMT"
+  last_modified: "Mon, 27 Apr 2026 22:00:00 GMT"
 
 ---
 # environment-setup-android
@@ -13,13 +13,13 @@ Prepares a working Android automation environment for Appium by validating Java,
 ## Decision Logic
 - If host OS is unsupported for Android SDK setup: stop and ask the user to switch to macOS, Linux, or Windows.
 - If `java -version` and `javac -version` already succeed: keep the existing Java setup and do not reconfigure `JAVA_HOME`.
-- If host OS is macOS and Java setup is needed (fresh environment): use Android Studio app setup (`/Applications/Android Studio.app`) as the primary method for both `ANDROID_HOME` (`$HOME/Library/Android/sdk`) and `JAVA_HOME` (Android Studio JBR), then fallback to Homebrew if Android Studio is unavailable.
+- If host OS is macOS and Java setup is needed (fresh environment): use Android Studio app setup as the primary method for both `ANDROID_HOME` (`$HOME/Library/Android/sdk`) and `JAVA_HOME` (Android Studio JBR). Check both `/Applications/Android Studio.app` and `$HOME/Applications/Android Studio.app`, and prefer the official direct download flow before Homebrew.
 - If host OS is Linux and Java setup is needed (fresh environment): use Android Studio bundled JBR as the primary method when Android Studio is installed, then fallback to distro/package-manager OpenJDK.
 - If host OS is Windows and Java setup is needed (fresh environment): use Android Studio bundled JBR as the primary method when Android Studio is installed, then fallback to Microsoft OpenJDK package install.
 - If host OS is Linux: use package manager + `$HOME/Android/Sdk` conventions.
 - If host OS is Windows: use Android SDK tools with persistent user environment variables.
 - If `java` or `javac` is missing: run step 3 to install/configure Java.
-- If the user wants official Android tooling setup flow: install Android Studio from the official site first, then use SDK Manager from Android Studio.
+- If the user wants official Android tooling setup flow: download Android Studio from the official site first, use its bundled JBR for Java, then bootstrap the SDK with the official `sdkmanager`.
 - If `ANDROID_HOME` is unset/empty or the `ANDROID_HOME` path does not exist: run step 2 to install command-line tools and create the SDK path.
 - If Java tooling is missing or broken (`java`/`javac` checks fail): run step 3 before Android SDK package/license commands.
 - If `adb` is missing: install `platform-tools` via `sdkmanager`.
@@ -63,14 +63,26 @@ Prepares a working Android automation environment for Appium by validating Java,
    ```
    Option A (Android Studio app path; macOS priority when app exists):
    - Download Android Studio from `https://developer.android.com/studio`.
-   - Complete first launch and install SDK components from SDK Manager.
+   - On macOS, check for the app in both `/Applications/Android Studio.app` and `$HOME/Applications/Android Studio.app`.
+   - You may either complete first launch and install SDK components from SDK Manager, or use the bundled JBR plus the official command-line tools zip to bootstrap the SDK non-interactively with `sdkmanager`.
    - Use platform default SDK path after setup:
      - macOS: `$HOME/Library/Android/sdk`
      - Linux: `$HOME/Android/Sdk`
      - Windows: `%LOCALAPPDATA%\Android\Sdk`
 
    Option B (CLI tools only):
-   - macOS/Homebrew example:
+   - macOS official command-line tools example:
+   ```bash
+   curl -L -o /tmp/commandlinetools-mac-latest.zip https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip
+   unzip -q /tmp/commandlinetools-mac-latest.zip -d /tmp/android-cmdline-tools
+   export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+   if [ ! -d "$JAVA_HOME" ]; then
+     export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+   fi
+   export PATH="$JAVA_HOME/bin:$PATH"
+   /tmp/android-cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/Library/Android/sdk" "cmdline-tools;latest"
+   ```
+   - macOS/Homebrew fallback example:
    ```bash
    [ -d "/Applications/Android Studio.app" ] || brew install --cask android-commandlinetools
    mkdir -p "$HOME/Library/Android/sdk/cmdline-tools/latest"
@@ -109,7 +121,12 @@ Prepares a working Android automation environment for Appium by validating Java,
    ```
    macOS primary method for fresh setup (Android Studio bundled JBR):
    ```bash
-   if [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
+   if [ -d "$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
+     export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+     export PATH="$JAVA_HOME/bin:$PATH"
+     java -version
+     javac -version
+   elif [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
      export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
      export PATH="$JAVA_HOME/bin:$PATH"
      java -version
@@ -192,7 +209,7 @@ Prepares a working Android automation environment for Appium by validating Java,
    macOS (priority: Android Studio SDK path):
    ```bash
    export ANDROID_HOME="$HOME/Library/Android/sdk"
-   export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+   export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$PATH"
    echo "$ANDROID_HOME"
    command -v adb
    ls "$ANDROID_HOME/emulator/emulator"
@@ -219,8 +236,8 @@ Prepares a working Android automation environment for Appium by validating Java,
 5. **Accept SDK licenses and install required packages**
    macOS/Linux:
    ```bash
-   if command -v sdkmanager >/dev/null 2>&1; then yes | sdkmanager --licenses; fi
-   if command -v sdkmanager >/dev/null 2>&1; then sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-34" "emulator"; fi
+   if command -v sdkmanager >/dev/null 2>&1; then yes | sdkmanager --sdk_root="$ANDROID_HOME" --licenses; fi
+   if command -v sdkmanager >/dev/null 2>&1; then sdkmanager --sdk_root="$ANDROID_HOME" "platform-tools" "build-tools;34.0.0" "platforms;android-34" "emulator"; fi
    ```
    Windows PowerShell:
    ```powershell
@@ -239,6 +256,7 @@ Prepares a working Android automation environment for Appium by validating Java,
    ```bash
    if command -v sdkmanager >/dev/null 2>&1; then sdkmanager --list | head -n 80; fi
    adb version
+   command -v emulator
    ls "$ANDROID_HOME/emulator/emulator"
    test -x "$ANDROID_HOME/emulator/emulator" && echo "emulator binary: OK"
    ```
