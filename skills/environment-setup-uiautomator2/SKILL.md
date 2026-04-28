@@ -2,7 +2,7 @@
 name: "environment-setup-uiautomator2"
 description: "Set up and validate a UiAutomator2 Appium environment on Android"
 metadata:
-   last_modified: "Mon, 06 Apr 2026 00:00:00 GMT"
+   last_modified: "Mon, 27 Apr 2026 22:00:00 GMT"
 
 ---
 # appium-uiautomator2-environment-setup
@@ -16,6 +16,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 - If Appium CLI is not installed: install `appium` globally.
 - Use global npm/Appium commands by default (`npm install -g appium`, `appium ...`).
 - Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
+- If `appium` resolves to an older Node-managed path than the active `node`/`npm` environment, reinstall Appium globally under the active Node runtime before continuing.
 - If Android SDK prerequisites are missing (`adb`, emulator binary, SDK packages): run `environment-setup-android` first.
 - If the user explicitly requests media features that require FFmpeg: run `environment-setup-ffmpeg` before final validation.
 - If the user explicitly requests automatic bundletool setup: run `environment-setup-bundletool` before final validation.
@@ -48,15 +49,18 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 2. **Install Appium npm command**
    ```bash
    npm install -g appium
+   export APPIUM_HOME="$HOME/.appium"
    appium driver install uiautomator2 || appium driver update uiautomator2
    appium driver list --installed --json || appium driver list --installed
    ```
+   Before installing drivers, ensure `APPIUM_HOME` is writable by the current user. If `appium` fails with an Appium-home writeability error, fix that path or set `APPIUM_HOME` explicitly and retry.
    Prefer `--json` output for machine-readable verification. Confirm a `uiautomator2` key is present; only fallback to plain-text output when `--json` is unsupported.
    If the install command fails only because `uiautomator2` is already installed, continue and do not stop preparation.
 
 3. **Validate Appium npm commands and Node compatibility (after driver setup)**
    macOS/Linux:
    ```bash
+   export APPIUM_HOME="$HOME/.appium"
    appium -v
    appium driver list --installed --json || appium driver list --installed
    npm view appium engines --json
@@ -77,6 +81,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 5. **Verify Android prerequisites from this skill context**
    macOS/Linux:
    ```bash
+   export APPIUM_HOME="$HOME/.appium"
    command -v adb
    adb version
    echo "$ANDROID_HOME"
@@ -95,6 +100,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 6. **Report connected devices and emulator inventory in task result**
    macOS/Linux:
    ```bash
+   export APPIUM_HOME="$HOME/.appium"
    adb devices -l
    "$ANDROID_HOME/emulator/emulator" -version
    "$ANDROID_HOME/emulator/emulator" -list-avds
@@ -113,6 +119,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 
 7. **Run Appium doctor for UiAutomator2 and fix in a loop**
    ```bash
+   export APPIUM_HOME="$HOME/.appium"
    appium driver doctor uiautomator2
    ```
    Use `0 required fixes needed` as the pass/fail gate. Optional warnings are non-blocking. If required fixes remain, apply targeted fixes and re-run.
@@ -138,6 +145,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 
 8. **Start Appium server smoke test**
    ```bash
+   export APPIUM_HOME="$HOME/.appium"
    appium server
    ```
    Windows PowerShell recommended form (for deterministic log checks):
