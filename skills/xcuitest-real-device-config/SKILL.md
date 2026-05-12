@@ -20,7 +20,7 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
   - Free Apple ID: use a bundle ID that Xcode has already accepted for that Apple ID.
   - Paid Apple Developer: ask for the expected bundle ID and team ID used by their org.
 - WDA preparation (step 4) — try in priority order and stop at the first that succeeds:
-  1. Download a prebuilt WDA package from the GitHub releases page and sign with [`resigner`](https://github.com/KazuCocoa/resigner) — handles profile embedding, optional bundle ID remapping, and signing in one step for any account type.
+  1. Download a prebuilt WDA package from the GitHub releases page and sign with [`resigner`](https://github.com/appium/resigner) — handles profile embedding, optional bundle ID remapping, and signing in one step for any account type.
   2. Build WDA with `xcodebuild` passing explicit `PRODUCT_BUNDLE_IDENTIFIER`, `DEVELOPMENT_TEAM`, and `CODE_SIGN_IDENTITY` settings.
   3. Build WDA via Xcode UI (`appium driver run xcuitest open-wda`) as a last resort.
 - Run `appium driver run xcuitest open-wda` only for Option 3 (Xcode UI); skip for Options 1 and 2.
@@ -99,8 +99,8 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    XCTest frameworks (safe for iOS 17+) and have no embedded provisioning profile;
    they must be signed with your own identity before use.
 
-   Download [`resigner`](https://github.com/KazuCocoa/resigner) from its
-   [releases page](https://github.com/KazuCocoa/resigner/releases). It handles profile
+   Download [`resigner`](https://github.com/appium/resigner) from its
+   [releases page](https://github.com/appium/resigner/releases). It handles profile
    embedding, optional bundle ID remapping, and signing in one step for any account type.
    Select the archive that matches the host machine architecture:
    ```bash
