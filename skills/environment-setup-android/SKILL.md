@@ -24,7 +24,7 @@ Prepares a working Android automation environment for Appium by validating Java,
 - If Java tooling is missing or broken (`java`/`javac` checks fail): run step 3 before Android SDK package/license commands.
 - If `adb` is missing: install `platform-tools` via `sdkmanager`.
 - If emulator binary is missing under `ANDROID_HOME/emulator/emulator` (or Windows equivalent): install emulator packages.
-- Prepare emulator instances using the latest stable system-image version by default.
+- Prepare emulator instances using the latest stable system-image version reported by `sdkmanager --list` by default.
 - Use host-optimized emulator architecture (native architecture first, then fallback architecture).
 - Skip step 7 emulator preparation if at least one device is already connected or at least one emulator instance already exists.
 - If required SDK packages are missing: install them and re-run checks.
@@ -73,6 +73,7 @@ Prepares a working Android automation environment for Appium by validating Java,
    Option B (CLI tools only):
    - macOS official command-line tools example:
    ```bash
+   # Verify the current command-line tools URL and checksum from https://developer.android.com/studio#command-tools before downloading.
    curl -L -o /tmp/commandlinetools-mac-latest.zip https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip
    unzip -q /tmp/commandlinetools-mac-latest.zip -d /tmp/android-cmdline-tools
    export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
@@ -237,12 +238,23 @@ Prepares a working Android automation environment for Appium by validating Java,
    macOS/Linux:
    ```bash
    if command -v sdkmanager >/dev/null 2>&1; then yes | sdkmanager --sdk_root="$ANDROID_HOME" --licenses; fi
-   if command -v sdkmanager >/dev/null 2>&1; then sdkmanager --sdk_root="$ANDROID_HOME" "platform-tools" "build-tools;34.0.0" "platforms;android-34" "emulator"; fi
+   if command -v sdkmanager >/dev/null 2>&1; then sdkmanager --sdk_root="$ANDROID_HOME" "platform-tools" "emulator" "cmdline-tools;latest"; fi
+   if command -v sdkmanager >/dev/null 2>&1; then
+     LATEST_PLATFORM="$(sdkmanager --sdk_root="$ANDROID_HOME" --list | grep -Eo 'platforms;android-[0-9]+' | sort -V | tail -n 1)"
+     LATEST_BUILD_TOOLS="$(sdkmanager --sdk_root="$ANDROID_HOME" --list | grep -Eo 'build-tools;[0-9][^ ]*' | sort -V | tail -n 1)"
+     sdkmanager --sdk_root="$ANDROID_HOME" "$LATEST_PLATFORM" "$LATEST_BUILD_TOOLS"
+   fi
    ```
    Windows PowerShell:
    ```powershell
    if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { cmd /c "(for /l %i in (1,1,200) do @echo y)| sdkmanager.bat --licenses" }
-   if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { sdkmanager.bat "platform-tools" "build-tools;34.0.0" "platforms;android-34" "emulator" }
+   if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) {
+     sdkmanager.bat "platform-tools" "emulator" "cmdline-tools;latest"
+     $list = sdkmanager.bat --list | Out-String
+     $platform = [regex]::Matches($list, 'platforms;android-[0-9]+') | ForEach-Object Value | Sort-Object {[int]($_ -replace '\D+', '')} | Select-Object -Last 1
+     $buildTools = [regex]::Matches($list, 'build-tools;[0-9][^ ]*') | ForEach-Object Value | Sort-Object | Select-Object -Last 1
+     sdkmanager.bat $platform $buildTools
+   }
    ```
     If license acceptance still fails in headless CI-like runs, pre-seed license hashes and retry package install:
     ```powershell
@@ -334,6 +346,17 @@ Prepares a working Android automation environment for Appium by validating Java,
     - On fresh setup, Android Studio bundled JBR is used as `JAVA_HOME` when Android Studio is present (macOS/Linux/Windows)
    - Android environment checks pass without requiring a connected device
    - Latest stable emulator/system-image version is prepared with host-optimized architecture only when no connected devices and no existing emulators are present; otherwise step 7 is skipped and current version details are reported in the task result
+
+## Evidence To Report
+
+- host OS and architecture
+- `java -version` and `javac -version`
+- `ANDROID_HOME`
+- `adb version` and `adb devices -l`
+- emulator binary path and `emulator -version`
+- installed SDK platform/build-tools package evidence from `sdkmanager --list_installed` or equivalent
+- command-line tools download URL and checksum verification source when a download was performed
+- whether emulator preparation was skipped because a connected device or AVD already existed
 
 ## Constraints
 - Always use detect-first behavior and install only missing components.

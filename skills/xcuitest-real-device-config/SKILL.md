@@ -34,6 +34,7 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
   - For faster session start if WDA can remain installed between sessions → Run Preinstalled WDA (`appium:usePreinstalledWDA`).
   - For faster session start using a pre-built package (no xcodebuild at session time) → Run Prebuilt WDA (`appium:prebuiltWDAPath`).
   - For fully self-managed WDA lifecycle → Attach to Running WDA (`appium:webDriverAgentUrl`).
+- For WebDriverAgent v13+ prebuilt/preinstalled flows, require iOS/tvOS 17.0 or newer before using `appium:usePreinstalledWDA` or `appium:prebuiltWDAPath`. For iOS/tvOS 16.x or older, use the default `xcodebuild` flow, an `.xctestrun`/`bootstrapPath` flow, or attach to an already running WDA with `appium:webDriverAgentUrl`.
 - Ask before installing optional 3rd-party device tools (ios-deploy, go-ios, pymobiledevice3, tidevice).
 
 ## Instructions
@@ -460,6 +461,17 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
      snippet for the mode that was validated.
    - Include one additional capabilities snippet as a fallback hint (for example,
      preinstalled mode and attach mode).
+
+## Evidence To Report
+
+- macOS version and Xcode version
+- target device name, UDID, OS version, and visibility in `xcrun xctrace list devices`
+- selected provisioning approach and bundle ID/team ID used
+- WDA preparation mode: default `xcodebuild`, preinstalled, prebuilt, `.xctestrun`, or attach-to-running
+- whether the target OS supports `appium:usePreinstalledWDA` / `appium:prebuiltWDAPath`
+- `codesign --verify --deep --strict` result for any prepared WDA bundle
+- deployment command and smallest successful verification
+- any required on-device action that remains manual
 
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.

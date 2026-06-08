@@ -49,6 +49,7 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    appium driver install chromium || appium driver update chromium
    appium driver list --installed --json || appium driver list --installed
    ```
+   Only use `appium driver update chromium --unsafe` after the user approves the risk of a major driver update.
    Prefer `--json` output for machine-readable verification. Confirm a `chromium` key is present; only fallback to plain-text output when `--json` is unsupported.
    If the install command fails only because `chromium` is already installed, continue and do not stop preparation.
 
@@ -249,6 +250,23 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    - Appium server logs show startup/readiness successfully after the status check, or readiness is confirmed by `/status` plus JSON driver listing that includes `chromium`
    - if logs are available, `Available drivers:` includes a `chromium` entry
    - Appium smoke-test server process is cleanly stopped after validation
+
+## Doctor Gate
+
+Prefer `appium driver doctor chromium --json` when supported and parse the required-fix count from structured output. If the Chromium driver does not expose doctor checks, mark doctor as `not-supported` and continue only with install/list/browser/smoke gates. Fall back to text only when JSON is unsupported.
+
+If doctor output changes and cannot be classified deterministically, mark the run as `needs-manual-review` and do not mark the skill complete unless doctor is explicitly not supported and all fallback gates pass.
+
+## Evidence To Report
+
+- `appium -v`
+- installed `chromium` driver version from `appium driver list --installed --json` or text fallback
+- selected browser target and browser version
+- chromedriver or `msedgedriver` version and path when used
+- doctor result or explicit `not-supported` status
+- `/status` smoke-test response
+- server log evidence that `Available drivers:` includes `chromium`
+- cleanup check showing no leftover Appium server process
 
 ## Constraints
 - Use global npm/Appium commands as the default execution mode.

@@ -84,7 +84,17 @@ Mark complete only when all are true:
 - `ffmpeg -version` succeeds
 - result summary states whether install was performed or skipped
 
+## Evidence To Report
+
+- host OS
+- whether FFmpeg was already present or installed
+- package manager used, if installation was performed
+- resolved `ffmpeg` path
+- `ffmpeg -version` first line
+
 ## Constraints
+
+- This optional skill requires explicit user request before installing FFmpeg.
 - This is an optional skill; run only when the user explicitly requests FFmpeg-related setup.
 - Ask before installing optional dependencies.
 - If privileged commands are required, pause and provide exact commands for user execution.

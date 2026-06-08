@@ -36,6 +36,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    appium driver install xcuitest || appium driver update xcuitest
    appium driver list --installed --json || appium driver list --installed
    ```
+   Only use `appium driver update xcuitest --unsafe` after the user approves the risk of a major driver update.
    Prefer `--json` output for machine-readable verification. Confirm an `xcuitest` key is present; only fallback to plain-text output when `--json` is unsupported.
    If the install command fails only because `xcuitest` is already installed, continue and do not stop preparation.
 
@@ -96,10 +97,10 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    if ($doctorOut -notmatch '0 required fixes needed') { throw "Doctor required fixes remain" }
    $doctorOut | Select-String '0 required fixes needed|optional fix'
    ```
-   AI-assisted fallback (only if exact phrase matching is inconclusive due output-format changes):
-   1. Re-run doctor once and capture full output (`appium driver doctor xcuitest 2>&1 | tee /tmp/appium-doctor-xcuitest.log`).
-   2. Ask an AI agent to classify required vs optional findings from the captured output.
-   3. Accept a pass only when the output clearly indicates zero required issues (for example: no required-fix section and no required-check failures).
+   Changed doctor wording fallback:
+   1. Re-run doctor once with `appium driver doctor xcuitest --json`.
+   2. If JSON is unsupported, capture full text output.
+   3. Accept a pass only when structured output or the text summary clearly indicates zero required issues.
    4. If still ambiguous, mark status as `needs-manual-review` and do not mark the skill complete.
 
 7. **Optional simulator readiness preflight**
@@ -140,6 +141,24 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
    - Appium server logs show startup/readiness successfully after the curl check, or (if banner logs are unavailable) readiness is confirmed by `/status` plus JSON driver listing that includes `xcuitest`
    - If logs are available, `Available drivers:` includes an `xcuitest` entry
    - Appium smoke-test server process is cleanly stopped after validation
+
+## Doctor Gate
+
+Prefer `appium driver doctor xcuitest --json` when supported and parse the required-fix count from structured output. Fall back to `appium driver doctor xcuitest` text only when JSON is unsupported, and require the exact summary `0 required fixes needed`.
+
+If doctor output changes and cannot be classified deterministically, mark the run as `needs-manual-review` and do not mark the skill complete.
+
+## Evidence To Report
+
+- `appium -v`
+- installed `xcuitest` driver version from `appium driver list --installed --json` or text fallback
+- `xcodebuild -version`
+- active `xcode-select -p`
+- doctor result, preferring structured required/optional fix counts
+- simulator inventory when simulator validation is run
+- `/status` smoke-test response
+- server log evidence that `Available drivers:` includes `xcuitest`
+- cleanup check showing no leftover Appium server process
 
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.

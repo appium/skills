@@ -51,6 +51,7 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    appium driver install espresso || appium driver update espresso
    appium driver list --installed --json || appium driver list --installed
    ```
+   Only use `appium driver update espresso --unsafe` after the user approves the risk of a major driver update.
    Prefer `--json` output for machine-readable verification. Confirm an `espresso` key is present; only fallback to plain-text output when `--json` is unsupported.
    If the install command fails only because `espresso` is already installed, continue and do not stop preparation.
 
@@ -129,10 +130,10 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    if ($doctorOut -notmatch '0 required fixes needed') { throw "Doctor required fixes remain" }
    $doctorOut | Select-String '0 required fixes needed|optional fix'
    ```
-   AI-assisted fallback (only if exact phrase matching is inconclusive due output-format changes):
-   1. Re-run doctor once and capture full output (`appium driver doctor espresso 2>&1 | tee /tmp/appium-doctor-espresso.log`).
-   2. Ask an AI agent to classify required vs optional findings from the captured output.
-   3. Accept a pass only when the output clearly indicates zero required issues (for example: no required-fix section and no required-check failures).
+   Changed doctor wording fallback:
+   1. Re-run doctor once with `appium driver doctor espresso --json`.
+   2. If JSON is unsupported, capture full text output.
+   3. Accept a pass only when structured output or the text summary clearly indicates zero required issues.
    4. If still ambiguous, mark status as `needs-manual-review` and do not mark the skill complete.
 
 8. **Start Appium server smoke test**
@@ -202,6 +203,23 @@ Prepares a reliable Appium Espresso execution environment by installing Node.js 
    - Appium server logs show startup/readiness successfully after the status check, or (if banner logs are unavailable) readiness is confirmed by `/status` plus JSON driver listing that includes `espresso`
    - If logs are available, `Available drivers:` includes an `espresso` entry
    - Appium smoke-test server process is cleanly stopped after validation
+
+## Doctor Gate
+
+Prefer `appium driver doctor espresso --json` when supported and parse the required-fix count from structured output. Fall back to `appium driver doctor espresso` text only when JSON is unsupported, and require the exact summary `0 required fixes needed`.
+
+If doctor output changes and cannot be classified deterministically, mark the run as `needs-manual-review` and do not mark the skill complete.
+
+## Evidence To Report
+
+- `appium -v`
+- installed `espresso` driver version from `appium driver list --installed --json` or text fallback
+- doctor result, preferring structured required/optional fix counts
+- Android prerequisite summary from `environment-setup-android`
+- connected device and emulator inventory
+- `/status` smoke-test response
+- server log evidence that `Available drivers:` includes `espresso`
+- cleanup check showing no leftover Appium server process
 
 ## Constraints
 - Always run `appium driver doctor espresso` after each environment change.

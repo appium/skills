@@ -14,7 +14,7 @@ Installs and validates `bundletool.jar` from official GitHub releases so Android
 - If host OS is unsupported: stop and ask the user to run on macOS, Linux, or Windows.
 - If user did not explicitly request bundletool setup: skip this skill.
 - If `bundletool.jar` is already resolvable via `PATH`: do not reinstall; validate and report current version.
-- If `bundletool.jar` is not present in `PATH`: download the latest release asset (`bundletool-all-*.jar`) from `https://github.com/google/bundletool/releases` and place it in a `PATH` directory.
+- If `bundletool.jar` is not present in `PATH`: download the latest release asset (`bundletool-all-*.jar`) from `https://github.com/google/bundletool/releases`, verify the release asset source and checksum/signature when available, and place it in a `PATH` directory.
 
 ## Instructions
 1. **Detect OS and current bundletool availability**
@@ -84,7 +84,18 @@ Mark complete only when all are true:
 - `java -jar <bundletool.jar> version` succeeds
 - result summary states whether install was performed or skipped
 
+## Evidence To Report
+
+- host OS
+- whether bundletool was already present or installed
+- GitHub release tag and asset URL when a download was performed
+- checksum/signature verification source when available
+- resolved `bundletool.jar` path
+- `java -jar <bundletool.jar> version` output
+
 ## Constraints
+
+- This optional skill requires explicit user request before installing bundletool.
 - This is an optional skill; run only when the user explicitly requests bundletool setup.
 - Ask the user before installing optional dependencies.
 - If privileged commands are required, pause and provide exact commands for user execution.

@@ -121,6 +121,16 @@ Prepares a stable Node.js and npm environment by validating the active Node runt
    - npm registry connectivity check succeeds (`npm ping`)
    - active Node runtime is an LTS release
 
+## Evidence To Report
+
+- host OS and shell
+- detected Node version manager, if any
+- `node -v`
+- `npm -v`
+- `node -p 'process.versions.node'`
+- `npm ping` result or the registry/network issue that blocks it
+- whether the active runtime satisfies the engine ranges requested by the calling Appium driver skill
+
 ## Constraints
 - Prefer Node.js LTS versions only.
 - Prefer maintained version-managed Node installations (`fnm`, `nvm`, `asdf`) when available.
