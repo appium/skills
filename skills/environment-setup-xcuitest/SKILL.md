@@ -160,6 +160,10 @@ If doctor output changes and cannot be classified deterministically, mark the ru
 - server log evidence that `Available drivers:` includes `xcuitest`
 - cleanup check showing no leftover Appium server process
 
+## Self-Improvement Prompt
+
+After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.
 - Use global npm/Appium commands as the default execution mode.

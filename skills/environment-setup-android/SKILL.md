@@ -358,6 +358,10 @@ Prepares a working Android automation environment for Appium by validating Java,
 - command-line tools download URL and checksum verification source when a download was performed
 - whether emulator preparation was skipped because a connected device or AVD already existed
 
+## Self-Improvement Prompt
+
+After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+
 ## Constraints
 - Always use detect-first behavior and install only missing components.
 - Re-run validation commands after each install/config change.

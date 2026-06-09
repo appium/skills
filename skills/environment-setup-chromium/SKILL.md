@@ -268,6 +268,10 @@ If doctor output changes and cannot be classified deterministically, mark the ru
 - server log evidence that `Available drivers:` includes `chromium`
 - cleanup check showing no leftover Appium server process
 
+## Self-Improvement Prompt
+
+After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+
 ## Constraints
 - Use global npm/Appium commands as the default execution mode.
 - Use `npx appium` only if the user explicitly asks for local execution.

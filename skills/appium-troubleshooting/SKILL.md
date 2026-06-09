@@ -61,6 +61,10 @@ Mark troubleshooting complete only when one of these is true:
 - the failing check passes after a verified fix, or
 - the exact blocker is isolated to something the user must do manually (for example signing, device trust, app build defects), with the relevant command output and next action captured
 
+## Self-Improvement Prompt
+
+After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+
 ## Constraints
 - Run commands one step at a time and re-run checks after each fix.
 - Treat Appium doctor output `0 required fixes needed` as the pass/fail gate; optional warnings are non-blocking.

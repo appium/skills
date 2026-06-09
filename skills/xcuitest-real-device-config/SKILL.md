@@ -473,6 +473,10 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
 - deployment command and smallest successful verification
 - any required on-device action that remains manual
 
+## Self-Improvement Prompt
+
+After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.
 - `environment-setup-xcuitest` must be completed before starting this skill.

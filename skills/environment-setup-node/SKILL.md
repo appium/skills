@@ -131,6 +131,10 @@ Prepares a stable Node.js and npm environment by validating the active Node runt
 - `npm ping` result or the registry/network issue that blocks it
 - whether the active runtime satisfies the engine ranges requested by the calling Appium driver skill
 
+## Self-Improvement Prompt
+
+After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+
 ## Constraints
 - Prefer Node.js LTS versions only.
 - Prefer maintained version-managed Node installations (`fnm`, `nvm`, `asdf`) when available.
