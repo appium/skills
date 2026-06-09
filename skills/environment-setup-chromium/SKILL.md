@@ -8,15 +8,14 @@ metadata:
 # appium-chromium-environment-setup
 
 ## Goal
-Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm, ensuring Appium 3 compatibility, installing the Chromium driver, validating browser/runtime prerequisites, and running a smoke test that confirms driver availability and server readiness.
+Prepare Appium Chromium Driver by validating Node/npm, Appium 3, driver install, browser prerequisites, and smoke checks.
 
 ## Decision Logic
-- If the host OS is not macOS, Linux, or Windows: stop and ask the user to use a supported OS.
-- If current Node.js does not satisfy `engines.node` for both `appium` and `appium-chromium-driver`: install/upgrade Node.js to a compatible active LTS version.
-- If current npm does not satisfy `appium-chromium-driver` `engines.npm`: upgrade npm before continuing.
+- If host OS is not macOS, Linux, or Windows: stop.
+- If Node.js misses `appium`/`appium-chromium-driver` engines: install active LTS.
+- If npm misses `appium-chromium-driver` engines: upgrade npm.
 - If Appium CLI is not installed: install `appium` globally.
-- Use global npm/Appium commands by default (`npm install -g appium`, `appium ...`).
-- Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
+- Use global npm/Appium (`npm install -g appium`, `appium ...`) unless the user asks for `npx`.
 - If Appium major version is `< 3`: upgrade Appium to 3.x before installing or validating `chromium`.
 - If the `chromium` driver is not installed: install it via Appium CLI.
 - If install returns "already installed", ignore the error and continue (or run driver update).
@@ -30,18 +29,8 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
 - If the user explicitly targets Microsoft Edge: treat `msedgedriver` setup as a separate optional step, require a driver version matching the installed Edge build, and pass it through `appium:executable` because automatic chromedriver download does not cover Edge.
 
 ## Instructions
-1. **Prepare Node.js + npm environment**
-   macOS/Linux:
-   ```bash
-   node -v
-   npm -v
-   ```
-   Windows PowerShell:
-   ```powershell
-   node -v
-   npm -v
-   ```
-   If `node` is missing, run `environment-setup-node` first (including Windows PowerShell profile bootstrap), then open a new terminal or run `. $PROFILE`, and re-run the commands.
+1. **Run prerequisite skill**
+   Run `environment-setup-node`. Continue only after its completion criteria pass.
 
 2. **Install/upgrade Appium and Chromium driver**
    ```bash
@@ -49,6 +38,7 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    appium driver install chromium || appium driver update chromium
    appium driver list --installed --json || appium driver list --installed
    ```
+   Only use `appium driver update chromium --unsafe` after the user approves the risk of a major driver update.
    Prefer `--json` output for machine-readable verification. Confirm a `chromium` key is present; only fallback to plain-text output when `--json` is unsupported.
    If the install command fails only because `chromium` is already installed, continue and do not stop preparation.
 
@@ -250,11 +240,32 @@ Prepares a reliable Appium Chromium Driver environment by validating Node.js/npm
    - if logs are available, `Available drivers:` includes a `chromium` entry
    - Appium smoke-test server process is cleanly stopped after validation
 
+## Doctor Gate
+
+Prefer doctor `--json`; fall back to text. If Chromium has no doctor, mark `not-supported` and require install/list/browser/smoke gates.
+
+If doctor output changes and cannot be classified deterministically, mark the run as `needs-manual-review` and do not mark the skill complete unless doctor is explicitly not supported and all fallback gates pass.
+
+## Evidence To Report
+
+- `appium -v`
+- installed `chromium` driver version from `appium driver list --installed --json` or text fallback
+- selected browser target and browser version
+- chromedriver or `msedgedriver` version and path when used
+- doctor result or explicit `not-supported` status
+- `/status` smoke-test response
+- server log evidence that `Available drivers:` includes `chromium`
+- cleanup check showing no leftover Appium server process
+
+## Self-Improvement Prompt
+
+After use, report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
+
 ## Constraints
-- Use global npm/Appium commands as the default execution mode.
-- Use `npx appium` only if the user explicitly asks for local execution.
-- Treat optional doctor warnings as non-blocking.
-- Ask before installing optional dependencies or browser packages.
-- Prefer deterministic CLI checks over assumptions.
-- If elevated privileges are required, pause and provide exact commands for the user to run.
-- Do not claim success until compatibility checks and smoke-test checks are green.
+- Use global npm/Appium.
+- Use `npx appium` only if asked.
+- Optional warnings are non-blocking.
+- Ask before optional/browser installs.
+- Prefer CLI evidence.
+- For privileged commands, pause and provide exact command.
+- Claim success only after compatibility and smoke pass.

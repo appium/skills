@@ -1,5 +1,9 @@
 # Appium Agent Skills
 
+## Help Improve These Skills
+
+Each skill includes a self-improvement prompt asking agents to note missing, ambiguous, outdated, or retry-causing instructions after use. If an agent reports a concrete improvement suggestion, please consider opening a PR that updates the affected `SKILL.md` with clearer steps, better verification, or newer commands.
+
 This repository contains AI Agent skills for helping with Appium automation, including environment setup, real-device configuration, and troubleshooting common failures.
 
 ## Available Skills
