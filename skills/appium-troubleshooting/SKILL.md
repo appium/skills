@@ -8,7 +8,7 @@ metadata:
 # appium-troubleshooting
 
 ## Goal
-Help the agent narrow a single-driver Appium failure into a small set of common buckets, apply the smallest plausible fix, and re-run the failing check until the root cause is confirmed or clearly handed back to the user.
+Triage one Appium driver failure, apply the smallest plausible fix, and re-check until confirmed or handed back.
 
 ## Decision Logic
 - Identify the active automation driver first (`uiautomator2` or `xcuitest`). If unknown, stop and ask for the failing session capabilities/log line that names the driver.
@@ -63,7 +63,7 @@ Mark troubleshooting complete only when one of these is true:
 
 ## Self-Improvement Prompt
 
-After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+After use, report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
 
 ## Constraints
 - Run commands one step at a time and re-run checks after each fix.

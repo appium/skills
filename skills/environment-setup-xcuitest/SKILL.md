@@ -8,77 +8,42 @@ metadata:
 # appium-xcuitest-environment-setup
 
 ## Goal
-Prepares a stable Appium XCUITest execution environment on macOS by validating Node.js and Appium installation, installing and validating Xcode toolchains, and iterating Appium doctor checks until doctor reports `0 required fixes needed`.
+Prepare Appium XCUITest on macOS by validating Node/Appium, Xcode, doctor, and smoke checks until `0 required fixes needed`.
 
 ## Decision Logic
-- If host OS is not macOS: stop and tell the user this skill only supports macOS.
+- If host OS is not macOS: stop.
 - If Xcode is missing or command line tools are unconfigured: install/configure them before continuing.
-- If current Node.js does not satisfy `engines.node` for both `appium` and `appium-xcuitest-driver`: install/upgrade Node.js to a compatible active LTS version.
+- If Node.js misses `appium`/`appium-xcuitest-driver` engines: install active LTS.
 - If Appium CLI or `xcuitest` driver is missing: install them via Appium CLI.
-- Use global npm/Appium commands by default (`npm install -g appium`, `appium ...`).
-- Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
-- If the user explicitly requests media features that require FFmpeg: run `environment-setup-ffmpeg` before final validation.
+- Use global npm/Appium (`npm install -g appium`, `appium ...`) unless the user asks for `npx`.
+- If requested, run `environment-setup-ffmpeg` before final validation.
 - If install returns "already installed", ignore the error and continue (or run driver update).
 - If `appium driver doctor xcuitest` reports missing dependencies: fix each reported dependency and re-run doctor.
 
 ## Instructions
-1. **Prepare Node.js + npm environment on macOS**
-   ```bash
-   sw_vers
-   node -v
-   npm -v
-   ```
-   If `node` is missing, install a compatible active LTS release and re-run the commands.
+1. **Run prerequisite skill**
+   Run `environment-setup-node`. On macOS, also verify Xcode basics before continuing.
 
-2. **Install Appium npm command and XCUITest driver**
+2. **Install XCUITest driver**
    ```bash
    npm install -g appium
    appium driver install xcuitest || appium driver update xcuitest
    appium driver list --installed --json || appium driver list --installed
    ```
-   Only use `appium driver update xcuitest --unsafe` after the user approves the risk of a major driver update.
-   Prefer `--json` output for machine-readable verification. Confirm an `xcuitest` key is present; only fallback to plain-text output when `--json` is unsupported.
-   If the install command fails only because `xcuitest` is already installed, continue and do not stop preparation.
+   Use `--unsafe` update only with user approval. Confirm `xcuitest` is installed.
 
-3. **Validate Appium npm commands and Node compatibility (after driver setup)**
-   ```bash
-   appium -v
-   appium driver list --installed --json || appium driver list --installed
-   npm view appium engines --json
-   npm view appium-xcuitest-driver engines --json
-   ```
-   If current Node.js does not satisfy the reported `engines.node` ranges, install/upgrade Node.js to a compatible active LTS version and re-run the setup checks.
-
-4. **Verify Xcode command line setup and license**
-   First validate Xcode availability:
-   ```bash
-   xcodebuild -version
-   ```
-   If version info is returned, continue without changing `xcode-select`.
-   If version info is not returned, check the selected developer path:
-   ```bash
-   xcode-select -p
-   ```
-   If the selected path does not contain `Contents/Developer`, try setting it to the default Xcode app path:
-   ```bash
-   xcode-select --switch /Applications/Xcode.app/Contents/Developer
-   ```
-   Re-validate:
+3. **Validate Xcode and simulator access**
    ```bash
    xcodebuild -version
    xcode-select -p
+   xcrun simctl list devices available
    ```
-   Then ensure license and first-launch tasks are complete (use privilege escalation only if prompted/required):
-   ```bash
-   sudo xcodebuild -license accept
-   xcodebuild -runFirstLaunch
-   ```
+   Run `sudo xcodebuild -license accept` or `xcodebuild -runFirstLaunch` only with user approval when checks require them.
 
-5. **Optional helper tools**
-   Install additional iOS helper tools only if the user explicitly requests capabilities that require them.
-   - For FFmpeg-related capabilities, run `environment-setup-ffmpeg`.
+4. **Optional FFmpeg**
+   If requested, run `environment-setup-ffmpeg`.
 
-6. **Run Appium doctor for XCUITest and fix in a loop**
+5. **Run Appium doctor for XCUITest and fix in a loop**
    ```bash
    appium driver doctor xcuitest
    ```
@@ -144,7 +109,7 @@ Prepares a stable Appium XCUITest execution environment on macOS by validating N
 
 ## Doctor Gate
 
-Prefer `appium driver doctor xcuitest --json` when supported and parse the required-fix count from structured output. Fall back to `appium driver doctor xcuitest` text only when JSON is unsupported, and require the exact summary `0 required fixes needed`.
+Prefer doctor `--json`; fall back to text. Require `0 required fixes needed`.
 
 If doctor output changes and cannot be classified deterministically, mark the run as `needs-manual-review` and do not mark the skill complete.
 
@@ -162,15 +127,15 @@ If doctor output changes and cannot be classified deterministically, mark the ru
 
 ## Self-Improvement Prompt
 
-After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+After use, report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
 
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.
-- Use global npm/Appium commands as the default execution mode.
-- Use `npx appium` only if the user explicitly asks for local execution.
+- Use global npm/Appium.
+- Use `npx appium` only if asked.
 - Always re-run `appium driver doctor xcuitest` after every fix.
-- Treat optional doctor warnings as non-blocking.
-- Ask the user before installing optional dependencies, and install them only when explicitly needed.
+- Optional warnings are non-blocking.
+- Ask before optional installs.
 - Do not skip Xcode license and first-launch checks.
 - If privileged commands are required, pause and provide the exact command for user execution.
-- Do not report readiness until doctor and smoke tests pass.
+- Report readiness only after doctor and smoke pass.

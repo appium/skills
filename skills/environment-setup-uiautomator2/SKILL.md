@@ -8,117 +8,41 @@ metadata:
 # appium-uiautomator2-environment-setup
 
 ## Goal
-Prepares a reliable Appium UiAutomator2 execution environment by installing Node.js and Appium prerequisites, configuring Android and Java dependencies, running Appium doctor checks, and iterating until doctor reports `0 required fixes needed`.
+Prepare Appium UiAutomator2 by validating Node/Appium, Android/Java, doctor, and smoke checks until `0 required fixes needed`.
 
 ## Decision Logic
-- If the host OS is not macOS, Linux, or Windows: stop and ask the user to use a supported OS.
-- If current Node.js does not satisfy `engines.node` for both `appium` and `appium-uiautomator2-driver`: install/upgrade Node.js to a compatible active LTS version.
+- If host OS is not macOS, Linux, or Windows: stop.
+- If Node.js misses `appium`/`appium-uiautomator2-driver` engines: install active LTS.
 - If Appium CLI is not installed: install `appium` globally.
-- Use global npm/Appium commands by default (`npm install -g appium`, `appium ...`).
-- Use local Appium commands (`npx appium ...`) only when the user explicitly requests local execution.
+- Use global npm/Appium (`npm install -g appium`, `appium ...`) unless the user asks for `npx`.
 - If `appium` resolves to an older Node-managed path than the active `node`/`npm` environment, reinstall Appium globally under the active Node runtime before continuing.
-- If Android SDK prerequisites are missing (`adb`, emulator binary, SDK packages): run `environment-setup-android` first.
-- If the user explicitly requests media features that require FFmpeg: run `environment-setup-ffmpeg` before final validation.
-- If the user explicitly requests automatic bundletool setup: run `environment-setup-bundletool` before final validation.
-- Always include host device/emulator inventory in the final skill result (connected devices, emulator version, and AVD list).
+- If Android SDK prerequisites are missing (`adb`, emulator, SDK packages): run `environment-setup-android`.
+- If requested, run `environment-setup-ffmpeg` or `environment-setup-bundletool` before final validation.
+- Report device/emulator inventory.
 - If the `uiautomator2` driver is not installed: install it via Appium CLI.
 - If install returns "already installed", ignore the error and continue (or run driver update).
 - If `appium driver doctor uiautomator2` reports missing dependencies: resolve each missing item and re-run doctor.
 
 ## Instructions
-1. **Prepare Node.js + npm environment**
-   macOS/Linux:
-   ```bash
-   node -v
-   npm -v
-   ```
-   Windows PowerShell:
-   ```powershell
-   node -v
-   npm -v
-   ```
-   If `node` is missing, run `environment-setup-node` first (including Windows PowerShell profile bootstrap), then open a new terminal or run `. $PROFILE`, and re-run the commands.
-   Windows PowerShell session bootstrap (recommended before any `appium` command in fresh/background terminals):
-   ```powershell
-   $fnmDir = "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe"
-   if (Test-Path $fnmDir) { $env:PATH = "$fnmDir;$env:PATH" }
-   fnm env --shell powershell | Invoke-Expression
-   fnm use lts-latest
-   ```
+1. **Run prerequisite skills**
+   Run `environment-setup-node`, then `environment-setup-android`. Continue only after both completion criteria pass.
 
-2. **Install Appium npm command**
+2. **Install UiAutomator2 driver**
    ```bash
    npm install -g appium
-   export APPIUM_HOME="$HOME/.appium"
    appium driver install uiautomator2 || appium driver update uiautomator2
    appium driver list --installed --json || appium driver list --installed
    ```
-   Only use `appium driver update uiautomator2 --unsafe` after the user approves the risk of a major driver update.
-   Before installing drivers, ensure `APPIUM_HOME` is writable by the current user. If `appium` fails with an Appium-home writeability error, fix that path or set `APPIUM_HOME` explicitly and retry.
-   Prefer `--json` output for machine-readable verification. Confirm a `uiautomator2` key is present; only fallback to plain-text output when `--json` is unsupported.
-   If the install command fails only because `uiautomator2` is already installed, continue and do not stop preparation.
+   Use `--unsafe` update only with user approval. Confirm `uiautomator2` is installed.
 
-3. **Validate Appium npm commands and Node compatibility (after driver setup)**
-   macOS/Linux:
+3. **Capture Android inventory**
    ```bash
-   export APPIUM_HOME="$HOME/.appium"
-   appium -v
-   appium driver list --installed --json || appium driver list --installed
-   npm view appium engines --json
-   npm view appium-uiautomator2-driver engines --json
-   ```
-   Windows PowerShell:
-   ```powershell
-   appium -v
-   appium driver list --installed --json; if ($LASTEXITCODE -ne 0) { appium driver list --installed }
-   npm view appium engines --json
-   npm view appium-uiautomator2-driver engines --json
-   ```
-   If current Node.js does not satisfy the reported `engines.node` ranges, install/upgrade Node.js to a compatible active LTS version and re-run the setup checks.
-
-4. **Run Android environment prerequisite skill**
-   Before UiAutomator2 doctor checks, execute `environment-setup-android` and do not continue until it passes completion criteria.
-
-5. **Verify Android prerequisites from this skill context**
-   macOS/Linux:
-   ```bash
-   export APPIUM_HOME="$HOME/.appium"
-   command -v adb
-   adb version
-   echo "$ANDROID_HOME"
-   ls "$ANDROID_HOME/emulator/emulator"
-   test -x "$ANDROID_HOME/emulator/emulator" && echo "emulator binary: OK"
-   ```
-   Windows PowerShell:
-   ```powershell
-   Get-Command adb.exe -ErrorAction SilentlyContinue
-   adb.exe version
-   $env:ANDROID_HOME
-   Test-Path "$env:ANDROID_HOME\emulator\emulator.exe"
-   if (Test-Path "$env:ANDROID_HOME\emulator\emulator.exe") { "emulator binary: OK" }
-   ```
-
-6. **Report connected devices and emulator inventory in task result**
-   macOS/Linux:
-   ```bash
-   export APPIUM_HOME="$HOME/.appium"
    adb devices -l
-   "$ANDROID_HOME/emulator/emulator" -version
-   "$ANDROID_HOME/emulator/emulator" -list-avds
+   emulator -version
+   emulator -list-avds
    ```
-   Windows PowerShell:
-   ```powershell
-   adb.exe devices -l
-   & "$env:ANDROID_HOME\emulator\emulator.exe" -version
-   & "$env:ANDROID_HOME\emulator\emulator.exe" -list-avds
-   ```
-   In the result summary, explicitly state whether emulator preparation was skipped because either connected devices already existed or one/more AVDs already existed.
 
-   Optional shared dependency:
-   - If the user explicitly requests FFmpeg-related capability, run `environment-setup-ffmpeg` before continuing.
-   - If the user explicitly requests bundletool installation, run `environment-setup-bundletool` before continuing.
-
-7. **Run Appium doctor for UiAutomator2 and fix in a loop**
+4. **Run Appium doctor for UiAutomator2 and fix in a loop**
    ```bash
    export APPIUM_HOME="$HOME/.appium"
    appium driver doctor uiautomator2
@@ -215,7 +139,7 @@ Prepares a reliable Appium UiAutomator2 execution environment by installing Node
 
 ## Doctor Gate
 
-Prefer `appium driver doctor uiautomator2 --json` when supported and parse the required-fix count from structured output. Fall back to `appium driver doctor uiautomator2` text only when JSON is unsupported, and require the exact summary `0 required fixes needed`.
+Prefer doctor `--json`; fall back to text. Require `0 required fixes needed`.
 
 If doctor output changes and cannot be classified deterministically, mark the run as `needs-manual-review` and do not mark the skill complete.
 
@@ -232,16 +156,16 @@ If doctor output changes and cannot be classified deterministically, mark the ru
 
 ## Self-Improvement Prompt
 
-After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+After use, report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
 
 ## Constraints
 - Always run `appium driver doctor uiautomator2` after each environment change.
-- Use global npm/Appium commands as the default execution mode.
-- Use `npx appium` only if the user explicitly asks for local execution.
+- Use global npm/Appium.
+- Use `npx appium` only if asked.
 - Do not skip Android prerequisite validation; rely on `environment-setup-android` for source-of-truth checks.
 - Use shell-appropriate commands (`bash` for macOS/Linux, PowerShell/cmd for Windows).
-- Treat optional doctor warnings as non-blocking.
+- Optional warnings are non-blocking.
 - Ask the user before installing optional dependencies, and install them only when the user explicitly needs that capability.
-- Prefer deterministic CLI checks over assumptions.
-- If elevated privileges are required, pause and provide exact commands for the user to run.
-- Do not claim success until doctor and smoke-test checks are actually green.
+- Prefer CLI evidence.
+- For privileged commands, pause and provide exact command.
+- Claim success only after doctor and smoke pass.

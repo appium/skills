@@ -475,16 +475,15 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
 
 ## Self-Improvement Prompt
 
-After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+After use, report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
 
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.
-- `environment-setup-xcuitest` must be completed before starting this skill.
+- Complete `environment-setup-xcuitest` first.
 - Always verify the WDA signature with `codesign --verify --deep --strict` (step 5)
   after any preparation step before deploying.
 - Never skip re-signing after modifying a signed `.app` bundle (e.g. removing frameworks).
-- Paid-account-only steps (automatic signing, wildcard profiles) must be clearly marked;
-  do not require them from users with a free Apple ID.
+- Mark paid-account-only steps; do not require them for free Apple IDs.
 - Ask the user before installing any 3rd-party device tool (ios-deploy, go-ios,
   pymobiledevice3, tidevice, ios-app-signer, etc.).
 - For steps that require physical interaction with the device (Trust popup, Developer

@@ -8,7 +8,7 @@ metadata:
 # environment-setup-android
 
 ## Goal
-Prepares a working Android automation environment for Appium by validating Java, Android SDK command-line tools, required SDK packages, environment variables, and ADB device visibility, with a verify-and-fix loop until all mandatory checks pass.
+Prepare Android automation by validating Java, Android SDK tools/packages, env vars, and ADB/device readiness.
 
 ## Decision Logic
 - If host OS is unsupported for Android SDK setup: stop and ask the user to switch to macOS, Linux, or Windows.
@@ -360,7 +360,7 @@ Prepares a working Android automation environment for Appium by validating Java,
 
 ## Self-Improvement Prompt
 
-After using this skill, note any instruction that was missing, ambiguous, outdated, or caused avoidable retries. If you find one, report a concise improvement suggestion with the affected section and proposed wording; do not change the skill file unless the user asks for that edit.
+After use, report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
 
 ## Constraints
 - Always use detect-first behavior and install only missing components.
