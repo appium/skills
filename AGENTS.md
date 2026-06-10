@@ -18,6 +18,7 @@ This file defines how AI agents should execute the skills in this repository.
 - Use `environment-setup-ffmpeg` as a shared optional dependency across drivers only when the user explicitly requests FFmpeg-related setup.
 - Use `environment-setup-bundletool` as a shared optional dependency for UiAutomator2/Espresso only when the user explicitly requests bundletool setup.
 - If output is incomplete/truncated, rerun only that step and capture logs.
+- After completing any skill, read and apply that skill's `Self-Improvement Prompt` section before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with the skill section and proposed wording. Do not edit skill files unless the user explicitly asks.
 
 ## Recommended Skill Order
 
@@ -212,3 +213,4 @@ Rules:
 
 - If your agent platform supports repository-level instruction files, prioritize this file before running skill commands.
 - If your platform does not auto-load this file, copy one prompt template above and provide it manually.
+

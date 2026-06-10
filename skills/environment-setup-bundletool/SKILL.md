@@ -95,7 +95,7 @@ Mark complete only when all are true:
 
 ## Self-Improvement Prompt
 
-After use, report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
+After use, always run this self-improvement check before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
 
 ## Constraints
 

@@ -360,7 +360,7 @@ Prepare Android automation by validating Java, Android SDK tools/packages, env v
 
 ## Self-Improvement Prompt
 
-After use, report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
+After use, always run this self-improvement check before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
 
 ## Constraints
 - Always use detect-first behavior and install only missing components.

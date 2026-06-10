@@ -157,8 +157,10 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    ```
 
    Run `resigner` to embed the profile and sign. `--profile` accepts a **directory**
-   path; resigner selects the matching profile automatically. Include `--bundle-id-remap`
-   flags only when your profile app identifier is not a true wildcard (`*`):
+   path containing `.mobileprovision` files, not the `.mobileprovision` file itself;
+   resigner selects the matching profile automatically. Include `--bundle-id-remap`
+   flags only when your profile app identifier is not a true wildcard (`*`). Each
+   remap must use `old.bundle.id=new.bundle.id` syntax:
    ```bash
    TARGET_BUNDLE_ID="<bundle-id-covered-by-your-profile>"  # strip the TEAMID. prefix
    # Omit the --bundle-id-remap lines ONLY if your profile app identifier is exactly `*`
@@ -475,7 +477,7 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
 
 ## Self-Improvement Prompt
 
-After use, report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
+After use, always run this self-improvement check before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
 
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.
