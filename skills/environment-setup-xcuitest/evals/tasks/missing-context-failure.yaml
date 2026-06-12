@@ -1,0 +1,3 @@
+id: environment-setup-xcuitest-missing-context-failure
+name: missing context failure
+prompt: "Continue environment-setup-xcuitest with missing credential, host, device, or target details."

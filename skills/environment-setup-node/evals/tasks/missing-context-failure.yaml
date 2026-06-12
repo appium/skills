@@ -1,0 +1,3 @@
+id: environment-setup-node-missing-context-failure
+name: missing context failure
+prompt: "Continue environment-setup-node with missing credential, host, device, or target details."

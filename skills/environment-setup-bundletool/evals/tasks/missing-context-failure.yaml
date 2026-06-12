@@ -1,0 +1,3 @@
+id: environment-setup-bundletool-missing-context-failure
+name: missing context failure
+prompt: "Continue environment-setup-bundletool with missing credential, host, device, or target details."

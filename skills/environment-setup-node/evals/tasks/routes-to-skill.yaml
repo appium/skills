@@ -1,0 +1,3 @@
+id: environment-setup-node-routes-to-skill
+name: routes to skill
+prompt: "Use environment-setup-node for its intended path and report verification evidence."

@@ -1,0 +1,3 @@
+id: environment-setup-ffmpeg-routes-to-skill
+name: routes to skill
+prompt: "Use environment-setup-ffmpeg for its intended path and report verification evidence."

@@ -1,0 +1,3 @@
+id: environment-setup-chromium-missing-context-failure
+name: missing context failure
+prompt: "Continue environment-setup-chromium with missing credential, host, device, or target details."

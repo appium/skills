@@ -1,0 +1,3 @@
+id: environment-setup-espresso-missing-context-failure
+name: missing context failure
+prompt: "Continue environment-setup-espresso with missing credential, host, device, or target details."
