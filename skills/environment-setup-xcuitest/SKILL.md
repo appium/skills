@@ -20,6 +20,11 @@ Prepare Appium XCUITest on macOS by validating Node/Appium, Xcode, doctor, and s
 - If install returns "already installed", ignore the error and continue (or run driver update).
 - If `appium driver doctor xcuitest` reports missing dependencies: fix each reported dependency and re-run doctor.
 
+## Do Not Use For
+- Do not use this skill for physical iOS/tvOS device provisioning, signing, or WDA preinstall flows; use `xcuitest-real-device-config` after this skill passes.
+- Do not use this skill for Android, Chromium, FFmpeg-only, or Node-only setup.
+
+
 ## Instructions
 1. **Run prerequisite skill**
    Run `environment-setup-node`. On macOS, also verify Xcode basics before continuing.
@@ -38,7 +43,7 @@ Prepare Appium XCUITest on macOS by validating Node/Appium, Xcode, doctor, and s
    xcode-select -p
    xcrun simctl list devices available
    ```
-   Run `sudo xcodebuild -license accept` or `xcodebuild -runFirstLaunch` only with user approval when checks require them.
+   Run Xcode license acceptance or first-launch setup only after explicit user approval for the exact command; report why it is needed and how to retry if it fails.
 
 4. **Optional FFmpeg**
    If requested, run `environment-setup-ffmpeg`.

@@ -21,6 +21,11 @@ Triage one Appium driver failure, apply the smallest plausible fix, and re-check
   - element lookup or locator issues: read [references/xcuitest-element-lookup.md](references/xcuitest-element-lookup.md) and [references/xcuitest-locators.md](references/xcuitest-locators.md).
 - If the official docs do not explain the exact stack trace or symptom, use [references/community-search.md](references/community-search.md) as a fallback workflow.
 
+## Do Not Use For
+- Do not use this skill for first-time environment setup when no failure has occurred; use the matching environment setup skill instead.
+- Do not use this skill for cross-driver comparisons unless the user explicitly asks for them.
+
+
 ## Instructions
 1. **Capture the failing command and lock the driver scope**
    Record the exact error text, platform, automation driver, and relevant capabilities before changing anything. If the driver is still unclear, ask for one of these before continuing:

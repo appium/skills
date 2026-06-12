@@ -10,6 +10,10 @@ metadata:
 ## Goal
 Prepare Appium UiAutomator2 by validating Node/Appium, Android/Java, doctor, and smoke checks until `0 required fixes needed`.
 
+## Do Not Use For
+- Do not use this skill for Espresso, XCUITest, Chromium, Node-only, FFmpeg-only, or bundletool-only setup.
+- Do not use this skill until the Android base environment has been checked or the failure clearly belongs to UiAutomator2.
+
 ## Decision Logic
 - If host OS is not macOS, Linux, or Windows: stop.
 - If Node.js misses `appium`/`appium-uiautomator2-driver` engines: install active LTS.

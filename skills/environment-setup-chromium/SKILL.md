@@ -10,6 +10,10 @@ metadata:
 ## Goal
 Prepare Appium Chromium Driver by validating Node/npm, Appium 3, driver install, browser prerequisites, and smoke checks.
 
+## Do Not Use For
+- Do not use this skill for native Android, iOS, tvOS, or non-Chromium desktop browser automation.
+- Do not use this skill to install a browser when the user has not approved OS-level package installation; pause and ask for approval first.
+
 ## Decision Logic
 - If host OS is not macOS, Linux, or Windows: stop.
 - If Node.js misses `appium`/`appium-chromium-driver` engines: install active LTS.
@@ -84,23 +88,14 @@ Prepare Appium Chromium Driver by validating Node/npm, Appium 3, driver install,
    brew install --cask microsoft-edge
    ```
    - Linux (Debian/Ubuntu examples):
-   ```bash
-   sudo apt-get update
-   sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium
-   # Microsoft Edge example
-   curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-   sudo install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/microsoft.gpg
-   echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/edge stable main" | sudo tee /etc/apt/sources.list.d/microsoft-edge.list
-   sudo apt-get update
-   sudo apt-get install -y microsoft-edge-stable
-   ```
-   - WSL from Windows host (Debian/Ubuntu examples, no interactive sudo prompt):
-   ```powershell
-   wsl -u root -e bash -lc "apt-get update"
-   wsl -u root -e bash -lc "apt-get install -y libnspr4 libnss3 libxss1 libasound2t64 libatk-bridge2.0-0 libatk1.0-0 libcups2t64 libdrm2 libgbm1 libgtk-3-0 xdg-utils"
-   wsl -u root -e bash -lc "apt-get install -y google-chrome-stable || apt-get install -y chromium-browser || apt-get install -y chromium"
-   ```
-   - Windows PowerShell (winget):
+  - After explicit user approval for privileged package installation, update package metadata.
+  - Install either `chromium-browser`, `chromium`, or the approved Chrome/Edge package with the approved package-manager command.
+  - For Microsoft Edge, get explicit user approval before adding the Microsoft package repository or keyring.
+
+- WSL from Windows host:
+  - After explicit user approval for root package installation inside WSL, install the browser runtime libraries and selected Chromium-based browser.
+
+- Windows PowerShell (winget):
    ```powershell
    winget install --id Google.Chrome --exact --accept-source-agreements --accept-package-agreements
    # or

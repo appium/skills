@@ -10,6 +10,11 @@ metadata:
 ## Goal
 Installs and validates FFmpeg in a cross-platform way so Appium environments can use optional media-related capabilities when explicitly requested.
 
+## Do Not Use For
+- Do not use this skill unless the user explicitly requested FFmpeg or an Appium media capability needs it.
+- Do not use this skill for Node, Android SDK, Xcode, browser, or Appium driver setup.
+
+
 ## Decision Logic
 - If host OS is unsupported: stop and ask the user to run on macOS, Linux, or Windows.
 - If `ffmpeg` is already available in `PATH`: do not reinstall; only validate version output.
@@ -38,20 +43,11 @@ Installs and validates FFmpeg in a cross-platform way so Appium environments can
    ```bash
    brew install ffmpeg
    ```
-   Linux (Debian/Ubuntu):
-   ```bash
-   sudo apt-get update
-   sudo apt-get install -y ffmpeg
-   ```
-   Linux (RHEL/CentOS/Fedora):
-   ```bash
-   sudo dnf install -y ffmpeg
-   ```
-   Linux (Arch):
-   ```bash
-   sudo pacman -S --noconfirm ffmpeg
-   ```
-   Windows PowerShell (`winget` preferred):
+   Linux:
+- After explicit user approval for privileged package installation, install the `ffmpeg` package with the approved distro package-manager command.
+- Debian/Ubuntu, RHEL/CentOS/Fedora, and Arch package name: `ffmpeg`.
+
+Windows PowerShell (`winget` preferred):
    ```powershell
    winget install --id Gyan.FFmpeg --exact --accept-package-agreements --accept-source-agreements
    ```
@@ -77,6 +73,14 @@ Installs and validates FFmpeg in a cross-platform way so Appium environments can
    - resolved FFmpeg executable path
    - first line of `ffmpeg -version`
    - whether installation was skipped because FFmpeg was already present
+
+## Examples
+- User asks to enable Appium media recording: install or validate FFmpeg, then report `ffmpeg -version`.
+- User only asks for a basic Appium driver setup without media capabilities: skip this skill and say FFmpeg was not required.
+
+## Verification
+- Confirm `command -v ffmpeg` or `Get-Command ffmpeg.exe` succeeds.
+- Confirm `ffmpeg -version` exits successfully and report the first version line.
 
 ## Completion criteria
 Mark complete only when all are true:

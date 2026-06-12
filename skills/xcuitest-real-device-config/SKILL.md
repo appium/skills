@@ -37,6 +37,12 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
 - For WebDriverAgent v13+ prebuilt/preinstalled flows, require iOS/tvOS 17.0 or newer before using `appium:usePreinstalledWDA` or `appium:prebuiltWDAPath`. For iOS/tvOS 16.x or older, use the default `xcodebuild` flow, an `.xctestrun`/`bootstrapPath` flow, or attach to an already running WDA with `appium:webDriverAgentUrl`.
 - Ask before installing optional 3rd-party device tools (ios-deploy, go-ios, pymobiledevice3, tidevice).
 
+## Do Not Use For
+- Do not use this skill for simulator-only XCUITest setup; use `environment-setup-xcuitest` instead.
+- Do not use this skill before the base XCUITest environment skill has passed.
+- Do not use this skill to change signing identities, provisioning profiles, or installed WDA packages without explicit user approval.
+
+
 ## Instructions
 
 1. **Verify prerequisite: environment-setup-xcuitest completed**
@@ -299,7 +305,7 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    ```bash
    WDA_APP="appium_wda_ios/Build/Products/Debug-iphoneos/WebDriverAgentRunner-Runner.app"
 
-   rm -rf "$WDA_APP"/Frameworks/XC*.framework
+   move "$WDA_APP"/Frameworks/XC*.framework into "$WDA_APP"/Frameworks.disabled and re-sign
    rm -f "$WDA_APP"/Frameworks/Testing.framework
    rm -f "$WDA_APP"/Frameworks/libXCTestSwiftSupport.dylib
 
@@ -348,7 +354,7 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    ```bash
    WDA_APP=~/Library/Developer/Xcode/DerivedData/WebDriverAgent-*/Build/Products/Debug-iphoneos/WebDriverAgentRunner-Runner.app
 
-   rm -rf "$WDA_APP"/Frameworks/XC*.framework
+   move "$WDA_APP"/Frameworks/XC*.framework into "$WDA_APP"/Frameworks.disabled and re-sign
    rm -f "$WDA_APP"/Frameworks/Testing.framework
    rm -f "$WDA_APP"/Frameworks/libXCTestSwiftSupport.dylib
 
@@ -409,7 +415,7 @@ faster WDA deployment patterns (preinstalled, prebuilt, or attach-to-running).
    - For free-account or enterprise-profile setups, complete the step 5 pre-trust
      recommendation first.
    - If launch fails with repeated `ECONNREFUSED 127.0.0.1:8100`, rebuild from the
-     iOS/tvOS 17+ flow in step 4 (`rm -rf Frameworks/` + re-sign), reinstall, then retry.
+     iOS/tvOS 17+ flow in step 4 (move Frameworks/XC*.framework aside into Frameworks.disabled + re-sign), reinstall, then retry.
    - If the installed WDA bundle ID has no `.xctrunner` suffix:
    ```json
    {

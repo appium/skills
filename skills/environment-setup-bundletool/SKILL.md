@@ -16,6 +16,11 @@ Installs and validates `bundletool.jar` from official GitHub releases so Android
 - If `bundletool.jar` is already resolvable via `PATH`: do not reinstall; validate and report current version.
 - If `bundletool.jar` is not present in `PATH`: download the latest release asset (`bundletool-all-*.jar`) from `https://github.com/google/bundletool/releases`, verify the release asset source and checksum/signature when available, and place it in a `PATH` directory.
 
+## Do Not Use For
+- Do not use this skill unless bundletool setup was explicitly requested or a selected Android driver setup requires Android App Bundle tooling.
+- Do not use this skill to install Java, Android SDK packages, or Appium drivers; use the matching environment setup skill first.
+
+
 ## Instructions
 1. **Detect OS and current bundletool availability**
    macOS/Linux:
@@ -77,6 +82,10 @@ Installs and validates `bundletool.jar` from official GitHub releases so Android
    - resolved `bundletool.jar` path
    - `bundletool` version output
    - whether installation was skipped because bundletool was already present
+
+## Examples
+- User asks for Android App Bundle support for UiAutomator2: run this skill after Android setup, then report the resolved `bundletool.jar` path and version output.
+- User only asks for standard APK automation: do not run this skill; report that bundletool is optional and was skipped.
 
 ## Completion criteria
 Mark complete only when all are true:

@@ -18,6 +18,15 @@ Prepares a stable Node.js and npm environment by validating the active Node runt
 - If `npm` is unavailable: repair npm environment before continuing.
 - If `npm ping` fails: resolve registry/network configuration before continuing.
 
+## Do Not Use For
+- Do not use this skill for Appium driver installation, Android SDK setup, Xcode setup, browser setup, or FFmpeg setup after Node and npm already validate.
+- Do not use this skill to change the user's preferred Node version manager unless a required Node/npm check fails.
+
+
+## Preflight
+- Identify the host OS and shell before changing Node tooling.
+- Check existing `node -v`, `npm -v`, active version manager, and `npm ping` result before installing or repairing anything.
+
 ## Instructions
 1. **Detect Node version management tools**
    ```bash
@@ -138,5 +147,5 @@ After use, always run this self-improvement check before the final response. Rep
 ## Constraints
 - Prefer Node.js LTS versions only.
 - Prefer maintained version-managed Node installations (`fnm`, `nvm`, `asdf`) when available.
-- Avoid using `sudo` in setup commands; prefer user-space tooling when permissions are restricted.
+- Avoid privileged setup commands; prefer user-space tooling when permissions are restricted.
 - Use deterministic terminal checks, not assumptions.

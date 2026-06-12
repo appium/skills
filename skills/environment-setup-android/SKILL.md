@@ -29,6 +29,11 @@ Prepare Android automation by validating Java, Android SDK tools/packages, env v
 - Skip step 7 emulator preparation if at least one device is already connected or at least one emulator instance already exists.
 - If required SDK packages are missing: install them and re-run checks.
 
+## Do Not Use For
+- Do not use this skill for iOS, tvOS, desktop browser, Node-only, or FFmpeg-only setup.
+- Do not use this skill to reconfigure a working Java or Android SDK installation unless a required validation check fails.
+
+
 ## Instructions
 1. **Detect OS and validate Java/base tooling**
    macOS/Linux:
@@ -90,11 +95,12 @@ Prepare Android automation by validating Java, Android SDK tools/packages, env v
    cp -R /opt/homebrew/share/android-commandlinetools/* "$HOME/Library/Android/sdk/cmdline-tools/latest/"
    ```
    - Linux example (Debian/Ubuntu-style prerequisites + cmdline tools placement):
-   ```bash
-   sudo apt-get update
-   sudo apt-get install -y unzip wget openjdk-21-jdk
-   mkdir -p "$HOME/Android/Sdk/cmdline-tools/latest"
-   ```
+     - After explicit user approval for privileged package installation, update package metadata.
+     - Install the packages `unzip`, `wget`, and `openjdk-21-jdk` with the approved package-manager command.
+     - Create the Android command-line tools directory:
+       ```bash
+       mkdir -p "$HOME/Android/Sdk/cmdline-tools/latest"
+       ```
    - Windows example (PowerShell, after extracting Android command-line tools zip):
    ```powershell
    New-Item -ItemType Directory -Force "$env:LOCALAPPDATA\Android\Sdk\cmdline-tools\latest"
