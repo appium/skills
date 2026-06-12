@@ -1,3 +1,0 @@
-id: environment-setup-android-missing-context-failure
-name: missing context failure
-prompt: "Continue environment-setup-android with missing credential, host, device, or target details."

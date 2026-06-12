@@ -1,3 +1,0 @@
-id: environment-setup-uiautomator2-missing-context-failure
-name: missing context failure
-prompt: "Continue environment-setup-uiautomator2 with missing credential, host, device, or target details."

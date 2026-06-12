@@ -1,3 +1,0 @@
-id: xcuitest-real-device-config-missing-context-failure
-name: missing context failure
-prompt: "Continue xcuitest-real-device-config with missing credential, host, device, or target details."
