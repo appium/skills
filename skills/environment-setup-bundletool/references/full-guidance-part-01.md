@@ -1,3 +1,5 @@
+# Full Guidance Part 1
+
 ---
 name: "environment-setup-bundletool"
 description: "Use this skill only when Android App Bundle tooling is explicitly requested or required by a selected UiAutomator2 or Espresso workflow that needs bundletool.jar."

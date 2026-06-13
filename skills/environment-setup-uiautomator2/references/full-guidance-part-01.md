@@ -1,3 +1,5 @@
+# Full Guidance Part 1
+
 ---
 name: "environment-setup-uiautomator2"
 description: "Use this skill to prepare and validate Appium UiAutomator2 automation on Android after Node/Appium and Android base tooling are checked or required by a failing workflow."

@@ -1,3 +1,5 @@
+# Full Guidance Part 1
+
 ---
 name: "environment-setup-ffmpeg"
 description: "Use this skill only when FFmpeg is explicitly requested or an Appium media capability needs it, then install or validate FFmpeg on macOS, Linux, or Windows."

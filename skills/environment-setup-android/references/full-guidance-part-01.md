@@ -1,3 +1,5 @@
+# Full Guidance Part 1
+
 ---
 name: "environment-setup-android"
 description: "Use this skill to prepare Android SDK, Java, adb, emulator, environment variables, and device readiness for Appium Android drivers on supported desktop hosts."

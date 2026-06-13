@@ -1,3 +1,5 @@
+# Full Guidance Part 1
+
 ---
 name: "environment-setup-chromium"
 description: "Use this skill to prepare Appium Chromium Driver for desktop Chromium-based browser automation, including Appium driver installation, browser checks, and smoke validation."

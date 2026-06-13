@@ -1,3 +1,5 @@
+# Full Guidance Part 1
+
 ---
 name: "environment-setup-xcuitest"
 description: "Use this skill to prepare Appium XCUITest automation on macOS for simulator workflows by validating Node/Appium, Xcode, the driver, doctor output, and smoke checks."

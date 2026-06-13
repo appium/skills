@@ -1,3 +1,5 @@
+# Full Guidance Part 1
+
 ---
 name: "xcuitest-real-device-config"
 description: "Use this skill after base XCUITest setup passes to configure a physical iOS or tvOS device, provisioning, WDA signing, installation, and reuse patterns."

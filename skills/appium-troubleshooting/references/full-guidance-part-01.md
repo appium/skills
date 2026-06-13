@@ -1,3 +1,5 @@
+# Full Guidance Part 1
+
 ---
 name: "appium-troubleshooting"
 description: "Use this skill to diagnose an existing Appium failure after a session, driver, device, WebDriverAgent, browser, or locator error is available, while keeping fixes scoped to the selected driver."

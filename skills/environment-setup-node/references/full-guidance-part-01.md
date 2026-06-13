@@ -1,3 +1,5 @@
+# Full Guidance Part 1
+
 ---
 name: "environment-setup-node"
 description: "Use this skill to validate and repair the Node.js and npm runtime needed by Appium skills, including version-manager detection, npm availability, and registry connectivity."
