@@ -1,34 +1,24 @@
 # Appium Agent Skills
 
-## Help Improve These Skills
+This repository contains AI Agent skills for Appium automation, including environment setup, real-device configuration, and troubleshooting common failures.
 
-Each skill includes a self-improvement prompt asking agents to note missing, ambiguous, outdated, or retry-causing instructions after use. If an agent reports a concrete improvement suggestion, please consider opening a PR that updates the affected `SKILL.md` with clearer steps, better verification, or newer commands.
-
-This repository contains AI Agent skills for helping with Appium automation, including environment setup, real-device configuration, and troubleshooting common failures.
+Each skill includes a self-improvement prompt asking agents to note missing, ambiguous, outdated, or retry-causing instructions after use. When a gap is found, consider opening a PR that updates `SKILL.md` with clearer steps, verification, or newer commands.
 
 ## Available Skills
 
 | Skill | Description |
 |---|---|
-| [environment-setup-node](skills/environment-setup-node/SKILL.md) | Prepares Node.js and npm environment |
-| [environment-setup-android](skills/environment-setup-android/SKILL.md) | Prepares Android SDK, Java, and ADB prerequisites for Appium Android drivers |
-| [environment-setup-ffmpeg](skills/environment-setup-ffmpeg/SKILL.md) | Optional shared FFmpeg setup for media-related capabilities across drivers |
-| [environment-setup-bundletool](skills/environment-setup-bundletool/SKILL.md) | Optional shared bundletool.jar setup for UiAutomator2/Espresso app-bundle tooling |
-| [environment-setup-uiautomator2](skills/environment-setup-uiautomator2/SKILL.md) | Prepares and validates an Android + UiAutomator2 Appium environment |
-| [environment-setup-espresso](skills/environment-setup-espresso/SKILL.md) | Prepares and validates an Android + Espresso Appium environment |
-| [environment-setup-chromium](skills/environment-setup-chromium/SKILL.md) | Prepares and validates an Appium Chromium Driver environment for desktop Chromium-based browsers |
-| [environment-setup-xcuitest](skills/environment-setup-xcuitest/SKILL.md) | Prepares and validates a macOS + XCUITest Appium environment |
+| [setup](skills/setup/SKILL.md) | Routes Appium environment setup to the preserved Node.js, Android, UiAutomator2, Espresso, Chromium, XCUITest, FFmpeg, or bundletool reference procedure |
 | [appium-troubleshooting](skills/appium-troubleshooting/SKILL.md) | Troubleshoots UiAutomator2 or XCUITest failures with a driver-scoped workflow that starts from the failing symptom and re-checks the smallest reproduction after each fix |
-| [xcuitest-real-device-config](skills/xcuitest-real-device-config/SKILL.md) | Prepare a real iOS/tvOS device for Appium XCUITest automation |
+| [xcuitest-real-device-config](skills/xcuitest-real-device-config/SKILL.md) | Prepares a real iOS/tvOS device for Appium XCUITest automation |
 
 ## Reliable Execution Notes
 
-- Run skill commands step-by-step rather than as one very long chained command.
-- For long-running checks, prefer an isolated background terminal and capture output after completion.
+- Run one skill at a time in dependency order.
 - If output appears incomplete, rerun only the affected step and collect logs from that step.
 - Treat Appium doctor as the source of truth for pass/fail (`0 required fixes needed`).
-- For FFmpeg-dependent capabilities, run the optional shared skill `environment-setup-ffmpeg` only when explicitly requested.
-- For bundletool-dependent capabilities, run the optional shared skill `environment-setup-bundletool` only when explicitly requested.
+- For FFmpeg-dependent capabilities, use `setup` reference `environment-setup-ffmpeg.md` only when explicitly requested.
+- For bundletool-dependent capabilities, use `setup` reference `environment-setup-bundletool.md` only when explicitly requested.
 - For startup, WDA, or locator failures after setup is complete, use `appium-troubleshooting` in a single driver path and follow the checks documented in that skill.
 
 ## Agent Instructions
