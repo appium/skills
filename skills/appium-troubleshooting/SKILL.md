@@ -30,10 +30,18 @@ Load `references/troubleshooting-procedure.md` first. Then load only the symptom
 
 Use community search only after the official references do not explain the exact stack trace or symptom.
 
+## Profile Map
+
+Load only the matching driver profile:
+
+- UiAutomator2: `profiles/uiautomator2.md`
+- XCUITest: `profiles/xcuitest.md`
+- Chromium: `profiles/chromium.md`
+
 ## Examples
 
-- "UiAutomator2 session creation fails with adb error" -> load the procedure and UiAutomator2 startup reference.
-- "XCUITest WDA starts then returns ECONNREFUSED" -> load the procedure and keep the scope on XCUITest evidence.
+- Session startup failure: `examples/session-startup.md`
+- Locator or element lookup failure: `examples/locator-failure.md`
 
 ## Verification
 
