@@ -32,11 +32,25 @@ Load only the references required for the requested path:
 
 Execute references one at a time in dependency order. Re-run the smallest relevant check after each fix.
 
+## Profile Map
+
+Load only matching profiles:
+
+- Global Appium command mode: `profiles/global-appium.md`
+- Local `npx appium` mode: `profiles/local-npx.md`
+- macOS: `profiles/macos.md`
+- Linux: `profiles/linux.md`
+- Windows: `profiles/windows.md`
+- Android drivers: `profiles/android.md`
+- XCUITest simulator setup: `profiles/xcuitest.md`
+- Desktop Chromium setup: `profiles/chromium.md`
+
 ## Examples
 
-- "Prepare Android + UiAutomator2" -> load Node.js, Android, and UiAutomator2 references.
-- "Prepare desktop Chrome automation" -> load Node.js and Chromium references.
-- "Install FFmpeg for Appium screen recording" -> load the optional FFmpeg reference after explicit user request.
+- Android + UiAutomator2: `examples/uiautomator2.md`
+- Android + Espresso: `examples/espresso.md`
+- Desktop Chromium: `examples/chromium.md`
+- macOS + XCUITest: `examples/xcuitest.md`
 
 ## Verification
 

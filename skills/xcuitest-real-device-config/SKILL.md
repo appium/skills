@@ -21,10 +21,20 @@ Confirm the host is macOS, the target device is connected and trusted, XCUITest 
 
 Load `references/real-device-procedure.md` for the complete procedure. Follow its steps one at a time, and pause for physical-device actions such as Trust prompts or Developer Mode toggles.
 
+## Profile Map
+
+Load only the signing and deployment profiles that match the user's path:
+
+- Free Apple ID signing: `profiles/free-apple-id.md`
+- Paid Apple Developer signing: `profiles/paid-developer.md`
+- Enterprise provisioning profile: `profiles/enterprise-profile.md`
+- Preinstalled WDA: `profiles/preinstalled-wda.md`
+- Prebuilt WDA: `profiles/prebuilt-wda.md`
+- Running WDA URL attach mode: `profiles/running-wda-url.md`
+
 ## Examples
 
-- "Configure my iPhone for real-device XCUITest" -> verify XCUITest setup, then load the real-device procedure.
-- "Use preinstalled WDA on iOS 17" -> load the real-device procedure and follow its WDA signing and verification path.
+- Real iOS/tvOS device setup: `examples/real-device.md`
 
 ## Verification
 
