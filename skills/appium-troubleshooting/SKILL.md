@@ -10,6 +10,9 @@ Diagnose one Appium failure, choose the smallest likely fix, and verify the fail
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
+## Reference Routing
+Load `full-guidance-part-01.md` for the complete troubleshooting workflow. Load `uiautomator2-session-startup.md` for UiAutomator2 session creation failures, `uiautomator2-locators.md` for UiAutomator2 element lookup issues, `xcuitest-troubleshooting.md` for XCUITest driver or WDA failures, `xcuitest-locators.md` for XCUITest locator strategy issues, `xcuitest-element-lookup.md` for XCUITest element lookup failures, and `community-search.md` only when bundled references do not explain the exact stack trace.
+
 ## Do Not Use For
 - Do not use for first-time environment setup with no failure evidence.
 - Do not use for cross-driver comparison unless the user asks for it.

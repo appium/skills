@@ -10,6 +10,9 @@ Validate the macOS XCUITest simulator environment until required doctor fixes ar
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
+## Reference Routing
+Load `full-guidance-part-01.md` when detailed XCUITest driver install, Xcode validation, simulator, or doctor repair steps are needed.
+
 ## Do Not Use For
 - Do not use for physical iOS/tvOS signing, provisioning, or WDA preinstall flows.
 - Do not use for Android, Chromium, FFmpeg-only, or Node-only setup.

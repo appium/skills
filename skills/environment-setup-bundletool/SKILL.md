@@ -10,6 +10,9 @@ Install or validate `bundletool.jar` from official release assets for optional A
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
+## Reference Routing
+Load `full-guidance-part-01.md` when detailed bundletool install, validation, or Appium driver integration steps are needed.
+
 ## Do Not Use For
 - Do not use for standard APK-only automation.
 - Do not use for Java, Android SDK, or Appium driver installation.

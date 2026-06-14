@@ -10,6 +10,9 @@ Install or validate UiAutomator2 and confirm Android device readiness for sessio
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
+## Reference Routing
+Load `full-guidance-part-01.md` when detailed UiAutomator2 driver install, doctor repair, or device smoke-test steps are needed.
+
 ## Do Not Use For
 - Do not use for Espresso, XCUITest, Chromium, Node-only, FFmpeg-only, or bundletool-only setup.
 

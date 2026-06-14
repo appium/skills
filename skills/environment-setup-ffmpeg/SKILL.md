@@ -10,6 +10,9 @@ Make `ffmpeg` available in PATH and prove it reports a version.
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
+## Reference Routing
+Load `full-guidance-part-01.md` when detailed FFmpeg install, PATH validation, or Appium media feature checks are needed.
+
 ## Do Not Use For
 - Do not use for Node, Android SDK, Xcode, browser, or Appium driver setup.
 
