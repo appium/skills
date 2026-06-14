@@ -15,6 +15,10 @@ Use this file to route Appium setup, troubleshooting, and real-device configurat
 - Do not use this file as a replacement for the selected skill instructions; load the relevant `SKILL.md`, routed profiles, references, and examples before executing.
 - Do not run optional FFmpeg, bundletool, or third-party real-device tooling unless the user explicitly requests that capability.
 
+## Preflight
+
+Before executing a skill, confirm the target platform, Appium driver, command mode (`appium` or `npx appium`), host OS, available permissions, relevant devices or simulators, and whether the user requested optional dependencies. Identify the exact skill files, profiles, references, examples, and verification commands that apply before making environment changes.
+
 ## Execution Rules
 
 - Execute skills one at a time in dependency order.
@@ -96,4 +100,3 @@ A skill is complete only when its own completion criteria in `SKILL.md` are sati
 - Optional doctor warnings do not block completion.
 - Validate global command mode (`appium`) as the default completion path.
 - Validate local command mode (`npx appium`) only when the user explicitly requests local execution.
-
