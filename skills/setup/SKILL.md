@@ -26,6 +26,7 @@ Load only the references required for the requested path:
 - Android UiAutomator2 driver: `references/environment-setup-uiautomator2.md`
 - Android Espresso driver: `references/environment-setup-espresso.md`
 - Desktop Chromium driver: `references/environment-setup-chromium.md`
+- macOS Safari driver: `references/environment-setup-safari.md`
 - macOS XCUITest driver: `references/environment-setup-xcuitest.md`
 - Optional FFmpeg capability: `references/environment-setup-ffmpeg.md`
 - Optional bundletool capability: `references/environment-setup-bundletool.md`
@@ -44,12 +45,14 @@ Load only matching profiles:
 - Android drivers: `profiles/android.md`
 - XCUITest simulator setup: `profiles/xcuitest.md`
 - Desktop Chromium setup: `profiles/chromium.md`
+- Safari setup: `profiles/safari.md`
 
 ## Examples
 
 - Android + UiAutomator2: `examples/uiautomator2.md`
 - Android + Espresso: `examples/espresso.md`
 - Desktop Chromium: `examples/chromium.md`
+- macOS + Safari: `examples/safari.md`
 - macOS + XCUITest: `examples/xcuitest.md`
 
 ## Verification

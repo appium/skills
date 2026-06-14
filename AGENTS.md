@@ -65,6 +65,15 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 4. `skills/setup/references/environment-setup-chromium.md`
 5. Example: `skills/setup/examples/chromium.md`
 
+### macOS + Safari
+
+1. `skills/setup/SKILL.md`
+2. `skills/setup/profiles/macos.md`
+3. `skills/setup/profiles/safari.md`
+4. `skills/setup/references/environment-setup-node.md`
+5. `skills/setup/references/environment-setup-safari.md`
+6. Example: `skills/setup/examples/safari.md`
+
 ### iOS + XCUITest Simulator
 
 1. `skills/setup/SKILL.md`
