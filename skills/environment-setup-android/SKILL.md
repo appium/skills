@@ -1,29 +1,373 @@
 ---
 name: "environment-setup-android"
-description: "Use this skill to prepare Android SDK, Java, adb, emulator, environment variables, and device readiness for Appium Android drivers on supported desktop hosts."
+description: "Prepare and validate Android SDK, Java, and device tooling for Appium Android drivers"
+metadata:
+  last_modified: "Mon, 27 Apr 2026 22:00:00 GMT"
+
 ---
 # environment-setup-android
 
 ## Goal
-Validate Android base tooling for UiAutomator2 or Espresso and install only missing required pieces.
+Prepare Android automation by validating Java, Android SDK tools/packages, env vars, and ADB/device readiness.
 
-## When To Use
-Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
-
-## Do Not Use For
-- Do not use for iOS, tvOS, Chromium, Node-only, or FFmpeg-only setup.
-- Do not use for reconfiguring Java or Android SDK when checks already pass.
-
-## Preflight
-Identify OS, shell, Java/Javac status, `ANDROID_HOME`, adb availability, emulator inventory, connected devices, and permission limits.
+## Decision Logic
+- If host OS is unsupported for Android SDK setup: stop and ask the user to switch to macOS, Linux, or Windows.
+- If `java -version` and `javac -version` already succeed: keep the existing Java setup and do not reconfigure `JAVA_HOME`.
+- If host OS is macOS and Java setup is needed (fresh environment): use Android Studio app setup as the primary method for both `ANDROID_HOME` (`$HOME/Library/Android/sdk`) and `JAVA_HOME` (Android Studio JBR). Check both `/Applications/Android Studio.app` and `$HOME/Applications/Android Studio.app`, and prefer the official direct download flow before Homebrew.
+- If host OS is Linux and Java setup is needed (fresh environment): use Android Studio bundled JBR as the primary method when Android Studio is installed, then fallback to distro/package-manager OpenJDK.
+- If host OS is Windows and Java setup is needed (fresh environment): use Android Studio bundled JBR as the primary method when Android Studio is installed, then fallback to Microsoft OpenJDK package install.
+- If host OS is Linux: use package manager + `$HOME/Android/Sdk` conventions.
+- If host OS is Windows: use Android SDK tools with persistent user environment variables.
+- If `java` or `javac` is missing: run step 3 to install/configure Java.
+- If the user wants official Android tooling setup flow: download Android Studio from the official site first, use its bundled JBR for Java, then bootstrap the SDK with the official `sdkmanager`.
+- If `ANDROID_HOME` is unset/empty or the `ANDROID_HOME` path does not exist: run step 2 to install command-line tools and create the SDK path.
+- If Java tooling is missing or broken (`java`/`javac` checks fail): run step 3 before Android SDK package/license commands.
+- If `adb` is missing: install `platform-tools` via `sdkmanager`.
+- If emulator binary is missing under `ANDROID_HOME/emulator/emulator` (or Windows equivalent): install emulator packages.
+- Prepare emulator instances using the latest stable system-image version reported by `sdkmanager --list` by default.
+- Use host-optimized emulator architecture (native architecture first, then fallback architecture).
+- Skip step 7 emulator preparation if at least one device is already connected or at least one emulator instance already exists.
+- If required SDK packages are missing: install them and re-run checks.
 
 ## Instructions
-1. Prefer existing Android Studio or command-line tools paths before installing anything.
-2. Install missing SDK packages with sdkmanager only after confirming required gaps.
-3. Ask for explicit approval before privileged OS package installation.
+1. **Detect OS and validate Java/base tooling**
+   macOS/Linux:
+   ```bash
+   uname -s
+   java -version
+   javac -version
+   echo "$JAVA_HOME"
+   command -v adb
+   ls "$ANDROID_HOME/emulator/emulator"
+   test -x "$ANDROID_HOME/emulator/emulator" && echo "emulator binary: OK"
+   ```
+   Windows PowerShell:
+   ```powershell
+   [System.Environment]::OSVersion.VersionString
+   java -version
+   javac -version
+   $env:JAVA_HOME
+   Get-Command adb.exe -ErrorAction SilentlyContinue
+   Test-Path "$env:ANDROID_HOME\emulator\emulator.exe"
+   ```
 
-## Verification
-Confirm Java/Javac, adb, Android SDK paths, required packages, and either a connected device or prepared emulator.
+2. **Install Android SDK tooling when `ANDROID_HOME` path is missing**
+   Trigger checks:
+   - macOS/Linux:
+   ```bash
+   [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME" ] || echo "run step 2"
+   ```
+   - Windows PowerShell:
+   ```powershell
+   if (-not $env:ANDROID_HOME -or -not (Test-Path $env:ANDROID_HOME)) { "run step 2" }
+   ```
+   Option A (Android Studio app path; macOS priority when app exists):
+   - Download Android Studio from `https://developer.android.com/studio`.
+   - On macOS, check for the app in both `/Applications/Android Studio.app` and `$HOME/Applications/Android Studio.app`.
+   - You may either complete first launch and install SDK components from SDK Manager, or use the bundled JBR plus the official command-line tools zip to bootstrap the SDK non-interactively with `sdkmanager`.
+   - Use platform default SDK path after setup:
+     - macOS: `$HOME/Library/Android/sdk`
+     - Linux: `$HOME/Android/Sdk`
+     - Windows: `%LOCALAPPDATA%\Android\Sdk`
 
-## Examples
-- UiAutomator2 setup reports adb missing; validate `ANDROID_HOME`, install platform-tools, then rerun the driver doctor.
+   Option B (CLI tools only):
+   - macOS official command-line tools example:
+   ```bash
+   # Verify the current command-line tools URL and checksum from https://developer.android.com/studio#command-tools before downloading.
+   curl -L -o /tmp/commandlinetools-mac-latest.zip https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip
+   unzip -q /tmp/commandlinetools-mac-latest.zip -d /tmp/android-cmdline-tools
+   export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+   if [ ! -d "$JAVA_HOME" ]; then
+     export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+   fi
+   export PATH="$JAVA_HOME/bin:$PATH"
+   /tmp/android-cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/Library/Android/sdk" "cmdline-tools;latest"
+   ```
+   - macOS/Homebrew fallback example:
+   ```bash
+   [ -d "/Applications/Android Studio.app" ] || brew install --cask android-commandlinetools
+   mkdir -p "$HOME/Library/Android/sdk/cmdline-tools/latest"
+   cp -R /opt/homebrew/share/android-commandlinetools/* "$HOME/Library/Android/sdk/cmdline-tools/latest/"
+   ```
+   - Linux example (Debian/Ubuntu-style prerequisites + cmdline tools placement):
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y unzip wget openjdk-21-jdk
+   mkdir -p "$HOME/Android/Sdk/cmdline-tools/latest"
+   ```
+   - Windows example (PowerShell, after extracting Android command-line tools zip):
+   ```powershell
+   New-Item -ItemType Directory -Force "$env:LOCALAPPDATA\Android\Sdk\cmdline-tools\latest"
+   ```
+
+3. **Configure Java for fresh environments (skip if Java already works)**
+   Trigger checks:
+   - macOS/Linux:
+   ```bash
+   if command -v java >/dev/null 2>&1 && command -v javac >/dev/null 2>&1; then
+     java -version >/dev/null 2>&1 && javac -version >/dev/null 2>&1 && echo "Java already available; skip step 3" || echo "run step 3"
+   else
+     echo "run step 3"
+   fi
+   ```
+   - Windows PowerShell:
+   ```powershell
+   if ((Get-Command java.exe -ErrorAction SilentlyContinue) -and (Get-Command javac.exe -ErrorAction SilentlyContinue)) {
+     java -version *> $null
+     if ($LASTEXITCODE -eq 0) {
+       javac -version *> $null
+       if ($LASTEXITCODE -eq 0) { "Java already available; skip step 3" } else { "run step 3" }
+     } else { "run step 3" }
+   } else { "run step 3" }
+   ```
+   macOS primary method for fresh setup (Android Studio bundled JBR):
+   ```bash
+   if [ -d "$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
+     export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+     export PATH="$JAVA_HOME/bin:$PATH"
+     java -version
+     javac -version
+   elif [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
+     export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+     export PATH="$JAVA_HOME/bin:$PATH"
+     java -version
+     javac -version
+   else
+     echo "Android Studio JBR not found; use fallback method below"
+   fi
+   ```
+   macOS fallback method (only when Android Studio is not installed):
+   ```bash
+   brew install --cask temurin
+   export JAVA_HOME="$(/usr/libexec/java_home -v 21)"
+   export PATH="$JAVA_HOME/bin:$PATH"
+   java -version
+   javac -version
+   ```
+   Linux primary method for fresh setup (Android Studio bundled JBR):
+   ```bash
+   if [ -d "$HOME/android-studio/jbr" ]; then
+     export JAVA_HOME="$HOME/android-studio/jbr"
+   elif [ -d "/opt/android-studio/jbr" ]; then
+     export JAVA_HOME="/opt/android-studio/jbr"
+   elif [ -d "/usr/local/android-studio/jbr" ]; then
+     export JAVA_HOME="/usr/local/android-studio/jbr"
+   else
+     echo "Android Studio JBR not found; use fallback method below"
+   fi
+   if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
+     export PATH="$JAVA_HOME/bin:$PATH"
+     java -version
+     javac -version
+   fi
+   ```
+   Linux fallback method (OpenJDK 21 example):
+   ```bash
+   export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+   export PATH="$JAVA_HOME/bin:$PATH"
+   java -version
+   javac -version
+   ```
+   Windows primary method for fresh setup (Android Studio bundled JBR, persist for current user):
+   ```powershell
+   $studioJbrCandidates = @(
+     "$env:LOCALAPPDATA\Programs\Android Studio\jbr",
+     "C:\Program Files\Android\Android Studio\jbr"
+   )
+   $studioJbr = $studioJbrCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+   if ($studioJbr) {
+     [Environment]::SetEnvironmentVariable('JAVA_HOME', $studioJbr, 'User')
+     $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+     if ($currentPath -notlike "*$studioJbr\bin*") {
+       [Environment]::SetEnvironmentVariable('Path', "$currentPath;$studioJbr\bin", 'User')
+     }
+     $env:JAVA_HOME = [Environment]::GetEnvironmentVariable('JAVA_HOME', 'User')
+     $env:PATH = "$studioJbr\bin;$env:PATH"
+     java -version
+     javac -version
+   } else {
+     "Android Studio JBR not found; use fallback method below"
+   }
+   ```
+   Windows fallback method (only when Android Studio is not installed):
+   ```powershell
+   winget install -e --id Microsoft.OpenJDK.17 --accept-source-agreements --accept-package-agreements
+   $jdkRoot = Get-ChildItem "C:\Program Files\Microsoft" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'jdk-*' } | Sort-Object Name -Descending | Select-Object -First 1
+   if ($jdkRoot) {
+     [Environment]::SetEnvironmentVariable('JAVA_HOME', $jdkRoot.FullName, 'User')
+     $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+     if ($currentPath -notlike "*$($jdkRoot.FullName)\\bin*") {
+       [Environment]::SetEnvironmentVariable('Path', "$currentPath;$($jdkRoot.FullName)\\bin", 'User')
+     }
+     $env:JAVA_HOME = [Environment]::GetEnvironmentVariable('JAVA_HOME', 'User')
+     $env:PATH = "$env:JAVA_HOME\\bin;$env:PATH"
+   }
+   java -version
+   javac -version
+   ```
+
+4. **Configure Android environment variables and PATH**
+   macOS (priority: Android Studio SDK path):
+   ```bash
+   export ANDROID_HOME="$HOME/Library/Android/sdk"
+   export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$PATH"
+   echo "$ANDROID_HOME"
+   command -v adb
+   ls "$ANDROID_HOME/emulator/emulator"
+   ```
+   Linux:
+   ```bash
+   export ANDROID_HOME="$HOME/Android/Sdk"
+   export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+   echo "$ANDROID_HOME"
+   command -v adb
+   ls "$ANDROID_HOME/emulator/emulator"
+   ```
+   Windows PowerShell (persist for current user):
+   ```powershell
+   [Environment]::SetEnvironmentVariable('ANDROID_HOME', "$env:LOCALAPPDATA\Android\Sdk", 'User')
+   $androidPaths = "$env:LOCALAPPDATA\Android\Sdk\platform-tools;$env:LOCALAPPDATA\Android\Sdk\cmdline-tools\latest\bin"
+   $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+   if ($currentPath -notlike "*$androidPaths*") {
+     [Environment]::SetEnvironmentVariable('Path', "$currentPath;$androidPaths", 'User')
+   }
+   $env:ANDROID_HOME = [Environment]::GetEnvironmentVariable('ANDROID_HOME', 'User')
+   ```
+
+5. **Accept SDK licenses and install required packages**
+   macOS/Linux:
+   ```bash
+   if command -v sdkmanager >/dev/null 2>&1; then yes | sdkmanager --sdk_root="$ANDROID_HOME" --licenses; fi
+   if command -v sdkmanager >/dev/null 2>&1; then sdkmanager --sdk_root="$ANDROID_HOME" "platform-tools" "emulator" "cmdline-tools;latest"; fi
+   if command -v sdkmanager >/dev/null 2>&1; then
+     LATEST_PLATFORM="$(sdkmanager --sdk_root="$ANDROID_HOME" --list | grep -Eo 'platforms;android-[0-9]+' | sort -V | tail -n 1)"
+     LATEST_BUILD_TOOLS="$(sdkmanager --sdk_root="$ANDROID_HOME" --list | grep -Eo 'build-tools;[0-9][^ ]*' | sort -V | tail -n 1)"
+     sdkmanager --sdk_root="$ANDROID_HOME" "$LATEST_PLATFORM" "$LATEST_BUILD_TOOLS"
+   fi
+   ```
+   Windows PowerShell:
+   ```powershell
+   if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { cmd /c "(for /l %i in (1,1,200) do @echo y)| sdkmanager.bat --licenses" }
+   if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) {
+     sdkmanager.bat "platform-tools" "emulator" "cmdline-tools;latest"
+     $list = sdkmanager.bat --list | Out-String
+     $platform = [regex]::Matches($list, 'platforms;android-[0-9]+') | ForEach-Object Value | Sort-Object {[int]($_ -replace '\D+', '')} | Select-Object -Last 1
+     $buildTools = [regex]::Matches($list, 'build-tools;[0-9][^ ]*') | ForEach-Object Value | Sort-Object | Select-Object -Last 1
+     sdkmanager.bat $platform $buildTools
+   }
+   ```
+    If license acceptance still fails in headless CI-like runs, pre-seed license hashes and retry package install:
+    ```powershell
+    $licensesDir = "$env:ANDROID_HOME\licenses"
+    New-Item -ItemType Directory -Force $licensesDir | Out-Null
+    Set-Content -Path "$licensesDir\android-sdk-license" -Value "24333f8a63b6825ea9c5514f83c2829b004d1fee`n8933bad161af4178b1185d1a37fbf41ea5269c55`nd56f5187479451eabf01fb78af6dfcb131a6481e"
+    ```
+
+6. **Verify Android SDK and ADB state**
+   macOS/Linux:
+   ```bash
+   if command -v sdkmanager >/dev/null 2>&1; then sdkmanager --list | head -n 80; fi
+   adb version
+   command -v emulator
+   ls "$ANDROID_HOME/emulator/emulator"
+   test -x "$ANDROID_HOME/emulator/emulator" && echo "emulator binary: OK"
+   ```
+   Windows PowerShell:
+   ```powershell
+   if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { sdkmanager.bat --list }
+   adb.exe version
+   Test-Path "$env:ANDROID_HOME\emulator\emulator.exe"
+   ```
+
+7. **Optional emulator instance preparation (if no physical device is connected and no emulator exists)**
+   Skip step 7 when either of the following is true:
+   - At least one device is already connected (`adb devices` shows a `device` entry)
+   - At least one emulator instance already exists (`emulator -list-avds` is non-empty)
+
+   Prepare an emulator instance using the latest stable system-image version and host-optimized architecture only when both are false.
+   macOS/Linux (prefer native architecture first, then fallback):
+   ```bash
+   ARCH=$(uname -m)
+   if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
+     PRIMARY_ARCH="arm64-v8a"
+     FALLBACK_ARCH="x86_64"
+   else
+     PRIMARY_ARCH="x86_64"
+     FALLBACK_ARCH="arm64-v8a"
+   fi
+   LATEST_API=$(sdkmanager --list | grep -o "system-images;android-[0-9]\+;google_apis;${PRIMARY_ARCH}" | sed 's/.*android-\([0-9]\+\).*/\1/' | sort -n | tail -1)
+   IMAGE_ARCH="$PRIMARY_ARCH"
+   if [ -z "$LATEST_API" ]; then
+     LATEST_API=$(sdkmanager --list | grep -o "system-images;android-[0-9]\+;google_apis;${FALLBACK_ARCH}" | sed 's/.*android-\([0-9]\+\).*/\1/' | sort -n | tail -1)
+     IMAGE_ARCH="$FALLBACK_ARCH"
+   fi
+   IMAGE="system-images;android-${LATEST_API};google_apis;${IMAGE_ARCH}"
+   sdkmanager "$IMAGE"
+   echo "no" | avdmanager create avd -n "api${LATEST_API}-google-${IMAGE_ARCH}" -k "$IMAGE"
+   emulator -list-avds
+   ```
+   Windows PowerShell (prefer x86_64, fallback arm64-v8a):
+   ```powershell
+   $primaryArch = "x86_64"
+   $fallbackArch = "arm64-v8a"
+   $matches = sdkmanager.bat --list | Select-String "system-images;android-[0-9]+;google_apis;$primaryArch"
+   $imageArch = $primaryArch
+   if (-not $matches) {
+     $matches = sdkmanager.bat --list | Select-String "system-images;android-[0-9]+;google_apis;$fallbackArch"
+     $imageArch = $fallbackArch
+   }
+   $latestApi = ($matches | ForEach-Object { [int]([regex]::Match($_.Line, 'android-(\d+)').Groups[1].Value) } | Sort-Object)[-1]
+   $image = "system-images;android-$latestApi;google_apis;$imageArch"
+   sdkmanager.bat $image
+   cmd /c "echo no| avdmanager.bat create avd -n api$latestApi-google-$imageArch -k $image"
+   emulator.exe -list-avds
+   ```
+   Report version details in the task result:
+   - macOS/Linux:
+   ```bash
+   emulator -version
+   emulator -list-avds
+   if command -v sdkmanager >/dev/null 2>&1; then sdkmanager --list | grep "system-images;android-" | head -n 20; fi
+   ```
+   - Windows PowerShell:
+   ```powershell
+   emulator.exe -version
+   emulator.exe -list-avds
+   if (Get-Command sdkmanager.bat -ErrorAction SilentlyContinue) { sdkmanager.bat --list | Select-String "system-images;android-" | Select-Object -First 20 }
+   ```
+
+8. **Completion criteria**
+   Mark complete only when all are true:
+   - `java -version` and `javac -version` succeed
+   - `adb` is executable from `PATH`
+   - Emulator binary exists under `ANDROID_HOME/emulator/emulator` (or `%ANDROID_HOME%\emulator\emulator.exe` on Windows)
+   - Required SDK packages are installed (`platform-tools`, one platform, one build-tools version)
+    - Existing Java setup is preserved when Java already works (no forced reconfiguration)
+    - On fresh setup, Android Studio bundled JBR is used as `JAVA_HOME` when Android Studio is present (macOS/Linux/Windows)
+   - Android environment checks pass without requiring a connected device
+   - Latest stable emulator/system-image version is prepared with host-optimized architecture only when no connected devices and no existing emulators are present; otherwise step 7 is skipped and current version details are reported in the task result
+
+## Evidence To Report
+
+- host OS and architecture
+- `java -version` and `javac -version`
+- `ANDROID_HOME`
+- `adb version` and `adb devices -l`
+- emulator binary path and `emulator -version`
+- installed SDK platform/build-tools package evidence from `sdkmanager --list_installed` or equivalent
+- command-line tools download URL and checksum verification source when a download was performed
+- whether emulator preparation was skipped because a connected device or AVD already existed
+
+## Self-Improvement Prompt
+
+After use, always run this self-improvement check before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
+
+## Constraints
+- Always use detect-first behavior and install only missing components.
+- Re-run validation commands after each install/config change.
+- Do not report success if `adb` is unavailable or emulator binary check fails.
+- Treat optional dependencies and optional doctor warnings as non-blocking unless the user requests those features.
+- Ask the user before installing optional dependencies; do not install them by default.
+- If privileged commands are needed, pause and provide exact commands for user execution.
+- Keep Android setup independent from Appium driver installation steps.
+- Use shell-appropriate commands (`bash` for macOS/Linux, PowerShell/cmd for Windows).
