@@ -1,6 +1,14 @@
+---
+description: "Repository-level execution rules for Appium skills. Use this guide to choose setup, troubleshooting, or real-device configuration workflows, enforce doctor-based verification, and preserve explicit approval gates for optional or privileged setup steps."
+---
+
 # AGENTS Guide for Appium Skills
 
 This file defines how AI agents should execute the skills in this repository.
+
+## Use When
+
+Use this file to route Appium setup, troubleshooting, and real-device configuration work to the correct skill sequence, dependency order, approval gate, and verification standard. When to use: load this guide before choosing or sequencing repository skills.
 
 ## Execution Rules
 
@@ -15,49 +23,60 @@ This file defines how AI agents should execute the skills in this repository.
 - Prefer user-space installs and local project fallbacks when permissions are restricted.
 - Use global npm/Appium commands by default (`npm -g`, `appium`).
 - Use local execution (`npx appium`) only when the user explicitly asks for a local mode.
-- Use `environment-setup-ffmpeg` as a shared optional dependency across drivers only when the user explicitly requests FFmpeg-related setup.
-- Use `environment-setup-bundletool` as a shared optional dependency for UiAutomator2/Espresso only when the user explicitly requests bundletool setup.
+- Use `setup` reference `environment-setup-ffmpeg.md` as a shared optional dependency across drivers only when the user explicitly requests FFmpeg-related setup.
+- Use `setup` reference `environment-setup-bundletool.md` as a shared optional dependency for UiAutomator2/Espresso only when the user explicitly requests bundletool setup.
 - If output is incomplete/truncated, rerun only that step and capture logs.
 - After completing any skill, read and apply that skill's `Self-Improvement Prompt` section before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with the skill section and proposed wording. Do not edit skill files unless the user explicitly asks.
+
+## Do Not Use For
+
+- Do not use this file as a replacement for the selected skill instructions; load the relevant `SKILL.md` and routed references before executing.
+- Do not run optional FFmpeg, bundletool, or third-party real-device tooling unless the user explicitly requests that capability.
 
 ## Recommended Skill Order
 
 ### Android + UiAutomator2
 
-1. `environment-setup-node`
-2. `environment-setup-android`
-3. `environment-setup-uiautomator2`
+1. `setup`
+   - Load `references/environment-setup-node.md`
+   - Load `references/environment-setup-android.md`
+   - Load `references/environment-setup-uiautomator2.md`
 
 ### Android + Espresso
 
-1. `environment-setup-node`
-2. `environment-setup-android`
-3. `environment-setup-espresso`
+1. `setup`
+   - Load `references/environment-setup-node.md`
+   - Load `references/environment-setup-android.md`
+   - Load `references/environment-setup-espresso.md`
 
 ### Desktop Chromium Browsers (Chrome/Chromium/Edge)
 
-1. `environment-setup-node`
-2. `environment-setup-chromium`
+1. `setup`
+   - Load `references/environment-setup-node.md`
+   - Load `references/environment-setup-chromium.md`
 
 ### Shared Optional Skill
 
-1. `environment-setup-ffmpeg` (run only when user explicitly requests FFmpeg-related capabilities)
-2. `environment-setup-bundletool` (run only when user explicitly requests bundletool setup for UiAutomator2/Espresso)
+1. `setup`
+   - Load `references/environment-setup-ffmpeg.md` only when user explicitly requests FFmpeg-related capabilities.
+   - Load `references/environment-setup-bundletool.md` only when user explicitly requests bundletool setup for UiAutomator2/Espresso.
 
 ### iOS + XCUITest (macOS only)
 
-1. `environment-setup-node`
-2. `environment-setup-xcuitest`
+1. `setup`
+   - Load `references/environment-setup-node.md`
+   - Load `references/environment-setup-xcuitest.md`
 
 ### iOS + XCUITest + Real Device (macOS only)
 
-1. `environment-setup-node`
-2. `environment-setup-xcuitest`
+1. `setup`
+   - Load `references/environment-setup-node.md`
+   - Load `references/environment-setup-xcuitest.md`
 3. `xcuitest-real-device-config`
 
 ### Troubleshooting
 
-1. If prerequisites or doctor checks are failing, run the relevant environment setup skill first.
+1. If prerequisites or doctor checks are failing, run `skills/setup/SKILL.md` with the relevant setup references first.
 2. Then run `appium-troubleshooting` in the failing driver path and load only the platform reference files that match the symptom.
 
 ## Completion Policy
@@ -78,9 +97,10 @@ Use this as a starting prompt for an AI agent:
 ```text
 Use this repository's skills to prepare Android + UiAutomator2.
 Follow exactly, in order:
-1) skills/environment-setup-node/SKILL.md
-2) skills/environment-setup-android/SKILL.md
-3) skills/environment-setup-uiautomator2/SKILL.md
+1) skills/setup/SKILL.md
+   - references/environment-setup-node.md
+   - references/environment-setup-android.md
+   - references/environment-setup-uiautomator2.md
 
 Rules:
   1) Start Appium server in Terminal A (`appium server`) and keep it running.
@@ -96,9 +116,10 @@ Use this as a starting prompt for an AI agent:
 ```text
 Use this repository's skills to prepare Android + Espresso.
 Follow exactly, in order:
-1) skills/environment-setup-node/SKILL.md
-2) skills/environment-setup-android/SKILL.md
-3) skills/environment-setup-espresso/SKILL.md
+1) skills/setup/SKILL.md
+   - references/environment-setup-node.md
+   - references/environment-setup-android.md
+   - references/environment-setup-espresso.md
 
 Rules:
 - Run one step at a time.
@@ -121,8 +142,9 @@ Use this as a starting prompt for an AI agent:
 ```text
 Use this repository's skills to prepare macOS + XCUITest.
 Follow exactly, in order:
-1) skills/environment-setup-node/SKILL.md
-2) skills/environment-setup-xcuitest/SKILL.md
+1) skills/setup/SKILL.md
+   - references/environment-setup-node.md
+   - references/environment-setup-xcuitest.md
 
 Rules:
 - Run one step at a time.
@@ -145,8 +167,9 @@ Use this as a starting prompt for an AI agent:
 ```text
 Use this repository's skills to prepare Appium Chromium Driver for desktop browser automation.
 Follow exactly, in order:
-1) skills/environment-setup-node/SKILL.md
-2) skills/environment-setup-chromium/SKILL.md
+1) skills/setup/SKILL.md
+   - references/environment-setup-node.md
+   - references/environment-setup-chromium.md
 
 Rules:
 - Run one step at a time.
@@ -170,13 +193,14 @@ Use this as a starting prompt for an AI agent:
 ```text
 Use this repository's skills to prepare macOS + XCUITest for a real iOS/tvOS device.
 Follow exactly, in order:
-1) skills/environment-setup-node/SKILL.md
-2) skills/environment-setup-xcuitest/SKILL.md
-3) skills/xcuitest-real-device-config/SKILL.md
+1) skills/setup/SKILL.md
+   - references/environment-setup-node.md
+   - references/environment-setup-xcuitest.md
+2) skills/xcuitest-real-device-config/SKILL.md
 
 Rules:
 - Run one step at a time.
-- Complete environment-setup-xcuitest before starting xcuitest-real-device-config.
+- Complete `references/environment-setup-xcuitest.md` before starting `xcuitest-real-device-config`.
 - Ask before installing optional 3rd-party device tools (ios-deploy, go-ios, pymobiledevice3, tidevice).
 - Do not use sudo unless I explicitly ask.
 - For steps requiring physical device interaction (Trust popup, Developer Mode toggle), pause and give the exact on-device instruction.
@@ -196,7 +220,7 @@ Use this as a starting prompt for an AI agent:
 ```text
 Use this repository's troubleshooting skill to diagnose an Appium failure.
 Follow this order:
-1) If setup or doctor output is failing, run the matching environment setup skill first.
+1) If setup or doctor output is failing, run `skills/setup/SKILL.md` with the matching setup references first.
 2) skills/appium-troubleshooting/SKILL.md
 
 Rules:
@@ -213,4 +237,6 @@ Rules:
 
 - If your agent platform supports repository-level instruction files, prioritize this file before running skill commands.
 - If your platform does not auto-load this file, copy one prompt template above and provide it manually.
+
+
 
