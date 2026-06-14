@@ -14,7 +14,7 @@ Use this skill when the request matches the description and the preflight checks
 
 ## Do Not Use For
 - Do not use for simulator-only XCUITest setup.
-- Do not use for base Node/Appium/Xcode setup before `environment-setup-xcuitest` passes.
+- Do not use for base Node/Appium/Xcode setup before `setup` with `xcuitest.md` passes.
 
 ## Preflight
 Confirm macOS, completed XCUITest setup, connected device UDID, Developer Mode/trust state, signing identity, team ID, bundle ID, and provisioning approach.
