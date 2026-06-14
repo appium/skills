@@ -10,9 +10,6 @@ Validate Appium 3, the Chromium driver, a supported browser, and a minimal serve
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
-## Reference Routing
-Load `full-guidance-part-01.md` when detailed Chromium driver install, browser discovery, or smoke-test steps are needed.
-
 ## Do Not Use For
 - Do not use for native Android, iOS, tvOS, or non-Chromium browser setup.
 - Do not use for installing OS browsers without approval.

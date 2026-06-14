@@ -10,9 +10,6 @@ Install or validate the Espresso driver and confirm Android device readiness for
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
-## Reference Routing
-Load `full-guidance-part-01.md` when detailed Espresso driver install, doctor repair, or Android session validation steps are needed.
-
 ## Do Not Use For
 - Do not use for UiAutomator2, XCUITest, Chromium, Node-only, FFmpeg-only, or bundletool-only setup.
 

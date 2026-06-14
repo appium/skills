@@ -10,9 +10,6 @@ Prepare a trusted, signed, and verifiable WebDriverAgent path for a real iOS/tvO
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
-## Reference Routing
-Load `full-guidance-part-01.md` when detailed real-device signing, provisioning, WebDriverAgent deployment, or codesign verification steps are needed.
-
 ## Do Not Use For
 - Do not use for simulator-only XCUITest setup.
 - Do not use for base Node/Appium/Xcode setup before `environment-setup-xcuitest` passes.

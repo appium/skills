@@ -10,9 +10,6 @@ Validate Android base tooling for UiAutomator2 or Espresso and install only miss
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
-## Reference Routing
-Load `full-guidance-part-01.md` when detailed Android setup commands, SDK package checks, or environment repair steps are needed.
-
 ## Do Not Use For
 - Do not use for iOS, tvOS, Chromium, Node-only, or FFmpeg-only setup.
 - Do not use for reconfiguring Java or Android SDK when checks already pass.
@@ -26,7 +23,7 @@ Identify OS, shell, Java/Javac status, `ANDROID_HOME`, adb availability, emulato
 3. Ask for explicit approval before privileged OS package installation.
 
 ## Verification
-Verify Java/Javac, adb, Android SDK paths, required packages, and either a connected device or prepared emulator; then run the relevant Appium driver doctor check and confirm `0 required fixes needed`.
+Confirm Java/Javac, adb, Android SDK paths, required packages, and either a connected device or prepared emulator.
 
 ## Examples
 - UiAutomator2 setup reports adb missing; validate `ANDROID_HOME`, install platform-tools, then rerun the driver doctor.

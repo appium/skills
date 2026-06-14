@@ -1,16 +1,4 @@
----
-description: "Use this repository guide to route Appium setup and troubleshooting work across the included skills, execute them in dependency order, and verify required doctor and smoke-test gates."
----
-
 # AGENTS Guide for Appium Skills
-
-## When To Use
-
-Use this guide when selecting or sequencing the Appium skills in this repository.
-
-## Do Not Use For
-
-Do not use this guide as a replacement for the individual skill instructions once a specific setup or troubleshooting path has been selected.
 
 This file defines how AI agents should execute the skills in this repository.
 

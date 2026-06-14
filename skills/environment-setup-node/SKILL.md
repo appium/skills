@@ -10,9 +10,6 @@ Confirm Node.js, npm, and registry access satisfy the calling Appium driver skil
 ## When To Use
 Use this skill when the request matches the description and the preflight checks point to this exact setup or troubleshooting path. Keep detailed commands in [full guidance](references/full-guidance.md).
 
-## Reference Routing
-Load `full-guidance-part-01.md` when detailed Node.js, npm, version manager, or registry repair commands are needed.
-
 ## Do Not Use For
 - Do not use for Appium driver, Android SDK, Xcode, browser, FFmpeg, or bundletool setup after Node/npm already validate.
 
@@ -25,7 +22,7 @@ Identify OS, shell, active Node version manager, `node -v`, `npm -v`, and `npm p
 3. Avoid privileged setup; prefer user-space tooling.
 
 ## Verification
-Verify `node -v`, `npm -v`, and `npm ping`; report whether the checks satisfy the calling skill engines.
+Report `node -v`, `npm -v`, `npm ping`, and whether versions satisfy the calling skill engines.
 
 ## Examples
 - Appium install fails because Node is too old; switch via nvm/fnm/asdf, then rerun Node and npm checks.
