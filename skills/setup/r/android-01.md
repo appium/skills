@@ -1,0 +1,30 @@
+---
+name: "android-01"
+description: "Preserved android setup procedure part 1 of 10"
+metadata:
+  last_modified: "Sun, 14 Jun 2026 00:00:00 GMT"
+---
+
+# android Part 1
+
+<!-- preserved-source: 64dcf79:skills/setup/references/environment-setup-android.md; strip this generated header when comparing -->
+
+---
+name: "environment-setup-android"
+description: "Prepare and validate Android SDK, Java, and device tooling for Appium Android drivers"
+metadata:
+  last_modified: "Mon, 27 Apr 2026 22:00:00 GMT"
+
+---
+# environment-setup-android
+
+## Goal
+Prepare Android automation by validating Java, Android SDK tools/packages, env vars, and ADB/device readiness.
+
+## Decision Logic
+- If host OS is unsupported for Android SDK setup: stop and ask the user to switch to macOS, Linux, or Windows.
+- If `java -version` and `javac -version` already succeed: keep the existing Java setup and do not reconfigure `JAVA_HOME`.
+- If host OS is macOS and Java setup is needed (fresh environment): use Android Studio app setup as the primary method for both `ANDROID_HOME` (`$HOME/Library/Android/sdk`) and `JAVA_HOME` (Android Studio JBR). Check both `/Applications/Android Studio.app` and `$HOME/Applications/Android Studio.app`, and prefer the official direct download flow before Homebrew.
+- If host OS is Linux and Java setup is needed (fresh environment): use Android Studio bundled JBR as the primary method when Android Studio is installed, then fallback to distro/package-manager OpenJDK.
+- If host OS is Windows and Java setup is needed (fresh environment): use Android Studio bundled JBR as the primary method when Android Studio is installed, then fallback to Microsoft OpenJDK package install.
+- If host OS is Linux: use package manager + `$HOME/Android/Sdk` conventions.

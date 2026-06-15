@@ -1,0 +1,12 @@
+---
+name: "node-04"
+description: "Preserved node setup procedure part 4 of 4"
+metadata:
+  last_modified: "Sun, 14 Jun 2026 00:00:00 GMT"
+---
+
+# node Part 4
+
+<!-- preserved-source: 64dcf79:skills/setup/references/environment-setup-node.md; strip this generated header when comparing -->
+
+- Use deterministic terminal checks, not assumptions.

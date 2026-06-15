@@ -1,0 +1,24 @@
+---
+name: "bundletool-03"
+description: "Preserved bundletool setup procedure part 3 of 3"
+metadata:
+  last_modified: "Sun, 14 Jun 2026 00:00:00 GMT"
+---
+
+# bundletool Part 3
+
+<!-- preserved-source: 64dcf79:skills/setup/references/environment-setup-bundletool.md; strip this generated header when comparing -->
+
+- `java -jar <bundletool.jar> version` output
+
+## Self-Improvement Prompt
+
+After use, always run this self-improvement check before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
+
+## Constraints
+
+- This optional skill requires explicit user request before installing bundletool.
+- This is an optional skill; run only when the user explicitly requests bundletool setup.
+- Ask the user before installing optional dependencies.
+- If privileged commands are required, pause and provide exact commands for user execution.
+- Do not modify unrelated Appium, Android SDK, Java, or Xcode configuration in this skill.

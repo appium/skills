@@ -1,0 +1,56 @@
+---
+name: "chromium-03"
+description: "Preserved chromium setup procedure part 3 of 8"
+metadata:
+  last_modified: "Sun, 14 Jun 2026 00:00:00 GMT"
+---
+
+# chromium Part 3
+
+<!-- preserved-source: 64dcf79:skills/setup/references/environment-setup-chromium.md; strip this generated header when comparing -->
+
+   Only use `appium driver update chromium --unsafe` after the user approves the risk of a major driver update.
+   Prefer `--json` output for machine-readable verification. Confirm a `chromium` key is present; only fallback to plain-text output when `--json` is unsupported.
+   If the install command fails only because `chromium` is already installed, continue and do not stop preparation.
+
+3. **Validate Appium command health and compatibility**
+   macOS/Linux:
+   ```bash
+   appium -v
+   appium driver list --installed --json || appium driver list --installed
+   npm view appium engines --json
+   npm view appium-chromium-driver engines peerDependencies --json
+   ```
+   Windows PowerShell:
+   ```powershell
+   appium -v
+   appium driver list --installed --json; if ($LASTEXITCODE -ne 0) { appium driver list --installed }
+   npm view appium engines --json
+   npm view appium-chromium-driver engines peerDependencies --json
+   ```
+   Verify Appium major version is `3` and that active Node/npm versions satisfy the reported ranges.
+
+4. **Validate browser availability (Chrome/Chromium/Edge)**
+   macOS/Linux:
+   ```bash
+   command -v google-chrome || true
+   command -v chromium || true
+   command -v chromium-browser || true
+   command -v msedge || true
+   ```
+   Windows PowerShell:
+   ```powershell
+   Get-Command chrome.exe -ErrorAction SilentlyContinue
+   Get-Command msedge.exe -ErrorAction SilentlyContinue
+   ```
+   Confirm at least one Chromium-based browser is available and note the target browser in the result summary.
+
+   Optional browser setup (run only when the user explicitly requests it):
+   - macOS (Homebrew):
+   ```bash
+   brew install --cask google-chrome
+   # or
+   brew install --cask chromium
+   # or
+   brew install --cask microsoft-edge
+   ```

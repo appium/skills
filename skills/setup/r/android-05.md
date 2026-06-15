@@ -1,0 +1,80 @@
+---
+name: "android-05"
+description: "Preserved android setup procedure part 5 of 10"
+metadata:
+  last_modified: "Sun, 14 Jun 2026 00:00:00 GMT"
+---
+
+# android Part 5
+
+<!-- preserved-source: 64dcf79:skills/setup/references/environment-setup-android.md; strip this generated header when comparing -->
+
+   macOS fallback method (only when Android Studio is not installed):
+   ```bash
+   brew install --cask temurin
+   export JAVA_HOME="$(/usr/libexec/java_home -v 21)"
+   export PATH="$JAVA_HOME/bin:$PATH"
+   java -version
+   javac -version
+   ```
+   Linux primary method for fresh setup (Android Studio bundled JBR):
+   ```bash
+   if [ -d "$HOME/android-studio/jbr" ]; then
+     export JAVA_HOME="$HOME/android-studio/jbr"
+   elif [ -d "/opt/android-studio/jbr" ]; then
+     export JAVA_HOME="/opt/android-studio/jbr"
+   elif [ -d "/usr/local/android-studio/jbr" ]; then
+     export JAVA_HOME="/usr/local/android-studio/jbr"
+   else
+     echo "Android Studio JBR not found; use fallback method below"
+   fi
+   if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
+     export PATH="$JAVA_HOME/bin:$PATH"
+     java -version
+     javac -version
+   fi
+   ```
+   Linux fallback method (OpenJDK 21 example):
+   ```bash
+   export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+   export PATH="$JAVA_HOME/bin:$PATH"
+   java -version
+   javac -version
+   ```
+   Windows primary method for fresh setup (Android Studio bundled JBR, persist for current user):
+   ```powershell
+   $studioJbrCandidates = @(
+     "$env:LOCALAPPDATA\Programs\Android Studio\jbr",
+     "C:\Program Files\Android\Android Studio\jbr"
+   )
+   $studioJbr = $studioJbrCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+   if ($studioJbr) {
+     [Environment]::SetEnvironmentVariable('JAVA_HOME', $studioJbr, 'User')
+     $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+     if ($currentPath -notlike "*$studioJbr\bin*") {
+       [Environment]::SetEnvironmentVariable('Path', "$currentPath;$studioJbr\bin", 'User')
+     }
+     $env:JAVA_HOME = [Environment]::GetEnvironmentVariable('JAVA_HOME', 'User')
+     $env:PATH = "$studioJbr\bin;$env:PATH"
+     java -version
+     javac -version
+   } else {
+     "Android Studio JBR not found; use fallback method below"
+   }
+   ```
+   Windows fallback method (only when Android Studio is not installed):
+   ```powershell
+   winget install -e --id Microsoft.OpenJDK.17 --accept-source-agreements --accept-package-agreements
+   $jdkRoot = Get-ChildItem "C:\Program Files\Microsoft" -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'jdk-*' } | Sort-Object Name -Descending | Select-Object -First 1
+   if ($jdkRoot) {
+     [Environment]::SetEnvironmentVariable('JAVA_HOME', $jdkRoot.FullName, 'User')
+     $currentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+     if ($currentPath -notlike "*$($jdkRoot.FullName)\\bin*") {
+       [Environment]::SetEnvironmentVariable('Path', "$currentPath;$($jdkRoot.FullName)\\bin", 'User')
+     }
+     $env:JAVA_HOME = [Environment]::GetEnvironmentVariable('JAVA_HOME', 'User')
+     $env:PATH = "$env:JAVA_HOME\\bin;$env:PATH"
+   }
+   java -version
+   javac -version
+   ```
