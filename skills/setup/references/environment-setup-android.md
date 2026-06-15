@@ -1,50 +1,24 @@
 ---
 name: "environment-setup-android"
-description: "Prepare Android SDK, Java, adb, and emulator tooling for Appium Android drivers"
+description: "Index for preserved environment-setup-android procedure parts"
 metadata:
   last_modified: "Sun, 14 Jun 2026 00:00:00 GMT"
 ---
 
 # environment-setup-android
 
-## Goal
-Validate Android SDK, Java, platform-tools, emulator tooling, licenses, and device inventory before UiAutomator2 or Espresso setup.
+Load every part in order. Parts preserve the original 2046-word procedure from 64dcf79 exactly.
 
-## Procedure
-1. Confirm host OS is macOS, Linux, or Windows. Stop on unsupported OS.
-2. Check Java and Android paths:
-   - `java -version`
-   - `javac -version`
-   - `echo "$JAVA_HOME"` or `$env:JAVA_HOME`
-   - `echo "$ANDROID_HOME"` or `$env:ANDROID_HOME`
-   - `adb version`
-   - `sdkmanager --version`
-3. If Android Studio is installed, prefer its bundled JBR for `JAVA_HOME`. On macOS check both `/Applications/Android Studio.app` and `$HOME/Applications/Android Studio.app`.
-4. If SDK tooling is missing, install Android Studio or official command-line tools into the user profile. Avoid `sudo` unless explicitly approved.
-5. Configure PATH for the current shell and persistent user profile:
-   - `platform-tools`
-   - `cmdline-tools/latest/bin`
-   - `emulator`
-6. Accept SDK licenses and install required packages:
-   - `platform-tools`
-   - `cmdline-tools;latest`
-   - `emulator`
-   - at least one current stable `platforms;android-*`
-   - matching `build-tools`
-7. Device readiness:
-   - `adb devices -l`
-   - `emulator -version`
-   - `emulator -list-avds`
-   - Skip AVD creation when a usable device is connected or an AVD already exists.
-8. If an emulator is needed, create one using the latest stable system image reported by `sdkmanager --list`, preferring the host-native architecture.
-9. Re-run all failed checks after each fix.
-
-## Completion Criteria
-- Java, `adb`, `sdkmanager`, and `emulator` commands succeed.
-- `ANDROID_HOME` points to an existing SDK.
-- SDK licenses are accepted.
-- Required SDK packages are installed.
-- `adb devices -l` and emulator inventory are reported.
+- [Part 1](../r/a1.md)
+- [Part 2](../r/a2.md)
+- [Part 3](../r/a3.md)
+- [Part 4](../r/a4.md)
+- [Part 5](../r/a5.md)
+- [Part 6](../r/a6.md)
+- [Part 7](../r/a7.md)
+- [Part 8](../r/a8.md)
+- [Part 9](../r/a9.md)
+- [Part 10](../r/a10.md)
 
 ## Self-Improvement Prompt
-Before the final response, report any missing, ambiguous, outdated, or retry-causing instruction in this reference with proposed wording. Do not edit skill files unless the user asked.
+Before the final response, report any missing, ambiguous, outdated, or retry-causing instruction in these parts with proposed wording. Do not edit skill files unless the user asked.

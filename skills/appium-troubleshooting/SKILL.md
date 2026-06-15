@@ -46,5 +46,5 @@ Load only the matching driver profile:
 ## Verification
 
 After each fix, rerun the smallest failing command or doctor check. Report the command evidence, the change made, and the confirmed outcome.
-
-After completing troubleshooting, apply the loaded procedure's `Self-Improvement Prompt` section.
+## Preserved Split References
+When a split index is selected, load these parts in order; they preserve original procedures exactly: references/trouble-01.md references/trouble-02.md references/trouble-03.md references/trouble-04.md references/trouble-05.md

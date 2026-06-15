@@ -39,5 +39,5 @@ Load only the signing and deployment profiles that match the user's path:
 ## Verification
 
 Completion requires the device to appear in `xcrun xctrace list devices`, a signing/provisioning path to be applied without WDA install errors, code signatures to verify after any WDA bundle modification, and at least one WDA deployment method to work.
-
-After completing configuration, apply the loaded procedure's `Self-Improvement Prompt` section.
+## Preserved Split References
+When a split index is selected, load these parts in order; they preserve original procedures exactly: references/realdev-01.md references/realdev-02.md references/realdev-03.md references/realdev-04.md references/realdev-05.md references/realdev-06.md references/realdev-07.md references/realdev-08.md references/realdev-09.md references/realdev-10.md references/realdev-11.md references/realdev-12.md references/realdev-13.md references/realdev-14.md
