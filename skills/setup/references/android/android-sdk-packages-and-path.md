@@ -40,6 +40,8 @@ $env:ANDROID_HOME = [Environment]::GetEnvironmentVariable('ANDROID_HOME', 'User'
 $env:PATH = "$androidPaths;$env:PATH"
 ```
 
+After configuration, run `node skills/setup/scripts/check-android-env.mjs` and verify `paths.missingRecommendedPathEntries` is empty or explain which shell startup file still needs the entries.
+
 ## Accept Licenses And Install Packages
 
 macOS/Linux:
@@ -59,3 +61,5 @@ sdkmanager --sdk_root="$env:ANDROID_HOME" "platform-tools" "emulator" "platforms
 adb version
 & "$env:ANDROID_HOME\emulator\emulator.exe" -version
 ```
+
+After package installation, use the script's `installed` object as the deterministic pass/fail summary.

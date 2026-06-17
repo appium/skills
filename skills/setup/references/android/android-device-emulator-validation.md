@@ -7,12 +7,13 @@ description: "Validate Android device inventory, create an emulator only when ne
 
 ## Device And Emulator Inventory
 
-macOS/Linux and Windows PowerShell:
+Run:
 
 ```bash
-adb devices -l
-emulator -list-avds
+node skills/setup/scripts/check-android-env.mjs
 ```
+
+Use `checks.devices`, `checks.avds`, `summary.connectedDeviceCount`, and `summary.avdCount`.
 
 Skip emulator creation when either condition is true:
 
@@ -49,14 +50,4 @@ Windows should use the same ordering: native architecture first, fallback archit
 
 ## Final Validation
 
-```bash
-java -version
-javac -version
-echo "$JAVA_HOME"
-echo "$ANDROID_HOME"
-adb version
-adb devices -l
-emulator -version
-emulator -list-avds
-sdkmanager --list_installed
-```
+Run `node skills/setup/scripts/check-android-env.mjs` and require `summary.requiredOk: true`. Report any false `installed` field, missing recommended PATH entry, connected device count, and AVD count.

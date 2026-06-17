@@ -21,6 +21,12 @@ Load these references in order:
 5. `android/android-sdk-packages-and-path.md` for `ANDROID_HOME`, `PATH`, licenses, and required SDK packages.
 6. `android/android-device-emulator-validation.md` for device inventory, emulator creation, final validation, and evidence.
 
+For deterministic read-only validation, run:
+
+```bash
+node skills/setup/scripts/check-android-env.mjs
+```
+
 ## Completion Criteria
 
 - `java -version` and `javac -version` both succeed.
