@@ -37,7 +37,17 @@ function doctorRequiredOk(output) {
   return /0 required fixes needed/i.test(output);
 }
 
-const android = run(process.execPath, ["skills/setup/scripts/check-android-env.mjs"]);
+function appiumHomeBlocked(...results) {
+  const text = results.map((result) => `${result.stdout}\n${result.stderr}`).join("\n");
+  return /Appium home path .* must be writeable|EPERM: operation not permitted.*\.appium|access '.*\.appium'/i.test(
+    text,
+  );
+}
+
+const android = run(process.execPath, ["skills/setup/scripts/check-android-env.mjs"], {
+  timeout: 45000,
+});
+
 let androidSummary = {};
 try {
   androidSummary = JSON.parse(android.stdout).summary || {};
@@ -47,11 +57,17 @@ try {
 
 const appiumVersion = run("appium", ["-v"]);
 const driversJson = run("appium", ["driver", "list", "--installed", "--json"]);
-const driversText = driversJson.ok ? driversJson : run("appium", ["driver", "list", "--installed"]);
-const doctor = run("appium", ["driver", "doctor", "uiautomator2"], { timeout: 60000 });
+const driversText = driversJson.ok
+  ? driversJson
+  : run("appium", ["driver", "list", "--installed"]);
+const doctor = run("appium", ["driver", "doctor", "uiautomator2"], {
+  timeout: 60000,
+});
+
 const doctorText = `${doctor.stdout}\n${doctor.stderr}`;
 const driverOutput = `${driversText.stdout}\n${driversText.stderr}`;
 const driverInstalled = /uiautomator2/i.test(driverOutput);
+const homeBlocked = appiumHomeBlocked(driversJson, driversText, doctor);
 
 const report = {
   android: {
@@ -75,6 +91,11 @@ const report = {
     driverVersion: parseDriverVersion(driverOutput),
     doctorRequiredOk: doctorRequiredOk(doctorText),
     optionalWarningsPresent: /optional fix possible|optional manual fixes|WARN Doctor/i.test(doctorText),
+    appiumHomeAccessBlocked: homeBlocked,
+    needsUnsandboxedAppiumHome: homeBlocked && !driverInstalled,
+    note: homeBlocked
+      ? "Appium could not inspect the real ~/.appium directory from this sandbox. Re-run this script outside the managed sandbox or run direct appium driver list/doctor commands."
+      : "",
   },
 };
 

@@ -19,9 +19,7 @@ If the driver already exists, continue to verification.
 ## Verify Driver
 
 ```bash
-appium -v
-appium driver list --installed --json
 node skills/setup/scripts/check-uiautomator2-env.mjs
 ```
 
-The driver is present when the JSON or text fallback includes `uiautomator2`. Report the installed driver version from the deterministic script or Appium CLI output.
+Driver setup is valid when `summary.driverInstalled` is true and `summary.driverVersion` is populated. If `summary.needsUnsandboxedAppiumHome` is true, rerun outside the managed sandbox or use `appium driver list --installed`.
