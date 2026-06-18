@@ -9,7 +9,7 @@ Use this repository's skills to prepare macOS + XCUITest for a real iOS or tvOS 
 5. Load `skills/setup/references/environment-setup-xcuitest.md`.
 6. Load `skills/xcuitest-real-device-config/SKILL.md`.
 7. Load the signing and WDA deployment profiles that match the user's path.
-8. Load `references/real-device-procedure.md`.
+8. Load `references/real-device-procedure-part1.md`, `references/real-device-procedure-part2.md`, `references/real-device-procedure-part3.md`, `references/real-device-procedure-part4.md`, `references/real-device-procedure-part5.md`, `references/real-device-procedure-part6.md`, `references/real-device-procedure-part7.md`, `references/real-device-procedure-part8.md`, and `references/real-device-procedure-part9.md` in order.
 
 Rules:
 

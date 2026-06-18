@@ -19,7 +19,18 @@ Confirm the host is macOS, the target device is connected and trusted, XCUITest 
 
 ## Reference Map
 
-Load `references/real-device-procedure.md` for the complete procedure. Follow its steps one at a time, and pause for physical-device actions such as Trust prompts or Developer Mode toggles.
+Load these references in order for the complete procedure:
+1. `references/real-device-procedure-part1.md`
+2. `references/real-device-procedure-part2.md`
+3. `references/real-device-procedure-part3.md`
+4. `references/real-device-procedure-part4.md`
+5. `references/real-device-procedure-part5.md`
+6. `references/real-device-procedure-part6.md`
+7. `references/real-device-procedure-part7.md`
+8. `references/real-device-procedure-part8.md`
+9. `references/real-device-procedure-part9.md`
+
+Follow the steps one at a time, and pause for physical-device actions such as Trust prompts or Developer Mode toggles.
 
 ## Profile Map
 
