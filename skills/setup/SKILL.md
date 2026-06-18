@@ -1,6 +1,6 @@
 ---
 name: "setup"
-description: "Route Appium environment setup work to the correct preserved reference procedure for Node.js, Android, UiAutomator2, Espresso, Chromium, XCUITest, FFmpeg, or bundletool while keeping optional installs gated by explicit user request."
+description: "Route Appium environment setup work to the correct preserved reference procedure for Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, XCUITest, FFmpeg, or bundletool while keeping optional installs gated by explicit user request."
 ---
 
 # setup
@@ -26,6 +26,7 @@ Load only the references required for the requested path:
 - Android UiAutomator2 driver: `references/environment-setup-uiautomator2.md`
 - Android Espresso driver: `references/environment-setup-espresso.md`
 - Desktop Chromium driver: `references/environment-setup-chromium.md`
+- Desktop Gecko driver: `references/environment-setup-gecko.md`
 - macOS Safari driver: `references/environment-setup-safari.md`
 - macOS XCUITest driver: `references/environment-setup-xcuitest.md`
 - Optional FFmpeg capability: `references/environment-setup-ffmpeg.md`
@@ -45,6 +46,7 @@ Load only matching profiles:
 - Android drivers: `profiles/android.md`
 - XCUITest simulator setup: `profiles/xcuitest.md`
 - Desktop Chromium setup: `profiles/chromium.md`
+- Desktop Gecko setup: `profiles/gecko.md`
 - Safari setup: `profiles/safari.md`
 
 ## Examples
@@ -52,6 +54,7 @@ Load only matching profiles:
 - Android + UiAutomator2: `examples/uiautomator2.md`
 - Android + Espresso: `examples/espresso.md`
 - Desktop Chromium: `examples/chromium.md`
+- Desktop Gecko: `examples/gecko.md`
 - macOS + Safari: `examples/safari.md`
 - macOS + XCUITest: `examples/xcuitest.md`
 
