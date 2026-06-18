@@ -19,7 +19,11 @@ Capture the exact failing command, error text, platform, automation driver, desi
 
 ## Reference Map
 
-Load `references/troubleshooting-procedure.md` first. Then load only the symptom-specific references needed:
+Load these procedure references first, in order:
+1. `references/troubleshooting-procedure-part1.md`
+2. `references/troubleshooting-procedure-part2.md`
+
+Then load only the symptom-specific references needed:
 
 - UiAutomator2 startup failures: `references/uiautomator2-session-startup.md`
 - UiAutomator2 locator failures: `references/uiautomator2-locators.md`
