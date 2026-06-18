@@ -18,6 +18,14 @@ Load these references in order:
 3. `safari/safari-driver-install.md` for Appium Safari driver installation and `safaridriver` checks.
 4. `safari/safari-smoke-status.md` for `/status`, log evidence, and cleanup.
 
+## Validation Command
+
+```bash
+node skills/setup/scripts/check-safari-env.mjs
+```
+
+Use `summary.requiredOk: true` as the read-only setup gate before smoke checks. The script does not enable Safari automation because that changes host authorization state.
+
 ## Completion Criteria
 
 - Host OS is macOS.

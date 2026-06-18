@@ -17,6 +17,14 @@ Load these references in order:
 2. `bundletool/bundletool-install.md` for download and PATH setup.
 3. `bundletool/bundletool-validation.md` for version evidence and completion criteria.
 
+## Validation Command
+
+```bash
+node skills/setup/scripts/check-bundletool-env.mjs
+```
+
+Use `summary.requiredOk: true` as the read-only setup gate after the user explicitly requests bundletool capability.
+
 ## Completion Criteria
 
 - User explicitly requested bundletool capability.

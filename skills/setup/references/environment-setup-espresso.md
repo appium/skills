@@ -20,6 +20,14 @@ Load these references in order:
 5. `espresso/espresso-doctor-validation.md` for required doctor pass criteria.
 6. `espresso/espresso-smoke-status.md` for server `/status`, log evidence, and cleanup.
 
+## Validation Command
+
+```bash
+node skills/setup/scripts/check-espresso-env.mjs
+```
+
+Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.
+
 ## Completion Criteria
 
 - Android setup completion criteria are satisfied.

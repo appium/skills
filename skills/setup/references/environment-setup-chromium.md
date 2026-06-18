@@ -19,6 +19,14 @@ Load these references in order:
 4. `chromium/chromium-driver-validation.md` for Appium driver installation and doctor handling.
 5. `chromium/chromium-smoke-status.md` for `/status`, log evidence, and cleanup.
 
+## Validation Command
+
+```bash
+node skills/setup/scripts/check-chromium-env.mjs
+```
+
+Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.
+
 ## Completion Criteria
 
 - `appium -v` succeeds and Appium major version is `>= 3`.

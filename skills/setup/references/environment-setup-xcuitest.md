@@ -19,6 +19,14 @@ Load these references in order:
 4. `xcuitest/xcuitest-driver-doctor.md` for driver install and doctor pass criteria.
 5. `xcuitest/xcuitest-smoke-status.md` for simulator inventory, `/status`, log evidence, and cleanup.
 
+## Validation Command
+
+```bash
+node skills/setup/scripts/check-xcuitest-env.mjs
+```
+
+Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.
+
 ## Completion Criteria
 
 - Host OS is macOS.
