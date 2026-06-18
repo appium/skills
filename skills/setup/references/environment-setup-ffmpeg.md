@@ -10,6 +10,14 @@ metadata:
 ## Goal
 Installs and validates FFmpeg in a cross-platform way so Appium environments can use optional media-related capabilities when explicitly requested.
 
+## Validation Command
+
+```bash
+node skills/setup/scripts/check-ffmpeg-env.mjs
+```
+
+Use `summary.requiredOk: true` as the read-only setup gate after the user explicitly requests FFmpeg capability.
+
 ## Decision Logic
 - If host OS is unsupported: stop and ask the user to run on macOS, Linux, or Windows.
 - If `ffmpeg` is already available in `PATH`: do not reinstall; only validate version output.
