@@ -8,7 +8,7 @@ Each skill includes a self-improvement prompt asking agents to note missing, amb
 
 | Skill | Description |
 |---|---|
-| [setup](skills/setup/SKILL.md) | Routes Appium environment setup to the preserved Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, XCUITest, FFmpeg, or bundletool reference procedure |
+| [setup](skills/setup/SKILL.md) | Routes Appium environment setup to the preserved Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, Mac2, XCUITest, FFmpeg, or bundletool reference procedure |
 | [appium-troubleshooting](skills/appium-troubleshooting/SKILL.md) | Troubleshoots UiAutomator2 or XCUITest failures with a driver-scoped workflow that starts from the failing symptom and re-checks the smallest reproduction after each fix |
 | [xcuitest-real-device-config](skills/xcuitest-real-device-config/SKILL.md) | Prepares a real iOS/tvOS device for Appium XCUITest automation |
 
@@ -24,4 +24,4 @@ Each skill includes a self-improvement prompt asking agents to note missing, amb
 ## Agent Instructions
 
 - See [AGENTS.md](AGENTS.md) for strict execution rules and copy-paste prompt templates.
-- Use the template matching your target (`uiautomator2`, `espresso`, `chromium`, `gecko`, `xcuitest`, `xcuitest real device`, or `troubleshooting`) and run skills in the documented order.
+- Use the template matching your target (`uiautomator2`, `espresso`, `chromium`, `gecko`, `mac2`, `xcuitest`, `xcuitest real device`, or `troubleshooting`) and run skills in the documented order.
