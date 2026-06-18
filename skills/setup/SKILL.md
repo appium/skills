@@ -1,65 +1,46 @@
 ---
 name: "setup"
-description: "Route Appium environment setup work to the correct preserved reference procedure for Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, XCUITest, FFmpeg, or bundletool while keeping optional installs gated by explicit user request."
+description: "Route Appium setup to Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, Safari, XCUITest, FFmpeg, or bundletool references; keep optional installs gated."
 ---
 
 # setup
 
 ## Use When
 
-Use this skill when preparing or validating an Appium automation environment. Start here for Android, iOS/macOS, Chromium desktop browser automation, and shared setup prerequisites.
+Use for Appium environment setup. This router selects setup profiles, references, and examples for the requested platform/driver.
 
 ## Do Not Use For
 
-Do not use this skill for diagnosing an already-failing Appium session; use `skills/appium-troubleshooting/SKILL.md`. Do not use optional setup references for FFmpeg or bundletool unless the user explicitly requests those capabilities.
+- Failing Appium sessions: use `skills/appium-troubleshooting/SKILL.md`.
+- Real iOS device signing/WDA setup after simulator setup: use `skills/xcuitest-real-device-config/SKILL.md`.
+- Optional FFmpeg or bundletool setup unless explicitly requested.
 
 ## Preflight
 
-Before changing the environment, identify the target platform and driver, confirm whether the user wants global Appium mode (`appium`) or local mode (`npx appium`), and record the active OS, shell, Node.js, npm, Appium, Java, Android SDK, Xcode, browser, and device/simulator state that applies to the request.
+Confirm target platform, driver, host OS, command mode (`appium` default, `npx appium` only when requested), available devices/browsers, and optional dependency requests.
 
-## Reference Map
+## Routing
 
-Load only the references required for the requested path:
+Always load the matching profile, `references/environment-setup-node.md`, and only the required target references:
 
-- Node.js prerequisite: `references/environment-setup-node.md`
-- Android SDK and Java: `references/environment-setup-android.md`
-- Android UiAutomator2 driver: `references/environment-setup-uiautomator2.md`
-- Android Espresso driver: `references/environment-setup-espresso.md`
-- Desktop Chromium driver: `references/environment-setup-chromium.md`
-- Desktop Gecko driver: `references/environment-setup-gecko.md`
-- macOS Safari driver: `references/environment-setup-safari.md`
-- macOS XCUITest driver: `references/environment-setup-xcuitest.md`
-- Optional FFmpeg capability: `references/environment-setup-ffmpeg.md`
-- Optional bundletool capability: `references/environment-setup-bundletool.md`
+- Android SDK: `references/environment-setup-android.md`
+- UiAutomator2: `references/environment-setup-uiautomator2.md`
+- Espresso: `references/environment-setup-espresso.md`
+- Chromium: `references/environment-setup-chromium.md`
+- Gecko: `references/environment-setup-gecko.md`
+- Safari: `references/environment-setup-safari.md`
+- XCUITest: `references/environment-setup-xcuitest.md`
+- FFmpeg: `references/environment-setup-ffmpeg.md` only on explicit request
+- bundletool: `references/environment-setup-bundletool.md` only on explicit request
 
-Execute references one at a time in dependency order. Re-run the smallest relevant check after each fix.
+Profiles: `profiles/android.md`, `profiles/chromium.md`, `profiles/gecko.md`, `profiles/macos.md`, `profiles/safari.md`, `profiles/xcuitest.md`, plus `profiles/global-appium.md` or `profiles/local-npx.md`.
 
-## Profile Map
+Examples: `examples/uiautomator2.md`, `examples/espresso.md`, `examples/chromium.md`, `examples/gecko.md`, `examples/safari.md`, `examples/xcuitest.md`.
 
-Load only matching profiles:
+## Rules
 
-- Global Appium command mode: `profiles/global-appium.md`
-- Local `npx appium` mode: `profiles/local-npx.md`
-- macOS: `profiles/macos.md`
-- Linux: `profiles/linux.md`
-- Windows: `profiles/windows.md`
-- Android drivers: `profiles/android.md`
-- XCUITest simulator setup: `profiles/xcuitest.md`
-- Desktop Chromium setup: `profiles/chromium.md`
-- Desktop Gecko setup: `profiles/gecko.md`
-- Safari setup: `profiles/safari.md`
+Run commands step by step. Ask before optional installs, privileged package-manager commands, or `sudo`. Prefer user-space/global Appium setup. Re-run checks after each fix.
 
-## Examples
+## Done
 
-- Android + UiAutomator2: `examples/uiautomator2.md`
-- Android + Espresso: `examples/espresso.md`
-- Desktop Chromium: `examples/chromium.md`
-- Desktop Gecko: `examples/gecko.md`
-- macOS + Safari: `examples/safari.md`
-- macOS + XCUITest: `examples/xcuitest.md`
-
-## Verification
-
-Completion requires the matching reference criteria to pass. For Appium drivers, the blocking gate is the relevant doctor or smoke check with `0 required fixes needed` when doctor is available; optional warnings are non-blocking.
-
-After completing setup, apply the loaded reference's `Self-Improvement Prompt` section and report any missing, ambiguous, outdated, or retry-causing instruction with proposed wording.
+Completion requires the selected reference criteria. Driver doctor required fixes must be `0` when doctor is supported; optional warnings do not block. Apply the loaded reference's self-improvement prompt before the final response.
