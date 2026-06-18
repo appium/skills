@@ -73,6 +73,15 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 4. `skills/setup/references/environment-setup-gecko.md`
 5. Example: `skills/setup/examples/gecko.md`
 
+### macOS + Mac2
+
+1. `skills/setup/SKILL.md`
+2. `skills/setup/profiles/macos.md`
+3. `skills/setup/profiles/mac2.md`
+4. `skills/setup/references/environment-setup-node.md`
+5. `skills/setup/references/environment-setup-mac2.md`
+6. Example: `skills/setup/examples/mac2.md`
+
 ### macOS + Safari
 
 1. `skills/setup/SKILL.md`
@@ -117,4 +126,3 @@ A skill is complete only when its own completion criteria in `SKILL.md` are sati
 - Optional doctor warnings do not block completion.
 - Validate global command mode (`appium`) as the default completion path.
 - Validate local command mode (`npx appium`) only when the user explicitly requests local execution.
-

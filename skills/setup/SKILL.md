@@ -1,6 +1,6 @@
 ---
 name: "setup"
-description: "Route Appium setup to Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, Safari, XCUITest, FFmpeg, or bundletool references; keep optional installs gated."
+description: "Route Appium setup to Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, Mac2, Safari, XCUITest, FFmpeg, or bundletool references; keep optional installs gated."
 ---
 
 # setup
@@ -28,14 +28,15 @@ Always load the matching profile, `references/environment-setup-node.md`, and on
 - Espresso: `references/environment-setup-espresso.md`
 - Chromium: `references/environment-setup-chromium.md`
 - Gecko: `references/environment-setup-gecko.md`
+- Mac2: `references/environment-setup-mac2.md`
 - Safari: `references/environment-setup-safari.md`
 - XCUITest: `references/environment-setup-xcuitest.md`
 - FFmpeg: `references/environment-setup-ffmpeg.md` only on explicit request
 - bundletool: `references/environment-setup-bundletool.md` only on explicit request
 
-Profiles: `profiles/android.md`, `profiles/chromium.md`, `profiles/gecko.md`, `profiles/macos.md`, `profiles/safari.md`, `profiles/xcuitest.md`, plus `profiles/global-appium.md` or `profiles/local-npx.md`.
+Profiles: `profiles/android.md`, `profiles/chromium.md`, `profiles/gecko.md`, `profiles/mac2.md`, `profiles/macos.md`, `profiles/safari.md`, `profiles/xcuitest.md`, plus `profiles/global-appium.md` or `profiles/local-npx.md`.
 
-Examples: `examples/uiautomator2.md`, `examples/espresso.md`, `examples/chromium.md`, `examples/gecko.md`, `examples/safari.md`, `examples/xcuitest.md`.
+Examples: `examples/uiautomator2.md`, `examples/espresso.md`, `examples/chromium.md`, `examples/gecko.md`, `examples/mac2.md`, `examples/safari.md`, `examples/xcuitest.md`.
 
 ## Rules
 
