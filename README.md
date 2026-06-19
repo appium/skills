@@ -4,6 +4,8 @@ This repository contains AI Agent skills for Appium automation, including enviro
 
 Each skill includes a self-improvement prompt asking agents to note missing, ambiguous, outdated, or retry-causing instructions after use. When a gap is found, consider opening a PR that updates `SKILL.md` with clearer steps, verification, or newer commands.
 
+Shared Appium execution context: [context/appium.md](context/appium.md).
+
 ## Available Skills
 
 | Skill | Description |

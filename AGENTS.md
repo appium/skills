@@ -17,7 +17,7 @@ Use this file to route Appium setup, troubleshooting, and real-device configurat
 
 ## Preflight
 
-Before executing a skill, confirm the target platform, Appium driver, command mode (`appium` or `npx appium`), host OS, available permissions, relevant devices or simulators, and whether the user requested optional dependencies. Identify the exact skill files, profiles, references, examples, and verification commands that apply before making environment changes.
+Before executing a skill, load `context/appium.md`, confirm the target platform, Appium driver, command mode (`appium` or `npx appium`), host OS, available permissions, relevant devices or simulators, and whether the user requested optional dependencies. Identify the exact skill files, profiles, references, examples, and verification commands that apply before making environment changes.
 
 ## Execution Rules
 
