@@ -6,7 +6,7 @@ Appium Safari Driver on macOS.
 2. Load `profiles/global-appium.md` unless the user explicitly asks for local `npx appium`.
 3. Load `profiles/macos.md`.
 4. Load `profiles/safari.md`.
-5. Load `references/environment-setup-node.md`.
+5. Load `contexts/tools/appium/setup/node-environment.md`.
 6. Load `references/environment-setup-safari.md`.
 
 Rules:

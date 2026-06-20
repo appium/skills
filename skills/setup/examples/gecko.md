@@ -5,8 +5,8 @@ Use skills to prepare Appium Gecko Driver for Firefox desktop automation.
 1. Load `skills/setup/SKILL.md`.
 2. Load `profiles/global-appium.md` unless the user explicitly requested `npx appium`.
 3. Load `profiles/gecko.md`.
-4. Load `references/environment-setup-node.md`.
-5. Load `references/environment-setup-gecko.md`.
+4. Load `contexts/tools/appium/setup/node-environment.md`.
+5. Load `contexts/tools/appium/setup/gecko-environment.md`.
 
 Rules:
 

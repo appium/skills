@@ -5,7 +5,7 @@ Use this repository's skills to prepare macOS + XCUITest for a real iOS or tvOS 
 1. Load `skills/setup/SKILL.md`.
 2. Load `skills/setup/profiles/macos.md`.
 3. Load `skills/setup/profiles/xcuitest.md`.
-4. Load `skills/setup/references/environment-setup-node.md`.
+4. Load `contexts/tools/appium/setup/node-environment.md`.
 5. Load `skills/setup/references/environment-setup-xcuitest.md`.
 6. Load `skills/xcuitest-real-device-config/SKILL.md`.
 7. Load the signing and WDA deployment profiles that match the user's path.

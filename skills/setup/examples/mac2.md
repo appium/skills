@@ -6,8 +6,8 @@ Use skills to prepare Appium Mac2 Driver for macOS desktop app automation.
 2. Load `profiles/global-appium.md` unless the user explicitly requested `npx appium`.
 3. Load `profiles/macos.md`.
 4. Load `profiles/mac2.md`.
-5. Load `references/environment-setup-node.md`.
-6. Load `references/environment-setup-mac2.md`.
+5. Load `contexts/tools/appium/setup/node-environment.md`.
+6. Load `contexts/tools/appium/setup/mac2-environment.md`.
 
 Rules:
 

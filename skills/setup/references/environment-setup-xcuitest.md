@@ -13,7 +13,7 @@ Prepare Appium XCUITest on macOS by validating Node/Appium, Xcode, driver instal
 
 Load these references in order:
 
-1. `environment-setup-node.md` for Node.js and npm.
+1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
 2. `xcuitest/xcuitest-decision-logic.md` for macOS-only setup gates and optional dependency boundaries.
 3. `xcuitest/xcuitest-xcode-prereqs.md` for Xcode, command-line tools, license, and first-launch checks.
 4. `xcuitest/xcuitest-driver-doctor.md` for driver install and doctor pass criteria.
