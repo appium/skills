@@ -13,7 +13,7 @@ Prepare Appium Mac2 Driver by validating macOS, Node/Appium, Xcode tooling, driv
 
 ## Routing
 
-1. `environment-setup-node.md` for Node.js and npm.
+1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
 2. `mac2/mac2-decision-logic.md` for macOS-only setup gates and authorization boundaries.
 3. `mac2/mac2-xcode-prereqs.md` for Xcode command-line tools, license, and first-launch checks.
 4. `mac2/mac2-driver-doctor.md` for driver installation and doctor pass criteria.

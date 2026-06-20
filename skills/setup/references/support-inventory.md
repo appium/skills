@@ -28,3 +28,9 @@ Static reachability for nested setup support files:
 - `uiautomator2/uiautomator2-doctor-validation.md`
 - `uiautomator2/uiautomator2-driver-install.md`
 - `uiautomator2/uiautomator2-smoke-status.md`
+
+Compatibility-only deprecated shims:
+- `environment-setup-espresso`
+- `environment-setup-gecko`
+- `environment-setup-mac2`
+- `environment-setup-uiautomator2`

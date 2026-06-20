@@ -13,7 +13,7 @@ Prepare Appium Chromium Driver by validating Node/Appium, browser availability, 
 
 Load these references in order:
 
-1. `environment-setup-node.md` for Node.js and npm.
+1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
 2. `chromium/chromium-decision-logic.md` for host, Appium, browser, and Edge-driver gates.
 3. `chromium/chromium-browser-prereqs.md` for Chrome, Chromium, Edge, and Linux dependency setup.
 4. `chromium/chromium-driver-validation.md` for Appium driver installation and doctor handling.

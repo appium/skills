@@ -14,7 +14,7 @@ Prepare Android automation by validating Java, Android SDK command-line tools, S
 
 Load these references in order:
 
-1. `android/android-decision-logic.md` for supported hosts, preservation rules, optional dependency boundaries, and install triggers.
+1. `contexts/tools/appium/setup/android-decision-logic.md` for supported hosts, preservation rules, optional dependency boundaries, and install triggers.
 2. `android/android-detect-base-tooling.md` for OS, Java, Android SDK, ADB, and emulator binary detection.
 3. `android/android-sdk-commandline-tools.md` for platform default SDK paths and command-line tools bootstrap.
 4. `android/android-java-configuration.md` for Java setup only when `java` or `javac` is missing.

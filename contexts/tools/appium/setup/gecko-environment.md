@@ -2,7 +2,6 @@
 id: setup-references-environment-setup-gecko
 owner: skills/setup
 status: stable
-source: skills/setup/references/environment-setup-gecko.md
 ---
 
 # appium-gecko-environment-setup
@@ -13,7 +12,7 @@ Prepare Appium Gecko Driver by validating Node/Appium, Firefox availability, dri
 
 ## Routing
 
-1. `environment-setup-node.md` for Node.js and npm.
+1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
 2. `gecko/gecko-decision-logic.md` for host, Appium, Firefox, and GeckoDriver gates.
 3. `gecko/gecko-browser-prereqs.md` for Firefox release, ESR, Developer Edition, Nightly, and Linux dependency setup.
 4. `gecko/gecko-driver-validation.md` for Appium driver installation and doctor handling.

@@ -5,7 +5,7 @@ Use this repository's skills to prepare Appium Chromium Driver for desktop brows
 1. Load `skills/setup/SKILL.md`.
 2. Load `profiles/global-appium.md` unless the user requests local mode.
 3. Load `profiles/chromium.md`.
-4. Load `references/environment-setup-node.md`.
+4. Load `contexts/tools/appium/setup/node-environment.md`.
 5. Load `references/environment-setup-chromium.md`.
 
 Rules:

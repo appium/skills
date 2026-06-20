@@ -32,7 +32,7 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 - Prefer user-space installs and local project fallbacks when permissions are restricted.
 - Use global npm/Appium commands by default (`npm -g`, `appium`).
 - Use local execution (`npx appium`) only when the user explicitly asks for local mode.
-- Use `setup` reference `environment-setup-ffmpeg.md` only when the user explicitly requests FFmpeg-related setup.
+- Use `setup` context `contexts/tools/appium/setup/ffmpeg-environment.md` only when the user explicitly requests FFmpeg-related setup.
 - Use `setup` reference `environment-setup-bundletool.md` only when the user explicitly requests bundletool setup for UiAutomator2/Espresso.
 - If output is incomplete or truncated, rerun only that step and capture logs.
 - After completing any skill, read and apply that skill's `Self-Improvement Prompt` section before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with the skill section and proposed wording. Do not edit skill files unless the user explicitly asks.
@@ -43,25 +43,25 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 
 1. `skills/setup/SKILL.md`
 2. `skills/setup/profiles/android.md`
-3. `skills/setup/references/environment-setup-node.md`
+3. `contexts/tools/appium/setup/node-environment.md`
 4. `skills/setup/references/environment-setup-android.md`
-5. `skills/setup/references/environment-setup-uiautomator2.md`
+5. `contexts/tools/appium/setup/uiautomator2-environment.md`
 6. Example: `skills/setup/examples/uiautomator2.md`
 
 ### Android + Espresso
 
 1. `skills/setup/SKILL.md`
 2. `skills/setup/profiles/android.md`
-3. `skills/setup/references/environment-setup-node.md`
+3. `contexts/tools/appium/setup/node-environment.md`
 4. `skills/setup/references/environment-setup-android.md`
-5. `skills/setup/references/environment-setup-espresso.md`
+5. `contexts/tools/appium/setup/espresso-environment.md`
 6. Example: `skills/setup/examples/espresso.md`
 
 ### Desktop Chromium Browsers
 
 1. `skills/setup/SKILL.md`
 2. `skills/setup/profiles/chromium.md`
-3. `skills/setup/references/environment-setup-node.md`
+3. `contexts/tools/appium/setup/node-environment.md`
 4. `skills/setup/references/environment-setup-chromium.md`
 5. Example: `skills/setup/examples/chromium.md`
 
@@ -69,8 +69,8 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 
 1. `skills/setup/SKILL.md`
 2. `skills/setup/profiles/gecko.md`
-3. `skills/setup/references/environment-setup-node.md`
-4. `skills/setup/references/environment-setup-gecko.md`
+3. `contexts/tools/appium/setup/node-environment.md`
+4. `contexts/tools/appium/setup/gecko-environment.md`
 5. Example: `skills/setup/examples/gecko.md`
 
 ### macOS + Mac2
@@ -78,8 +78,8 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 1. `skills/setup/SKILL.md`
 2. `skills/setup/profiles/macos.md`
 3. `skills/setup/profiles/mac2.md`
-4. `skills/setup/references/environment-setup-node.md`
-5. `skills/setup/references/environment-setup-mac2.md`
+4. `contexts/tools/appium/setup/node-environment.md`
+5. `contexts/tools/appium/setup/mac2-environment.md`
 6. Example: `skills/setup/examples/mac2.md`
 
 ### macOS + Safari
@@ -87,7 +87,7 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 1. `skills/setup/SKILL.md`
 2. `skills/setup/profiles/macos.md`
 3. `skills/setup/profiles/safari.md`
-4. `skills/setup/references/environment-setup-node.md`
+4. `contexts/tools/appium/setup/node-environment.md`
 5. `skills/setup/references/environment-setup-safari.md`
 6. Example: `skills/setup/examples/safari.md`
 
@@ -96,7 +96,7 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 1. `skills/setup/SKILL.md`
 2. `skills/setup/profiles/macos.md`
 3. `skills/setup/profiles/xcuitest.md`
-4. `skills/setup/references/environment-setup-node.md`
+4. `contexts/tools/appium/setup/node-environment.md`
 5. `skills/setup/references/environment-setup-xcuitest.md`
 6. Example: `skills/setup/examples/xcuitest.md`
 

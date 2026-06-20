@@ -2,7 +2,6 @@
 id: setup-references-environment-setup-uiautomator2
 owner: skills/setup
 status: stable
-source: skills/setup/references/environment-setup-uiautomator2.md
 ---
 
 # appium-uiautomator2-environment-setup
@@ -15,8 +14,8 @@ Prepare Appium UiAutomator2 by validating Node/Appium, Android prerequisites, dr
 
 Load these references in order:
 
-1. `environment-setup-node.md` for Node.js and npm.
-2. `environment-setup-android.md` for Java, Android SDK, ADB, emulator, device, and SDK package validation.
+1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
+2. `references/environment-setup-android.md` for Java, Android SDK, ADB, emulator, device, and SDK package validation.
 3. `uiautomator2/uiautomator2-decision-logic.md` for driver setup triggers and optional dependency boundaries.
 4. `uiautomator2/uiautomator2-driver-install.md` for global Appium and UiAutomator2 driver installation.
 5. `uiautomator2/uiautomator2-doctor-validation.md` for required doctor pass criteria.

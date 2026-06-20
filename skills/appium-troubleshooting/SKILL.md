@@ -24,6 +24,9 @@ Load these procedure references first, in order:
 1. `contexts/tools/appium/troubleshooting/procedure-part1.md`
 2. `references/troubleshooting-procedure-part2.md`
 
+Compatibility-only deprecated shims:
+- `troubleshooting-procedure-part1`
+
 Then load only the symptom-specific references needed:
 
 - UiAutomator2 startup failures: `references/uiautomator2-session-startup.md`
