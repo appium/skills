@@ -104,10 +104,9 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 
 1. Complete the iOS + XCUITest simulator setup path first.
 2. `skills/xcuitest-real-device-config/SKILL.md`
-3. Load the signing profile that matches the user: free Apple ID, paid developer, or enterprise.
-4. Load the WDA deployment profile that matches the user: preinstalled, prebuilt, or running WDA URL.
-5. Load `contexts/tools/appium/real-device/references/real-device-procedure-part1.md` through `real-device-procedure-part9.md` in order.
-6. Example: `contexts/tools/appium/real-device/examples/real-device.md`
+3. Load the matching profile from `contexts/tools/appium/real-device/profiles/`: free Apple ID, paid developer, enterprise, preinstalled WDA, prebuilt WDA, or running WDA URL.
+4. Load `contexts/tools/appium/real-device/references/real-device-procedure-part1.md` through `real-device-procedure-part9.md` in order.
+5. Example: `contexts/tools/appium/real-device/examples/real-device.md`
 
 ### Troubleshooting
 
@@ -120,7 +119,7 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 
 ## Completion Policy
 
-A skill is complete only when its own completion criteria in `SKILL.md` are satisfied.
+A workflow is complete only when the completion criteria in the loaded context, reference, or procedure are satisfied.
 
 - Required doctor checks must pass.
 - Optional doctor warnings do not block completion.
