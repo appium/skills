@@ -3,19 +3,19 @@ name: "xcuitest-real-device-config"
 description: "Route macOS real iOS or tvOS device preparation for Appium XCUITest, including device trust, Developer Mode, provisioning profiles, WebDriverAgent signing, and deployment patterns."
 ---
 
-# xcuitest-real-device-config
+# XCUITest Real Device Router
 
 ## Use When
 
 Use this skill after XCUITest setup is complete and the user needs a physical iOS or tvOS device prepared for Appium automation.
 
-## Do Not Use For
+## Out Of Scope
 
-Do not use this skill for simulators, Android devices, desktop Chromium, or first-time XCUITest prerequisite setup. Use `skills/setup/SKILL.md` and `references/environment-setup-xcuitest.md` before this skill.
+For simulators, Android devices, desktop Chromium, or first-time XCUITest prerequisite setup, use `skills/setup/SKILL.md` and `references/environment-setup-xcuitest.md` before this skill.
 
-## Preflight
+## Intake
 
-Confirm the host is macOS, the target device is connected and trusted, XCUITest setup has passed, and the user has identified the intended signing approach: free Apple ID, paid Apple Developer account, enterprise profile, prebuilt WDA, preinstalled WDA, or running WDA URL.
+Load `contexts/xcuitest-real-device-readiness.md`. Confirm the host is macOS, the target device is connected and trusted, XCUITest setup has passed, and the user has identified the intended signing approach: free Apple ID, paid Apple Developer account, enterprise profile, prebuilt WDA, preinstalled WDA, or running WDA URL.
 
 ## Reference Map
 
@@ -43,12 +43,12 @@ Load only the signing and deployment profiles that match the user's path:
 - Prebuilt WDA: `profiles/prebuilt-wda.md`
 - Running WDA URL attach mode: `profiles/running-wda-url.md`
 
-## Examples
+## Samples
 
 - Real iOS/tvOS device setup: `examples/real-device.md`
 
-## Verification
+## Completion
 
-Completion requires the device to appear in `xcrun xctrace list devices`, a signing/provisioning path to be applied without WDA install errors, code signatures to verify after any WDA bundle modification, and at least one WDA deployment method to work.
+Completion requires the device to appear in `xcrun xctrace list devices`, a signing or provisioning path to be applied without WDA install errors, code signatures to verify after any WDA bundle modification, and at least one WDA deployment method to work.
 
-After completing configuration, apply the loaded procedure's `Self-Improvement Prompt` section.
+After completing configuration, apply the loaded procedure's self-improvement prompt.
