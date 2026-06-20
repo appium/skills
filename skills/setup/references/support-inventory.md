@@ -1,7 +1,7 @@
 ---
 id: setup-support-inventory
 owner: skills/setup
-status: active
+status: stable
 ---
 
 # Setup Support Inventory

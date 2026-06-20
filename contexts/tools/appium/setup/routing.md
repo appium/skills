@@ -1,7 +1,7 @@
 ---
 id: appium-setup-routing
 owner: skills/setup
-status: active
+status: stable
 ---
 
 # Appium Setup Routing Context

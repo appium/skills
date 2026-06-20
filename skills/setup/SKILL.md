@@ -1,6 +1,7 @@
 ---
 name: "setup"
 description: "Route first-time or corrective Appium environment preparation to Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, Mac2, Safari, XCUITest, FFmpeg, or bundletool references; keep optional installs gated."
+requires_context: contexts/tools/appium/setup/routing.md
 ---
 
 # Appium Router
@@ -17,7 +18,7 @@ Use this skill for Appium environment preparation. This router selects setup pro
 
 ## Intake
 
-Load `contexts/appium-setup-routing.md`. Confirm target platform, driver, host OS, command mode (`appium` default, `npx appium` only when requested), available devices or browsers, and optional dependency requests.
+Load `contexts/tools/appium/setup/routing.md`. Confirm target platform, driver, host OS, command mode (`appium` default, `npx appium` only when requested), available devices or browsers, and optional dependency requests.
 
 ## Routing
 

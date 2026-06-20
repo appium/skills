@@ -1,7 +1,7 @@
 ---
 id: setup-references-environment-setup-espresso
 owner: skills/setup
-status: active
+status: stable
 source: skills/setup/references/environment-setup-espresso.md
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: setup-references-android-android-decision-logic
 owner: skills/setup
-status: active
+status: stable
 source: skills/setup/references/android/android-decision-logic.md
 ---
 

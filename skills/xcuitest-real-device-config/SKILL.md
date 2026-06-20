@@ -1,6 +1,7 @@
 ---
 name: "xcuitest-real-device-config"
 description: "Route macOS real iOS or tvOS device preparation for Appium XCUITest, including device trust, Developer Mode, provisioning profiles, WebDriverAgent signing, and deployment patterns."
+requires_context: contexts/tools/appium/real-device/xcuitest-readiness.md
 ---
 
 # XCUITest Real Device Router
@@ -15,7 +16,7 @@ For simulators, Android devices, desktop Chromium, or first-time XCUITest prereq
 
 ## Intake
 
-Load `contexts/xcuitest-real-device-readiness.md`. Confirm the host is macOS, the target device is connected and trusted, XCUITest setup has passed, and the user has identified the intended signing approach: free Apple ID, paid Apple Developer account, enterprise profile, prebuilt WDA, preinstalled WDA, or running WDA URL.
+Load `contexts/tools/appium/real-device/xcuitest-readiness.md`. Confirm the host is macOS, the target device is connected and trusted, XCUITest setup has passed, and the user has identified the intended signing approach: free Apple ID, paid Apple Developer account, enterprise profile, prebuilt WDA, preinstalled WDA, or running WDA URL.
 
 ## Reference Map
 

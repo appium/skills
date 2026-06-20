@@ -1,7 +1,7 @@
 ---
 id: setup-references-environment-setup-uiautomator2
 owner: skills/setup
-status: active
+status: stable
 source: skills/setup/references/environment-setup-uiautomator2.md
 ---
 

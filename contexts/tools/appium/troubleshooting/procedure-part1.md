@@ -1,7 +1,7 @@
 ---
 id: appium-troubleshooting-references-troubleshooting-procedure-part1
 owner: skills/appium-troubleshooting
-status: active
+status: stable
 source: skills/appium-troubleshooting/references/troubleshooting-procedure-part1.md
 ---
 

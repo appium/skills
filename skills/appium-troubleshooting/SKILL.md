@@ -1,6 +1,7 @@
 ---
 name: "appium-troubleshooting"
 description: "Route diagnosis for failing Appium commands, sessions, WebDriverAgent launches, browser driver startup, device connection, and element lookup to the matching driver profile and symptom reference after setup has been attempted."
+requires_context: contexts/tools/appium/troubleshooting/triage.md
 ---
 
 # Appium Failure Router
@@ -15,7 +16,7 @@ For first-time environment setup, use `skills/setup/SKILL.md`. For driver or pla
 
 ## Intake
 
-Load `contexts/appium-troubleshooting-triage.md`. Capture the exact failing command, error text, platform, automation driver, desired capabilities, Appium version, installed driver list, and the smallest reproduction available before changing anything.
+Load `contexts/tools/appium/troubleshooting/triage.md`. Capture the exact failing command, error text, platform, automation driver, desired capabilities, Appium version, installed driver list, and the smallest reproduction available before changing anything.
 
 ## Reference Map
 

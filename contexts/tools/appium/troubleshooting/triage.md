@@ -1,7 +1,7 @@
 ---
 id: appium-troubleshooting-triage
 owner: skills/appium-troubleshooting
-status: active
+status: stable
 ---
 
 # Appium Failure Triage Context

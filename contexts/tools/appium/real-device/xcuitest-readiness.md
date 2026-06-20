@@ -1,7 +1,7 @@
 ---
 id: xcuitest-real-device-readiness
 owner: skills/xcuitest-real-device-config
-status: active
+status: stable
 ---
 
 # XCUITest Real Device Readiness Context
