@@ -1,7 +1,7 @@
 ---
 name: "setup"
 description: "Route first-time or corrective Appium environment preparation to Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, Mac2, Safari, XCUITest, FFmpeg, or bundletool references; keep optional installs gated."
-requires_context: contexts/tools/appium/setup/routing.md
+requires_context: contexts/tools/appium/setup/routing.md, contexts/tools/appium/setup/node-environment.md, contexts/tools/appium/setup/uiautomator2-environment.md, contexts/tools/appium/setup/espresso-environment.md, contexts/tools/appium/setup/gecko-environment.md, contexts/tools/appium/setup/mac2-environment.md, contexts/tools/appium/setup/ffmpeg-environment.md
 ---
 
 # Appium Router
@@ -22,17 +22,17 @@ Load `contexts/tools/appium/setup/routing.md`. Confirm target platform, driver, 
 
 ## Routing
 
-Load the matching profile, `references/environment-setup-node.md`, and only the required target references:
+Load the matching profile, `contexts/tools/appium/setup/node-environment.md`, and only the required target references:
 
 - Android SDK: `references/environment-setup-android.md`
-- UiAutomator2: `references/environment-setup-uiautomator2.md`
-- Espresso: `references/environment-setup-espresso.md`
+- UiAutomator2: `contexts/tools/appium/setup/uiautomator2-environment.md`
+- Espresso: `contexts/tools/appium/setup/espresso-environment.md`
 - Chromium: `references/environment-setup-chromium.md`
-- Gecko: `references/environment-setup-gecko.md`
-- Mac2: `references/environment-setup-mac2.md`
+- Gecko: `contexts/tools/appium/setup/gecko-environment.md`
+- Mac2: `contexts/tools/appium/setup/mac2-environment.md`
 - Safari: `references/environment-setup-safari.md`
 - XCUITest: `references/environment-setup-xcuitest.md`
-- FFmpeg: `references/environment-setup-ffmpeg.md` only on explicit request
+- FFmpeg: `contexts/tools/appium/setup/ffmpeg-environment.md` only on explicit request
 - bundletool: `references/environment-setup-bundletool.md` only on explicit request
 
 Profiles: `profiles/android.md`, `profiles/chromium.md`, `profiles/gecko.md`, `profiles/mac2.md`, `profiles/macos.md`, `profiles/safari.md`, `profiles/xcuitest.md`, plus `profiles/global-appium.md` or `profiles/local-npx.md`.

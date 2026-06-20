@@ -1,7 +1,7 @@
 ---
 name: "appium-troubleshooting"
 description: "Route diagnosis for failing Appium commands, sessions, WebDriverAgent launches, browser driver startup, device connection, and element lookup to the matching driver profile and symptom reference after setup has been attempted."
-requires_context: contexts/tools/appium/troubleshooting/triage.md
+requires_context: contexts/tools/appium/troubleshooting/triage.md, contexts/tools/appium/troubleshooting/procedure-part1.md
 ---
 
 # Appium Failure Router
@@ -21,7 +21,7 @@ Load `contexts/tools/appium/troubleshooting/triage.md`. Capture the exact failin
 ## Reference Map
 
 Load these procedure references first, in order:
-1. `references/troubleshooting-procedure-part1.md`
+1. `contexts/tools/appium/troubleshooting/procedure-part1.md`
 2. `references/troubleshooting-procedure-part2.md`
 
 Then load only the symptom-specific references needed:
