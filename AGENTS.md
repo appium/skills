@@ -12,12 +12,12 @@ Use this file to route Appium setup, troubleshooting, and real-device configurat
 
 ## Do Not Use For
 
-- Do not use this file as a replacement for the selected skill instructions; load the relevant `SKILL.md`, routed profiles, references, and examples before executing.
+- Do not use this file as a replacement for the selected skill instructions; load the relevant `SKILL.md`, routed contexts, profiles, references, examples, and procedures under `contexts/` before executing.
 - Do not run optional FFmpeg, bundletool, or third-party real-device tooling unless the user explicitly requests that capability.
 
 ## Preflight
 
-Before executing a skill, confirm the target platform, Appium driver, command mode (`appium` or `npx appium`), host OS, available permissions, relevant devices or simulators, and whether the user requested optional dependencies. Identify the exact skill files, profiles, references, examples, and verification commands that apply before making environment changes.
+Before executing a skill, confirm the target platform, Appium driver, command mode (`appium` or `npx appium`), host OS, available permissions, relevant devices or simulators, and whether the user requested optional dependencies. Identify the exact skill files, canonical `contexts/` assets, `tools/` helper scripts, profiles, references, examples, and verification commands that apply before making environment changes.
 
 ## Execution Rules
 
@@ -33,9 +33,9 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 - Use global npm/Appium commands by default (`npm -g`, `appium`).
 - Use local execution (`npx appium`) only when the user explicitly asks for local mode.
 - Use `setup` context `contexts/tools/appium/setup/ffmpeg-environment.md` only when the user explicitly requests FFmpeg-related setup.
-- Use `setup` reference `environment-setup-bundletool.md` only when the user explicitly requests bundletool setup for UiAutomator2/Espresso.
+- Use `setup` reference `contexts/tools/appium/setup/references/environment-setup-bundletool.md` only when the user explicitly requests bundletool setup for UiAutomator2/Espresso.
 - If output is incomplete or truncated, rerun only that step and capture logs.
-- After completing any skill, read and apply that skill's `Self-Improvement Prompt` section before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with the skill section and proposed wording. Do not edit skill files unless the user explicitly asks.
+- After completing any workflow, read and apply the self-improvement prompt in the loaded context, reference, or procedure before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with the loaded asset path and proposed wording. Do not edit files unless the user explicitly asks.
 
 ## Recommended Skill Order
 

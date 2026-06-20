@@ -11,7 +11,7 @@ description: "macOS-only Safari Appium setup gates and authorization boundaries"
 ## Decision Logic
 
 - If host OS is not macOS: stop.
-- If Node.js or npm needs repair: run `environment-setup-node.md`.
+- If Node.js or npm needs repair: run `contexts/tools/appium/setup/node-environment.md`.
 - If Appium CLI is missing or Appium major version is `< 3`: install or upgrade global Appium.
 - If `safaridriver` is missing: stop and repair Safari/macOS tooling.
 - Run `safaridriver --enable` only when Safari automation is not enabled and the user can accept the macOS authorization prompt.

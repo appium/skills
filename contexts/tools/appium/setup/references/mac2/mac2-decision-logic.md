@@ -17,7 +17,7 @@ description: "Decide Mac2 setup path from macOS host, Appium mode, Xcode state, 
 
 ## Required Gates
 
-1. Node.js and npm satisfy `environment-setup-node.md`.
+1. Node.js and npm satisfy `contexts/tools/appium/setup/node-environment.md`.
 2. Xcode tooling satisfies `mac2-xcode-prereqs.md`.
 3. `appium -v` succeeds and Appium major version is `>= 3`.
 4. `appium driver list --installed` includes `mac2`.

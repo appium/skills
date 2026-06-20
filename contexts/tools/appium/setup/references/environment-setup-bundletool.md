@@ -16,9 +16,9 @@ Install and validate `bundletool.jar` from official Google bundletool releases o
 
 Load these references in order:
 
-1. `bundletool/bundletool-decision-logic.md` for optional-use gates and install triggers.
-2. `bundletool/bundletool-install.md` for download and PATH setup.
-3. `bundletool/bundletool-validation.md` for version evidence and completion criteria.
+1. `contexts/tools/appium/setup/references/bundletool/bundletool-decision-logic.md` for optional-use gates and install triggers.
+2. `contexts/tools/appium/setup/references/bundletool/bundletool-install.md` for download and PATH setup.
+3. `contexts/tools/appium/setup/references/bundletool/bundletool-validation.md` for version evidence and completion criteria.
 
 ## Validation Command
 

@@ -6,7 +6,7 @@ source: contexts/tools/appium/setup/espresso-environment.md
 
 ---
 
-# appium-espresso-environment-setup
+# Espresso Environment
 
 ## Goal
 
@@ -16,12 +16,12 @@ Prepare Appium Espresso by validating Node/Appium, Android prerequisites, driver
 
 Load these references in order:
 
-1. `environment-setup-node.md` for Node.js and npm.
-2. `environment-setup-android.md` for Java, Android SDK, ADB, emulator, and SDK package validation.
-3. `espresso/espresso-decision-logic.md` for driver setup triggers and optional dependency boundaries.
-4. `espresso/espresso-driver-install.md` for global Appium and Espresso driver installation.
-5. `espresso/espresso-doctor-validation.md` for required doctor pass criteria.
-6. `espresso/espresso-smoke-status.md` for server `/status`, log evidence, and cleanup.
+1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
+2. `contexts/tools/appium/setup/references/environment-setup-android.md` for Java, Android SDK, ADB, emulator, and SDK package validation.
+3. `contexts/tools/appium/setup/references/espresso/espresso-decision-logic.md` for driver setup triggers and optional dependency boundaries.
+4. `contexts/tools/appium/setup/references/espresso/espresso-driver-install.md` for global Appium and Espresso driver installation.
+5. `contexts/tools/appium/setup/references/espresso/espresso-doctor-validation.md` for required doctor pass criteria.
+6. `contexts/tools/appium/setup/references/espresso/espresso-smoke-status.md` for server `/status`, log evidence, and cleanup.
 
 ## Validation Command
 

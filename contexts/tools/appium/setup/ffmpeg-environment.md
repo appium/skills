@@ -6,7 +6,7 @@ source: contexts/tools/appium/setup/ffmpeg-environment.md
 
 ---
 
-# environment-setup-ffmpeg
+# FFmpeg Environment
 
 ## Goal
 Installs and validates FFmpeg in a cross-platform way so Appium environments can use optional media-related capabilities when explicitly requested.
