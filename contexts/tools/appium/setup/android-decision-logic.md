@@ -1,8 +1,9 @@
 ---
+owner: appium
 id: setup-references-android-android-decision-logic
-owner: skills/setup
 status: stable
-source: skills/setup/references/android/android-decision-logic.md
+source: contexts/tools/appium/setup/android-decision-logic.md
+
 ---
 
 # android-decision-logic

@@ -42,63 +42,63 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 ### Android + UiAutomator2
 
 1. `skills/setup/SKILL.md`
-2. `skills/setup/profiles/android.md`
+2. `contexts/tools/appium/setup/profiles/android.md`
 3. `contexts/tools/appium/setup/node-environment.md`
-4. `skills/setup/references/environment-setup-android.md`
+4. `contexts/tools/appium/setup/references/environment-setup-android.md`
 5. `contexts/tools/appium/setup/uiautomator2-environment.md`
-6. Example: `skills/setup/examples/uiautomator2.md`
+6. Example: `contexts/tools/appium/setup/examples/uiautomator2.md`
 
 ### Android + Espresso
 
 1. `skills/setup/SKILL.md`
-2. `skills/setup/profiles/android.md`
+2. `contexts/tools/appium/setup/profiles/android.md`
 3. `contexts/tools/appium/setup/node-environment.md`
-4. `skills/setup/references/environment-setup-android.md`
+4. `contexts/tools/appium/setup/references/environment-setup-android.md`
 5. `contexts/tools/appium/setup/espresso-environment.md`
-6. Example: `skills/setup/examples/espresso.md`
+6. Example: `contexts/tools/appium/setup/examples/espresso.md`
 
 ### Desktop Chromium Browsers
 
 1. `skills/setup/SKILL.md`
-2. `skills/setup/profiles/chromium.md`
+2. `contexts/tools/appium/setup/profiles/chromium.md`
 3. `contexts/tools/appium/setup/node-environment.md`
-4. `skills/setup/references/environment-setup-chromium.md`
-5. Example: `skills/setup/examples/chromium.md`
+4. `contexts/tools/appium/setup/references/environment-setup-chromium.md`
+5. Example: `contexts/tools/appium/setup/examples/chromium.md`
 
 ### Desktop Firefox Browsers
 
 1. `skills/setup/SKILL.md`
-2. `skills/setup/profiles/gecko.md`
+2. `contexts/tools/appium/setup/profiles/gecko.md`
 3. `contexts/tools/appium/setup/node-environment.md`
 4. `contexts/tools/appium/setup/gecko-environment.md`
-5. Example: `skills/setup/examples/gecko.md`
+5. Example: `contexts/tools/appium/setup/examples/gecko.md`
 
 ### macOS + Mac2
 
 1. `skills/setup/SKILL.md`
-2. `skills/setup/profiles/macos.md`
-3. `skills/setup/profiles/mac2.md`
+2. `contexts/tools/appium/setup/profiles/macos.md`
+3. `contexts/tools/appium/setup/profiles/mac2.md`
 4. `contexts/tools/appium/setup/node-environment.md`
 5. `contexts/tools/appium/setup/mac2-environment.md`
-6. Example: `skills/setup/examples/mac2.md`
+6. Example: `contexts/tools/appium/setup/examples/mac2.md`
 
 ### macOS + Safari
 
 1. `skills/setup/SKILL.md`
-2. `skills/setup/profiles/macos.md`
-3. `skills/setup/profiles/safari.md`
+2. `contexts/tools/appium/setup/profiles/macos.md`
+3. `contexts/tools/appium/setup/profiles/safari.md`
 4. `contexts/tools/appium/setup/node-environment.md`
-5. `skills/setup/references/environment-setup-safari.md`
-6. Example: `skills/setup/examples/safari.md`
+5. `contexts/tools/appium/setup/references/environment-setup-safari.md`
+6. Example: `contexts/tools/appium/setup/examples/safari.md`
 
 ### iOS + XCUITest Simulator
 
 1. `skills/setup/SKILL.md`
-2. `skills/setup/profiles/macos.md`
-3. `skills/setup/profiles/xcuitest.md`
+2. `contexts/tools/appium/setup/profiles/macos.md`
+3. `contexts/tools/appium/setup/profiles/xcuitest.md`
 4. `contexts/tools/appium/setup/node-environment.md`
-5. `skills/setup/references/environment-setup-xcuitest.md`
-6. Example: `skills/setup/examples/xcuitest.md`
+5. `contexts/tools/appium/setup/references/environment-setup-xcuitest.md`
+6. Example: `contexts/tools/appium/setup/examples/xcuitest.md`
 
 ### iOS + XCUITest Real Device
 
@@ -106,8 +106,8 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 2. `skills/xcuitest-real-device-config/SKILL.md`
 3. Load the signing profile that matches the user: free Apple ID, paid developer, or enterprise.
 4. Load the WDA deployment profile that matches the user: preinstalled, prebuilt, or running WDA URL.
-5. Load `skills/xcuitest-real-device-config/references/real-device-procedure-part1.md` through `real-device-procedure-part9.md` in order.
-6. Example: `skills/xcuitest-real-device-config/examples/real-device.md`
+5. Load `contexts/tools/appium/real-device/references/real-device-procedure-part1.md` through `real-device-procedure-part9.md` in order.
+6. Example: `contexts/tools/appium/real-device/examples/real-device.md`
 
 ### Troubleshooting
 
@@ -115,8 +115,8 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 2. `skills/appium-troubleshooting/SKILL.md`
 3. Load the matching driver profile and symptom references.
 4. Examples:
-   - `skills/appium-troubleshooting/examples/session-startup.md`
-   - `skills/appium-troubleshooting/examples/locator-failure.md`
+   - `contexts/tools/appium/troubleshooting/examples/session-startup.md`
+   - `contexts/tools/appium/troubleshooting/examples/locator-failure.md`
 
 ## Completion Policy
 

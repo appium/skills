@@ -1,0 +1,27 @@
+---
+owner: appium
+id: appium.setup.references.xcuitest.xcuitest-smoke-status
+name: "xcuitest-smoke-status"
+description: "Run Appium server smoke status checks and cleanup for XCUITest"
+
+---
+
+# xcuitest-smoke-status
+
+## Smoke Check
+
+Start `appium server`, then run:
+
+```bash
+curl -s http://127.0.0.1:4723/status
+```
+
+The response must indicate readiness. Logs should include `Available drivers:` and `xcuitest`.
+
+## Cleanup
+
+Stop the server and verify:
+
+```bash
+pgrep -fl "appium.*server" || echo "no appium server process"
+```

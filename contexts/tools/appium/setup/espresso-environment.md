@@ -1,8 +1,9 @@
 ---
+owner: appium
 id: setup-references-environment-setup-espresso
-owner: skills/setup
 status: stable
-source: skills/setup/references/environment-setup-espresso.md
+source: contexts/tools/appium/setup/espresso-environment.md
+
 ---
 
 # appium-espresso-environment-setup
@@ -25,7 +26,7 @@ Load these references in order:
 ## Validation Command
 
 ```bash
-node skills/setup/scripts/check-espresso-env.mjs
+node tools/appium/setup/scripts/check-espresso-env.mjs
 ```
 
 Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.

@@ -1,58 +1,22 @@
 ---
+owner: appium
 name: "appium-troubleshooting"
-description: "Route diagnosis for failing Appium commands, sessions, WebDriverAgent launches, browser driver startup, device connection, and element lookup to the matching driver profile and symptom reference after setup has been attempted."
+description: "Route Appium failure diagnosis to canonical troubleshooting context assets for failed commands, session startup, app launch, driver startup, device connectivity, WebDriverAgent behavior, browser automation, locator strategy, and element lookup issues."
 requires_context: contexts/tools/appium/troubleshooting/triage.md, contexts/tools/appium/troubleshooting/procedure-part1.md
 ---
 
-# Appium Failure Router
+# Appium Router Entry
 
-## Use When
+## Route
 
-Use this skill when an Appium command, session start, WebDriverAgent launch, browser driver startup, device connection, or element lookup is already failing and the user needs diagnosis.
+Use this thin entrypoint for Appium failure diagnosis. Load `contexts/tools/appium/troubleshooting/triage.md` first, then follow `contexts/tools/appium/troubleshooting/procedure-part1.md` and the relevant profiles, references, and examples under `contexts/tools/appium/troubleshooting/`.
 
-## Out Of Scope
+## When Not To Use
 
-For first-time environment setup, use `skills/setup/SKILL.md`. For driver or platform comparisons, proceed only when the user asks for analysis.
+do not use for mismatched requests; choose the routed alternative below.
 
-## Intake
+Do not use this skill for first-time environment installation; route that input to `skills/setup/SKILL.md`. Do not use this skill for real-device signing or provisioning before any failure exists; route that input to `skills/xcuitest-real-device-config/SKILL.md`.
 
-Load `contexts/tools/appium/troubleshooting/triage.md`. Capture the exact failing command, error text, platform, automation driver, desired capabilities, Appium version, installed driver list, and the smallest reproduction available before changing anything.
+## Evidence
 
-## Reference Map
-
-Load these procedure references first, in order:
-1. `contexts/tools/appium/troubleshooting/procedure-part1.md`
-2. `references/troubleshooting-procedure-part2.md`
-
-Compatibility-only deprecated shims:
-- `troubleshooting-procedure-part1`
-
-Then load only the symptom-specific references needed:
-
-- UiAutomator2 startup failures: `references/uiautomator2-session-startup.md`
-- UiAutomator2 locator failures: `references/uiautomator2-locators.md`
-- XCUITest startup, WDA, and signing failures: `references/xcuitest-troubleshooting.md`
-- XCUITest element lookup failures: `references/xcuitest-element-lookup.md`
-- XCUITest locator strategy questions: `references/xcuitest-locators.md`
-- Community search fallback: `references/community-search.md`
-
-Use community search only after the official references do not explain the exact stack trace or symptom.
-
-## Profile Map
-
-Load only the matching driver profile:
-
-- UiAutomator2: `profiles/uiautomator2.md`
-- XCUITest: `profiles/xcuitest.md`
-- Chromium: `profiles/chromium.md`
-
-## Samples
-
-- Session startup failure: `examples/session-startup.md`
-- Locator or element lookup failure: `examples/locator-failure.md`
-
-## Completion
-
-After each fix, rerun the smallest failing command or doctor check. Report the command evidence, the change made, and the confirmed outcome.
-
-After completing diagnosis, apply the loaded procedure's self-improvement prompt.
+Example input: `Diagnose why my UiAutomator2 session fails during startup with this server log and desired capabilities.` Verify the suspected failure class against logs, capabilities, device state, and driver-specific checks before recommending a fix.

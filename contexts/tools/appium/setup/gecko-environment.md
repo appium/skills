@@ -1,7 +1,8 @@
 ---
+owner: appium
 id: setup-references-environment-setup-gecko
-owner: skills/setup
 status: stable
+
 ---
 
 # appium-gecko-environment-setup
@@ -21,7 +22,7 @@ Prepare Appium Gecko Driver by validating Node/Appium, Firefox availability, dri
 ## Validation Command
 
 ```bash
-node skills/setup/scripts/check-gecko-env.mjs
+node tools/appium/setup/scripts/check-gecko-env.mjs
 ```
 
 Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.

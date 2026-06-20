@@ -1,8 +1,9 @@
 ---
+owner: appium
 id: setup-references-environment-setup-node
-owner: skills/setup
 status: stable
-source: skills/setup/references/environment-setup-node.md
+source: contexts/tools/appium/setup/node-environment.md
+
 ---
 
 # environment-setup-node
@@ -23,7 +24,7 @@ Load these references in order:
 For deterministic read-only validation, run:
 
 ```bash
-node skills/setup/scripts/check-node-env.mjs
+node tools/appium/setup/scripts/check-node-env.mjs
 ```
 
 ## Completion Criteria

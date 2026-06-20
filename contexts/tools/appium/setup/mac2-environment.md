@@ -1,8 +1,9 @@
 ---
+owner: appium
 id: setup-references-environment-setup-mac2
-owner: skills/setup
 status: stable
-source: skills/setup/references/environment-setup-mac2.md
+source: contexts/tools/appium/setup/mac2-environment.md
+
 ---
 
 # appium-mac2-environment-setup
@@ -22,7 +23,7 @@ Prepare Appium Mac2 Driver by validating macOS, Node/Appium, Xcode tooling, driv
 ## Validation Command
 
 ```bash
-node skills/setup/scripts/check-mac2-env.mjs
+node tools/appium/setup/scripts/check-mac2-env.mjs
 ```
 
 Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.

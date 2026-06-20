@@ -1,8 +1,9 @@
 ---
+owner: appium
 id: setup-references-environment-setup-ffmpeg
-owner: skills/setup
 status: stable
-source: skills/setup/references/environment-setup-ffmpeg.md
+source: contexts/tools/appium/setup/ffmpeg-environment.md
+
 ---
 
 # environment-setup-ffmpeg
@@ -13,7 +14,7 @@ Installs and validates FFmpeg in a cross-platform way so Appium environments can
 ## Validation Command
 
 ```bash
-node skills/setup/scripts/check-ffmpeg-env.mjs
+node tools/appium/setup/scripts/check-ffmpeg-env.mjs
 ```
 
 Use `summary.requiredOk: true` as the read-only setup gate after the user explicitly requests FFmpeg capability.
