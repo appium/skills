@@ -1,10 +1,11 @@
 ---
+owner: appium
 id: setup-references-environment-setup-gecko
-owner: skills/setup
 status: stable
+
 ---
 
-# appium-gecko-environment-setup
+# Gecko Environment
 
 ## Goal
 
@@ -13,15 +14,15 @@ Prepare Appium Gecko Driver by validating Node/Appium, Firefox availability, dri
 ## Routing
 
 1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
-2. `gecko/gecko-decision-logic.md` for host, Appium, Firefox, and GeckoDriver gates.
-3. `gecko/gecko-browser-prereqs.md` for Firefox release, ESR, Developer Edition, Nightly, and Linux dependency setup.
-4. `gecko/gecko-driver-validation.md` for Appium driver installation and doctor handling.
-5. `gecko/gecko-smoke-status.md` for `/status`, log evidence, and cleanup.
+2. `contexts/tools/appium/setup/references/gecko/gecko-decision-logic.md` for host, Appium, Firefox, and GeckoDriver gates.
+3. `contexts/tools/appium/setup/references/gecko/gecko-browser-prereqs.md` for Firefox release, ESR, Developer Edition, Nightly, and Linux dependency setup.
+4. `contexts/tools/appium/setup/references/gecko/gecko-driver-validation.md` for Appium driver installation and doctor handling.
+5. `contexts/tools/appium/setup/references/gecko/gecko-smoke-status.md` for `/status`, log evidence, and cleanup.
 
 ## Validation Command
 
 ```bash
-node skills/setup/scripts/check-gecko-env.mjs
+node tools/appium/setup/scripts/check-gecko-env.mjs
 ```
 
 Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.

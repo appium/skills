@@ -1,10 +1,11 @@
 ---
+owner: appium
 id: setup-references-environment-setup-uiautomator2
-owner: skills/setup
 status: stable
+
 ---
 
-# appium-uiautomator2-environment-setup
+# UiAutomator2 Environment
 
 ## Goal
 
@@ -15,16 +16,16 @@ Prepare Appium UiAutomator2 by validating Node/Appium, Android prerequisites, dr
 Load these references in order:
 
 1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
-2. `references/environment-setup-android.md` for Java, Android SDK, ADB, emulator, device, and SDK package validation.
-3. `uiautomator2/uiautomator2-decision-logic.md` for driver setup triggers and optional dependency boundaries.
-4. `uiautomator2/uiautomator2-driver-install.md` for global Appium and UiAutomator2 driver installation.
-5. `uiautomator2/uiautomator2-doctor-validation.md` for required doctor pass criteria.
-6. `uiautomator2/uiautomator2-smoke-status.md` for server `/status`, log evidence, and cleanup.
+2. `contexts/tools/appium/setup/references/environment-setup-android.md` for Java, Android SDK, ADB, emulator, device, and SDK package validation.
+3. `contexts/tools/appium/setup/references/uiautomator2/uiautomator2-decision-logic.md` for driver setup triggers and optional dependency boundaries.
+4. `contexts/tools/appium/setup/references/uiautomator2/uiautomator2-driver-install.md` for global Appium and UiAutomator2 driver installation.
+5. `contexts/tools/appium/setup/references/uiautomator2/uiautomator2-doctor-validation.md` for required doctor pass criteria.
+6. `contexts/tools/appium/setup/references/uiautomator2/uiautomator2-smoke-status.md` for server `/status`, log evidence, and cleanup.
 
 For deterministic read-only validation, run:
 
 ```bash
-node skills/setup/scripts/check-uiautomator2-env.mjs
+node tools/appium/setup/scripts/check-uiautomator2-env.mjs
 ```
 
 ## Completion Criteria

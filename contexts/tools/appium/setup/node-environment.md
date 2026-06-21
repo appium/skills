@@ -1,11 +1,12 @@
 ---
+owner: appium
 id: setup-references-environment-setup-node
-owner: skills/setup
 status: stable
-source: skills/setup/references/environment-setup-node.md
+source: contexts/tools/appium/setup/node-environment.md
+
 ---
 
-# environment-setup-node
+# Node Environment
 
 ## Goal
 
@@ -15,15 +16,15 @@ Prepare a stable Node.js and npm environment by validating the active runtime, n
 
 Load these references in order:
 
-1. `node/node-decision-logic.md` for version, package-manager, and install triggers.
-2. `node/node-version-manager-setup.md` for `nvm`, `fnm`, `asdf`, and Windows `winget` setup.
-3. `node/node-npm-health.md` for npm availability, registry checks, and PowerShell policy repair.
-4. `node/node-validation-evidence.md` for final evidence and completion criteria.
+1. `contexts/tools/appium/setup/references/node/node-decision-logic.md` for version, package-manager, and install triggers.
+2. `contexts/tools/appium/setup/references/node/node-version-manager-setup.md` for `nvm`, `fnm`, `asdf`, and Windows `winget` setup.
+3. `contexts/tools/appium/setup/references/node/node-npm-health.md` for npm availability, registry checks, and PowerShell policy repair.
+4. `contexts/tools/appium/setup/references/node/node-validation-evidence.md` for final evidence and completion criteria.
 
 For deterministic read-only validation, run:
 
 ```bash
-node skills/setup/scripts/check-node-env.mjs
+node tools/appium/setup/scripts/check-node-env.mjs
 ```
 
 ## Completion Criteria
