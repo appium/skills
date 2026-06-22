@@ -7,6 +7,10 @@ requires_context: contexts/tools/appium/setup/routing.md, contexts/tools/appium/
 
 # Appium Router Entry
 
+## Required inputs
+
+Before running this workflow, confirm the target platform, Appium driver, command mode (`appium` global by default or `npx appium` only when requested), host OS, relevant devices or simulators, available permissions, and whether the user explicitly requested optional dependencies such as FFmpeg or bundletool.
+
 ## Route
 
 Use this thin entrypoint for Appium environment setup work. Load `contexts/tools/appium/setup/routing.md` first, then load only the setup contexts, profiles, references, examples, and scripts that match the requested driver, platform, and install mode. Canonical setup assets live under `contexts/tools/appium/setup/`; executable helpers live under `tools/appium/setup/scripts/`.

@@ -7,6 +7,10 @@ requires_context: contexts/tools/appium/real-device/xcuitest-readiness.md
 
 # Appium Router Entry
 
+## Required inputs
+
+Before running this workflow, confirm the iOS or tvOS real device target, Appium command mode, host macOS and Xcode state, Apple signing option, WebDriverAgent deployment strategy, device trust and Developer Mode state, available provisioning credentials, and permissions for any required local signing or device checks.
+
 ## Route
 
 Use this thin entrypoint for real-device XCUITest setup. Load `contexts/tools/appium/real-device/xcuitest-readiness.md` first, then follow the relevant references, profiles, and examples under `contexts/tools/appium/real-device/`.

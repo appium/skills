@@ -7,6 +7,10 @@ requires_context: contexts/tools/appium/troubleshooting/triage.md, contexts/tool
 
 # Appium Router Entry
 
+## Required inputs
+
+Before running this workflow, confirm the failing Appium command or symptom, target platform and driver, command mode (`appium` global or `npx appium`), host OS, device or simulator state, relevant capabilities, recent logs or doctor output, and available permissions for rerunning checks.
+
 ## Route
 
 Use this thin entrypoint for Appium failure diagnosis. Load `contexts/tools/appium/troubleshooting/triage.md` first, then follow `contexts/tools/appium/troubleshooting/procedure-part1.md` and the relevant profiles, references, and examples under `contexts/tools/appium/troubleshooting/`.
