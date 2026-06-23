@@ -12,6 +12,7 @@ import {
 
 const env = process.env;
 const androidHome = env.ANDROID_HOME || env.ANDROID_SDK_ROOT || defaultAndroidHome();
+const exeExt = isWindows ? ".exe" : "";
 const cmdExt = isWindows ? ".bat" : "";
 
 const recommendedPathEntries = [
@@ -21,8 +22,8 @@ const recommendedPathEntries = [
 ];
 
 const paths = {
-  adb: pathJoin(androidHome, "platform-tools", `adb${cmdExt}`),
-  emulator: pathJoin(androidHome, "emulator", `emulator${isWindows ? ".exe" : ""}`),
+  adb: pathJoin(androidHome, "platform-tools", `adb${exeExt}`),
+  emulator: pathJoin(androidHome, "emulator", `emulator${exeExt}`),
   sdkmanager: pathJoin(androidHome, "cmdline-tools", "latest", "bin", `sdkmanager${cmdExt}`),
 };
 
