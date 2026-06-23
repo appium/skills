@@ -17,7 +17,7 @@ id: appium.real-device.references.real-device-procedure-part9
 
 ## Self-Improvement Prompt
 
-After use, always run this self-improvement check before the final response. Report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
+Before the final response, run this self-improvement check. Report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
 
 ## Constraints
 - This skill is macOS-only; do not provide Linux/Windows alternatives.

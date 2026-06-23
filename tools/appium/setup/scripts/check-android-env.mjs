@@ -1,81 +1,45 @@
 #!/usr/bin/env node
-import { existsSync, statSync } from "node:fs";
-import os from "node:os";
-import path from "node:path";
-import { spawnSync } from "node:child_process";
 
-const isWindows = process.platform === "win32";
-const home = os.homedir();
+import {
+  commandExists,
+  executable,
+  existingPaths,
+  hostReport,
+  isWindows,
+  pathJoin,
+  run,
+} from "./env-check-helpers.mjs";
+
 const env = process.env;
-const androidHome =
-  env.ANDROID_HOME ||
-  env.ANDROID_SDK_ROOT ||
-  (isWindows
-    ? path.join(env.LOCALAPPDATA || path.join(home, "AppData", "Local"), "Android", "Sdk")
-    : process.platform === "darwin"
-      ? path.join(home, "Library", "Android", "sdk")
-      : path.join(home, "Android", "Sdk"));
-
-const binExt = isWindows ? ".exe" : "";
+const androidHome = env.ANDROID_HOME || env.ANDROID_SDK_ROOT || defaultAndroidHome();
+const exeExt = isWindows ? ".exe" : "";
 const cmdExt = isWindows ? ".bat" : "";
+
+const recommendedPathEntries = [
+  pathJoin(androidHome, "platform-tools"),
+  pathJoin(androidHome, "cmdline-tools", "latest", "bin"),
+  pathJoin(androidHome, "emulator"),
+];
+
 const paths = {
-  adb: path.join(androidHome, "platform-tools", `adb${binExt}`),
-  emulator: path.join(androidHome, "emulator", `emulator${binExt}`),
-  sdkmanager: path.join(androidHome, "cmdline-tools", "latest", "bin", `sdkmanager${cmdExt}`),
+  adb: pathJoin(androidHome, "platform-tools", `adb${exeExt}`),
+  emulator: pathJoin(androidHome, "emulator", `emulator${exeExt}`),
+  sdkmanager: pathJoin(androidHome, "cmdline-tools", "latest", "bin", `sdkmanager${cmdExt}`),
 };
 
-function command(name, args = [], options = {}) {
-  const result = spawnSync(name, args, {
-    encoding: "utf8",
-    timeout: options.timeout ?? 15000,
-    shell: false,
-  });
-  return {
-    command: [name, ...args].join(" "),
-    ok: result.status === 0,
-    status: result.status,
-    signal: result.signal,
-    stdout: trim(result.stdout),
-    stderr: trim(result.stderr),
-    error: result.error?.message,
-  };
-}
+const adbCommand = executable(paths.adb) ? paths.adb : "adb";
+const emulatorCommand = executable(paths.emulator) ? paths.emulator : "emulator";
+const sdkmanagerCommand = executable(paths.sdkmanager) ? paths.sdkmanager : "sdkmanager";
 
-function trim(value) {
-  return (value || "").trim().slice(0, 12000);
-}
-
-function executable(file) {
-  try {
-    const stats = statSync(file);
-    return stats.isFile() && (isWindows || Boolean(stats.mode & 0o111));
-  } catch {
-    return false;
-  }
-}
-
-function commandExists(name) {
-  const probe = isWindows ? "where" : "command";
-  const args = isWindows ? [name] : ["-v", name];
-  return command(probe, args, { timeout: 5000 });
-}
-
-const java = command("java", ["-version"]);
-const javac = command("javac", ["-version"]);
-const adbVersion = executable(paths.adb)
-  ? command(paths.adb, ["version"])
-  : command("adb", ["version"]);
-const devices = executable(paths.adb)
-  ? command(paths.adb, ["devices", "-l"])
-  : command("adb", ["devices", "-l"]);
-const avds = executable(paths.emulator)
-  ? command(paths.emulator, ["-list-avds"])
-  : command("emulator", ["-list-avds"]);
-const sdkPackages = executable(paths.sdkmanager)
-  ? command(paths.sdkmanager, ["--list_installed"], { timeout: 30000 })
-  : command("sdkmanager", ["--list_installed"], { timeout: 30000 });
+const java = run("java", ["-version"], { timeout: 15000 });
+const javac = run("javac", ["-version"], { timeout: 15000 });
+const adbVersion = run(adbCommand, ["version"], { timeout: 15000 });
+const devices = run(adbCommand, ["devices", "-l"], { timeout: 15000 });
+const avds = run(emulatorCommand, ["-list-avds"], { timeout: 15000 });
+const sdkPackages = run(sdkmanagerCommand, ["--list_installed"], { timeout: 45000 });
 
 const packageText = `${sdkPackages.stdout}\n${sdkPackages.stderr}`;
+const pathEntries = (env.PATH || "").split(isWindows ? ";" : ":");
 const installed = {
   platformTools: /(?:^|\n)\s*platform-tools\s*\|/.test(packageText),
   emulator: /(?:^|\n)\s*emulator\s*\|/.test(packageText),
@@ -85,19 +49,8 @@ const installed = {
   systemImage: /system-images;android-\d+/.test(packageText),
 };
 
-const pathEntries = (env.PATH || "").split(path.delimiter);
-const recommendedPathEntries = [
-  path.join(androidHome, "platform-tools"),
-  path.join(androidHome, "cmdline-tools", "latest", "bin"),
-  path.join(androidHome, "emulator"),
-];
-
 const report = {
-  host: {
-    platform: process.platform,
-    release: os.release(),
-    arch: os.arch(),
-  },
+  host: hostReport(),
   environment: {
     JAVA_HOME: env.JAVA_HOME || "",
     ANDROID_HOME: env.ANDROID_HOME || "",
@@ -106,16 +59,14 @@ const report = {
   },
   paths: {
     ...paths,
-    androidHomeExists: existsSync(androidHome),
+    androidHomeExists: existingPaths([androidHome]).length > 0,
     adbExecutable: executable(paths.adb),
     emulatorExecutable: executable(paths.emulator),
     sdkmanagerExecutable: executable(paths.sdkmanager),
     adbOnPath: commandExists("adb").ok,
     emulatorOnPath: commandExists("emulator").ok,
     sdkmanagerOnPath: commandExists("sdkmanager").ok,
-    missingRecommendedPathEntries: recommendedPathEntries.filter(
-      (entry) => !pathEntries.includes(entry),
-    ),
+    missingRecommendedPathEntries: recommendedPathEntries.filter((entry) => !pathEntries.includes(entry)),
   },
   checks: {
     java,
@@ -127,17 +78,7 @@ const report = {
   },
   installed,
   summary: {
-    requiredOk:
-      java.ok &&
-      javac.ok &&
-      existsSync(androidHome) &&
-      (executable(paths.adb) || commandExists("adb").ok) &&
-      (executable(paths.emulator) || commandExists("emulator").ok) &&
-      (executable(paths.sdkmanager) || commandExists("sdkmanager").ok) &&
-      installed.platformTools &&
-      installed.emulator &&
-      installed.platform &&
-      installed.buildTools,
+    requiredOk: false,
     connectedDeviceCount: parseDeviceCount(devices.stdout),
     avdCount: avds.ok && avds.stdout ? avds.stdout.split(/\r?\n/).filter(Boolean).length : 0,
     deviceInventoryOk: devices.ok,
@@ -147,7 +88,31 @@ const report = {
   },
 };
 
+report.summary.requiredOk =
+  java.ok &&
+  javac.ok &&
+  existingPaths([androidHome]).length > 0 &&
+  (executable(paths.adb) || commandExists("adb").ok) &&
+  (executable(paths.emulator) || commandExists("emulator").ok) &&
+  (executable(paths.sdkmanager) || commandExists("sdkmanager").ok) &&
+  installed.platformTools &&
+  installed.emulator &&
+  installed.platform &&
+  installed.buildTools;
+
 process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+
+function defaultAndroidHome() {
+  if (isWindows) {
+    return pathJoin(env.LOCALAPPDATA || pathJoin(env.USERPROFILE || "", "AppData", "Local"), "Android", "Sdk");
+  }
+
+  if (process.platform === "darwin") {
+    return pathJoin(env.HOME || "", "Library", "Android", "sdk");
+  }
+
+  return pathJoin(env.HOME || "", "Android", "Sdk");
+}
 
 function parseDeviceCount(output) {
   return output
