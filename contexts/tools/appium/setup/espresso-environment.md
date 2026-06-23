@@ -10,14 +10,14 @@ source: contexts/tools/appium/setup/espresso-environment.md
 
 ## Goal
 
-Prepare Appium Espresso by validating Node/Appium, Android prerequisites, driver installation, doctor checks, and server smoke evidence until required fixes are zero.
+Prepare Appium Espresso by checking Node/Appium, Android prerequisites, driver installation, doctor output, and server smoke evidence until required fixes are zero.
 
 ## Routing
 
 Load these references in order:
 
-1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
-2. `contexts/tools/appium/setup/references/environment-setup-android.md` for Java, Android SDK, ADB, emulator, and SDK package validation.
+1. First load `contexts/tools/appium/setup/node-environment.md` to validate Node.js and npm.
+2. Then load `contexts/tools/appium/setup/references/environment-setup-android.md` to validate Java, Android SDK, ADB, emulator, and SDK packages.
 3. `contexts/tools/appium/setup/references/espresso/espresso-decision-logic.md` for driver setup triggers and optional dependency boundaries.
 4. `contexts/tools/appium/setup/references/espresso/espresso-driver-install.md` for global Appium and Espresso driver installation.
 5. `contexts/tools/appium/setup/references/espresso/espresso-doctor-validation.md` for required doctor pass criteria.

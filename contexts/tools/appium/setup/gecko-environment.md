@@ -25,7 +25,7 @@ Prepare Appium Gecko Driver by validating Node/Appium, Firefox availability, dri
 node tools/appium/setup/scripts/check-gecko-env.mjs
 ```
 
-Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.
+Treat `summary.requiredOk: true` as the read-only setup gate before running smoke checks.
 
 ## Completion Criteria
 

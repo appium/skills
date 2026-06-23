@@ -2,58 +2,47 @@
 
 import {
   appiumDriverChecks,
-  commandPath,
+  doctorRequiredOk,
   hostReport,
   isMac,
   run,
+  xcodeReport,
 } from "./env-check-helpers.mjs";
 
-const xcodebuildVersion = run("xcodebuild", ["-version"], { timeout: 15000 });
-const xcodeSelect = run("xcode-select", ["-p"], { timeout: 10000 });
-const license = run("xcodebuild", ["-license", "check"], { timeout: 15000 });
-const firstLaunch = run("xcodebuild", ["-checkFirstLaunchStatus"], { timeout: 15000 });
-const xcrunXcodebuild = run("xcrun", ["--find", "xcodebuild"], { timeout: 10000 });
+const xcode = xcodeReport({
+  xcrunXcodebuild: run("xcrun", ["--find", "xcodebuild"], { timeout: 10000 }),
+});
 const appium = appiumDriverChecks("mac2", { doctorTimeout: 90000 });
+const appiumRequiredOk = appium.installed && doctorRequiredOk(appium.checks.doctor.stdout);
 
 const report = {
   host: hostReport(),
-  xcode: {
-    macHost: isMac,
-    executables: {
-      xcodebuild: commandPath("xcodebuild"),
-      xcodeSelect: commandPath("xcode-select"),
-      xcrun: commandPath("xcrun"),
-    },
-    checks: {
-      xcodebuildVersion,
-      xcodeSelect,
-      license,
-      firstLaunch,
-      xcrunXcodebuild,
-    },
-  },
+  xcode,
   privacy: {
     automationNote:
       "This script does not modify Accessibility, Screen Recording, Automation, or Developer Tools privacy settings.",
   },
-  appium,
+  appium: {
+    ...appium,
+    requiredOk: appiumRequiredOk,
+  },
   summary: {
     requiredOk:
       isMac &&
-      xcodebuildVersion.ok &&
-      xcodeSelect.ok &&
-      license.ok &&
-      firstLaunch.ok &&
-      xcrunXcodebuild.ok &&
-      appium.requiredOk,
+      xcode.checks.xcodebuildVersion.ok &&
+      xcode.checks.xcodeSelect.ok &&
+      xcode.checks.license.ok &&
+      xcode.checks.firstLaunch.ok &&
+      xcode.checks.xcrunXcodebuild.ok &&
+      appiumRequiredOk,
     macHost: isMac,
-    xcodebuildOk: xcodebuildVersion.ok,
-    xcodeSelectOk: xcodeSelect.ok,
-    licenseOk: license.ok,
-    firstLaunchOk: firstLaunch.ok,
-    xcrunXcodebuildOk: xcrunXcodebuild.ok,
+    xcodebuildOk: xcode.checks.xcodebuildVersion.ok,
+    xcodeSelectOk: xcode.checks.xcodeSelect.ok,
+    licenseOk: xcode.checks.license.ok,
+    firstLaunchOk: xcode.checks.firstLaunch.ok,
+    xcrunXcodebuildOk: xcode.checks.xcrunXcodebuild.ok,
     driverInstalled: appium.installed,
-    doctorRequiredOk: /0 required fixes needed/i.test(appium.checks.doctor.stdout),
+    doctorRequiredOk: doctorRequiredOk(appium.checks.doctor.stdout),
   },
 };
 

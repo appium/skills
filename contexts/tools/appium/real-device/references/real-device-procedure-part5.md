@@ -84,8 +84,9 @@ BACKUP_DIR="$WDA_APP/../WDA-framework-backup-$(date +%Y%m%d%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 find "$WDA_APP/Frameworks" -maxdepth 1 -type d -name 'XC*.framework' -exec mv {} "$BACKUP_DIR"/ \;
-test ! -e "$WDA_APP"/Frameworks/Testing.framework || mv "$WDA_APP"/Frameworks/Testing.framework "$BACKUP_DIR"/
-test ! -e "$WDA_APP"/Frameworks/libXCTestSwiftSupport.dylib || mv "$WDA_APP"/Frameworks/libXCTestSwiftSupport.dylib "$BACKUP_DIR"/
+for framework_item in Testing.framework libXCTestSwiftSupport.dylib; do
+  test ! -e "$WDA_APP/Frameworks/$framework_item" || mv "$WDA_APP/Frameworks/$framework_item" "$BACKUP_DIR"/
+done
 
    # Re-sign with the same identity used during build
    codesign --force --sign "$SIGN_ID" "$WDA_APP"
@@ -94,4 +95,3 @@ test ! -e "$WDA_APP"/Frameworks/libXCTestSwiftSupport.dylib || mv "$WDA_APP"/Fra
    Proceed to step 5 to verify the signature.
 
    ---
-

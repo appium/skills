@@ -142,3 +142,25 @@ export function pathJoin(...parts) {
 function shellQuote(value) {
   return `'${String(value).replace(/'/g, "'\\''")}'`;
 }
+export function xcodeReport(extraChecks = {}) {
+  const xcodebuildVersion = run("xcodebuild", ["-version"], { timeout: 15000 });
+  const xcodeSelect = run("xcode-select", ["-p"], { timeout: 10000 });
+  const license = run("xcodebuild", ["-license", "check"], { timeout: 15000 });
+  const firstLaunch = run("xcodebuild", ["-checkFirstLaunchStatus"], { timeout: 15000 });
+
+  return {
+    macHost: isMac,
+    executables: {
+      xcodebuild: commandPath("xcodebuild"),
+      xcodeSelect: commandPath("xcode-select"),
+      xcrun: commandPath("xcrun"),
+    },
+    checks: {
+      xcodebuildVersion,
+      xcodeSelect,
+      license,
+      firstLaunch,
+      ...extraChecks,
+    },
+  };
+}

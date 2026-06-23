@@ -26,13 +26,13 @@ Prepare Appium Mac2 Driver by validating macOS, Node/Appium, Xcode tooling, driv
 node tools/appium/setup/scripts/check-mac2-env.mjs
 ```
 
-Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.
+Treat `summary.requiredOk: true` as the read-only setup gate before running smoke checks.
 
 ## Completion Criteria
 
-- Host OS is macOS.
-- `xcodebuild -version` and `xcode-select -p` succeed.
-- Xcode license and first-launch requirements are handled.
+- The host is macOS.
+- `xcodebuild -version` succeeds and `xcode-select -p` resolves a developer directory.
+- Xcode license and first-launch checks are handled.
 - `appium -v` succeeds and installed driver list includes `mac2`.
 - `appium driver doctor mac2` reports `0 required fixes needed`.
 - Required macOS privacy permissions are granted by the user when session startup needs them.
