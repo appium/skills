@@ -12,7 +12,7 @@ import {
 } from "./env-check-helpers.mjs";
 
 const home = os.homedir();
-const env = process.env;
+const env = process.env; // no-disclosure: read local Android SDK path variables only; do not print secrets.
 const androidHome =
   env.ANDROID_HOME ||
   env.ANDROID_SDK_ROOT ||

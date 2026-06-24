@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/chromium/chromium-driver-validation.md"
 id: appium.setup.references.chromium.chromium-driver-validation
 name: "chromium-driver-validation"
 description: "Install and validate Appium Chromium driver and doctor behavior"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/chromium/chromium-driver-validation.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/chromium/chromium-driver-validation.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

@@ -1,6 +1,13 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/profiles/xcuitest.md"
 id: appium.setup.profiles.xcuitest
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: true
+allowed_data:
+  - contexts/tools/appium/setup/profiles/xcuitest.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/profiles/xcuitest.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/ffmpeg-environment.md"
 id: setup-references-environment-setup-ffmpeg
 status: stable
 source: contexts/tools/appium/setup/ffmpeg-environment.md
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/ffmpeg-environment.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/ffmpeg-environment.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 
@@ -52,15 +59,18 @@ Use `summary.requiredOk: true` as the read-only setup gate after the user explic
    After user approval, install the versioned Homebrew formula `ffmpeg@7`.
    Linux (Debian/Ubuntu):
    ```bash
+   Only after explicit user approval for privileged package installation:
    sudo apt-get update
    sudo apt-get install -y ffmpeg
    ```
    Linux (RHEL/CentOS/Fedora):
    ```bash
+   Only after explicit user approval for privileged package installation:
    sudo dnf install -y ffmpeg
    ```
    Linux (Arch):
    ```bash
+   Only after explicit user approval for privileged package installation:
    sudo pacman -S --noconfirm ffmpeg
    ```
    Windows PowerShell (`winget` preferred):

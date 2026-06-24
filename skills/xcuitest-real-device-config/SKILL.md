@@ -1,5 +1,12 @@
 ---
 owner: appium
+policy_scope: "skills/xcuitest-real-device-config/SKILL.md"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: true
+allowed_data:
+  - skills/xcuitest-real-device-config/SKILL.md local workflow inputs, public URLs, and sanitized diagnostics
+  - skills/xcuitest-real-device-config/SKILL.md bounded command output, local paths, driver names, IDs, and logs
 name: "xcuitest-real-device-config"
 description: "Route real iOS or tvOS device preparation for Appium XCUITest to canonical readiness, provisioning, signing, WebDriverAgent, and deployment context assets."
 requires_context: contexts/tools/appium/real-device/xcuitest-readiness.md

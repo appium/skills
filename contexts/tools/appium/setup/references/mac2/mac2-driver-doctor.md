@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/mac2/mac2-driver-doctor.md"
 id: appium.setup.references.mac2.mac2-driver-doctor
 name: "mac2-driver-doctor"
 description: "Install and validate Appium Mac2 driver and doctor behavior"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/mac2/mac2-driver-doctor.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/mac2/mac2-driver-doctor.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

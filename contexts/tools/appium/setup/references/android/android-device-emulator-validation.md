@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/android/android-device-emulator-validation.md"
 id: appium.setup.references.android.android-device-emulator-validation
 name: "android-device-emulator-validation"
-description: "Validate Android device inventory, create an emulator only when needed, and capture final evidence"
+description: android-device-emulator-validation: "Validate Android device inventory, create an emulator only when needed, and capture final evidence"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/android/android-device-emulator-validation.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/android/android-device-emulator-validation.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/chromium/chromium-browser-prereqs.md"
 id: appium.setup.references.chromium.chromium-browser-prereqs
 name: "chromium-browser-prereqs"
 description: "Install or validate Chrome, Chromium, Edge, and Linux browser dependencies"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/chromium/chromium-browser-prereqs.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/chromium/chromium-browser-prereqs.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

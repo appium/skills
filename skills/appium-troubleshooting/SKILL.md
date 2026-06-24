@@ -1,8 +1,16 @@
 ---
 owner: appium
+policy_scope: "skills/appium-troubleshooting/SKILL.md"
 name: "appium-troubleshooting"
 description: "Route Appium failure diagnosis to canonical troubleshooting context assets for failed commands, session startup, app launch, driver startup, device connectivity, WebDriverAgent behavior, browser automation, locator strategy, and element lookup issues."
 requires_context: contexts/tools/appium/troubleshooting/triage.md, contexts/tools/appium/troubleshooting/procedure-part1.md
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - skills/appium-troubleshooting/SKILL.md local workflow inputs, public URLs, and sanitized diagnostics
+  - skills/appium-troubleshooting/SKILL.md bounded command output, local paths, driver names, IDs, and logs
+
 ---
 
 # Appium Router Entry

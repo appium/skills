@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/xcuitest/xcuitest-xcode-prereqs.md"
 id: appium.setup.references.xcuitest.xcuitest-xcode-prereqs
 name: "xcuitest-xcode-prereqs"
 description: "Validate Xcode, command-line tools, license, first launch, and simulator inventory"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: true
+allowed_data:
+  - contexts/tools/appium/setup/references/xcuitest/xcuitest-xcode-prereqs.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/xcuitest/xcuitest-xcode-prereqs.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

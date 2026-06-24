@@ -6,7 +6,7 @@ import {
   run,
 } from "./env-check-helpers.mjs";
 
-const env = process.env;
+const env = process.env; // no-disclosure: read local bundletool path variables only; do not print secrets.
 const bundletoolJar =
   env.BUNDLETOOL_JAR ||
   env.BUNDLETOOL_PATH ||

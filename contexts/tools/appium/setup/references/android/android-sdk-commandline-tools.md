@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/android/android-sdk-commandline-tools.md"
 id: appium.setup.references.android.android-sdk-commandline-tools
 name: "android-sdk-commandline-tools"
 description: "Install Android SDK command-line tools only when the SDK path is missing"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/android/android-sdk-commandline-tools.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/android/android-sdk-commandline-tools.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 
@@ -47,6 +54,7 @@ cp -R /opt/homebrew/share/android-commandlinetools/* "$HOME/Library/Android/sdk/
 Linux example:
 
 ```bash
+Only after explicit user approval for privileged package installation:
 sudo apt-get update
 sudo apt-get install -y unzip wget openjdk-21-jdk
 mkdir -p "$HOME/Android/Sdk/cmdline-tools/latest"

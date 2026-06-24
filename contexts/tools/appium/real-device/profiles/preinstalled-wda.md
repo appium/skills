@@ -1,6 +1,13 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/real-device/profiles/preinstalled-wda.md"
 id: appium.real-device.profiles.preinstalled-wda
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: true
+allowed_data:
+  - contexts/tools/appium/real-device/profiles/preinstalled-wda.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/real-device/profiles/preinstalled-wda.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

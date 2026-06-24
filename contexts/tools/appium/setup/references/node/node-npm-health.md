@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/node/node-npm-health.md"
 id: appium.setup.references.node.node-npm-health
 name: "node-npm-health"
 description: "Validate npm availability, registry connectivity, and Windows PowerShell script policy"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/node/node-npm-health.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/node/node-npm-health.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

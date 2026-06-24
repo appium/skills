@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/espresso/espresso-driver-install.md"
 id: appium.setup.references.espresso.espresso-driver-install
 name: "espresso-driver-install"
 description: "Install and verify the Appium Espresso driver in global command mode"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/espresso/espresso-driver-install.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/espresso/espresso-driver-install.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

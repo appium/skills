@@ -1,6 +1,13 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/profiles/safari.md"
 id: appium.setup.profiles.safari
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/profiles/safari.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/profiles/safari.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

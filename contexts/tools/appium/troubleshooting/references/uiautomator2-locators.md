@@ -1,6 +1,13 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/troubleshooting/references/uiautomator2-locators.md"
 id: appium.troubleshooting.references.uiautomator2-locators
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/troubleshooting/references/uiautomator2-locators.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/troubleshooting/references/uiautomator2-locators.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 
@@ -16,7 +23,7 @@ Use the driver docs for the full strategy list and performance tradeoffs. Keep t
 - If the app is hybrid, confirm the current context before debugging native locators.
 - `-android uiautomator` is useful when ids or accessibility metadata are missing, but keep the query narrow and readable enough to debug from logs.
 - Treat a working `xpath` as proof that the node exists, not as the preferred final fix. Replace it with a stronger native locator when the source exposes one.
-- If the node is not present in source at all, this is usually an app-state, accessibility, or context problem rather than locator syntax.
+- If the node is not present in the current view, use one focused view snapshot to distinguish app state, accessibility, or context from locator syntax.
 
 ## Hybrid App Checks
 - If the element is inside a WebView, confirm the failing lookup is happening in a `WEBVIEW_*` context rather than `NATIVE_APP`.

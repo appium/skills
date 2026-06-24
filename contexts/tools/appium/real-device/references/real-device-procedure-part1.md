@@ -1,10 +1,17 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/real-device/references/real-device-procedure-part1.md"
 id: appium.real-device.references.real-device-procedure-part1
 name: "xcuitest-real-device-config"
 description: "Prepare a real iOS/tvOS device for Appium XCUITest automation: device trust, Developer Mode, provisioning profile, WDA code-signing and deployment patterns"
   last_modified: "Fri, 13 Mar 2026 22:30:00 GMT"
 metadata:
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: true
+allowed_data:
+  - contexts/tools/appium/real-device/references/real-device-procedure-part1.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/real-device/references/real-device-procedure-part1.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 # xcuitest-real-device-config

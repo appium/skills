@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/gecko/gecko-browser-prereqs.md"
 id: appium.setup.references.gecko.gecko-browser-prereqs
 name: "gecko-browser-prereqs"
-description: "Validate Firefox browser availability and host prerequisites for Appium Gecko Driver"
+description: gecko-browser-prereqs: "Validate Firefox browser availability and host prerequisites for Appium Gecko Driver"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/gecko/gecko-browser-prereqs.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/gecko/gecko-browser-prereqs.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/node-environment.md"
 id: setup-references-environment-setup-node
 status: stable
 source: contexts/tools/appium/setup/node-environment.md
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/node-environment.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/node-environment.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 
@@ -42,4 +49,4 @@ Report OS, architecture, shell, `node -v`, `npm -v`, active Node executable path
 
 ## Constraints
 
-Prefer maintained LTS Node versions and user-space installs. Avoid `sudo`. Use global npm/Appium mode unless the user explicitly asks for local `npx` mode.
+Prefer maintained LTS Node versions and user-space installs. Avoid privileged elevation. Use global npm/Appium mode unless the user explicitly asks for local `npx` mode.

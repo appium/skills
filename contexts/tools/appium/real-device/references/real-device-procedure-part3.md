@@ -1,8 +1,17 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/real-device/references/real-device-procedure-part3.md"
 id: appium.real-device.references.real-device-procedure-part3
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: true
+allowed_data:
+  - contexts/tools/appium/real-device/references/real-device-procedure-part3.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/real-device/references/real-device-procedure-part3.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
+No-disclosure: do not paste, upload, print, or store certificate contents, signing secrets, archive passwords, provisioning profile payloads, or decoded signing artifacts in chat or logs. Use only local paths, names, IDs, and sanitized command output.
+
 
    **Option 1 (primary) — Download prebuilt WDA from GitHub releases**
 
@@ -27,11 +36,11 @@ id: appium.real-device.references.real-device-procedure-part3
    # binary is at: darwin-*/resigner
    ```
 
-   Export your signing certificate as a `.p12`. Use either method:
+   Create a local signing archive from your signing identity. Use either method:
 
    **GUI (Keychain Access):** locate your Apple Development certificate (the one with a
-   private key) → right-click → **Export** → choose **Personal Information Exchange
-   (.p12)** → set an export password.
+   matching signing identity) → right-click → **Export** → choose **Personal Information Exchange
+   archive** → set an archive password and keep it local.
 
    **CLI (login keychain):**
    ```bash
@@ -41,7 +50,7 @@ id: appium.real-device.references.real-device-procedure-part3
      -t identities \
      -f pkcs12 \
      -P "$P12_PASS" \
-     -o ~/sign/mysign.p12
+     -o "$HOME/sign/<certificate-export-file>"
    ```
 
    Inspect the downloaded package to confirm current bundle IDs and signing state:
@@ -60,7 +69,7 @@ id: appium.real-device.references.real-device-procedure-part3
    PROFILES_DIR="/path/to/profiles-directory"   # resigner --profile takes a directory
    PROFILE_PLIST="$(mktemp -t wda-profile.XXXXXX)"
    trap 'rm -f "$PROFILE_PLIST"' EXIT
-   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > "$PROFILE_PLIST"
+   security cms -D -i "$PROFILES_DIR/<profile-file>" > "$PROFILE_PLIST"
     # output example: TEAMID1234.com.example.wda  ->  TARGET_BUNDLE_ID=com.example.wda
    /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROFILE_PLIST"
     /usr/libexec/PlistBuddy -c "Print :ExpirationDate" "$PROFILE_PLIST"
@@ -70,7 +79,7 @@ id: appium.real-device.references.real-device-procedure-part3
    ```
 
    Run `resigner` to embed the profile and sign. `--profile` accepts a **directory**
-   path containing `.mobileprovision` files, not the `.mobileprovision` file itself;
+   path containing provisioning profile files, not an individual profile file;
    resigner selects the matching profile automatically. Include `--bundle-id-remap`
    flags only when your profile app identifier is not a true wildcard (`*`). Each
    remap must use `old.bundle.id=new.bundle.id` syntax:
@@ -80,7 +89,7 @@ id: appium.real-device.references.real-device-procedure-part3
    # Partial wildcards (e.g. io.appium.* or com.example.*) still require --bundle-id-remap
 
    resigner \
-     --p12-file "<path-to-your.p12>" \
+     --p12-file "<path-to-local-certificate-export>" \
      --p12-password "<p12-password>" \
      --profile "$PROFILES_DIR" \
      --force \

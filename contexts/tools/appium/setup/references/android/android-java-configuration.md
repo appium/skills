@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/android/android-java-configuration.md"
 id: appium.setup.references.android.android-java-configuration
 name: "android-java-configuration"
-description: "Configure Java for Android setup only when java or javac is missing"
+description: android-java-configuration: "Configure Java for Android setup only when java or javac is missing"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/android/android-java-configuration.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/android/android-java-configuration.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

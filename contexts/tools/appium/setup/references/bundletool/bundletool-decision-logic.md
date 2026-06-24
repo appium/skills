@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/bundletool/bundletool-decision-logic.md"
 id: appium.setup.references.bundletool.bundletool-decision-logic
 name: "bundletool-decision-logic"
 description: "Optional bundletool setup gates and install triggers"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/bundletool/bundletool-decision-logic.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/bundletool/bundletool-decision-logic.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

@@ -1,8 +1,15 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/setup/references/environment-setup-safari.md"
 id: appium.setup.references.environment-setup-safari
 name: "environment-setup-safari"
 description: "Route Appium Safari driver setup for macOS Safari and optional iOS Safari targets"
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: false
+allowed_data:
+  - contexts/tools/appium/setup/references/environment-setup-safari.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/setup/references/environment-setup-safari.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 
@@ -40,4 +47,4 @@ Use `summary.requiredOk: true` as the read-only setup gate before smoke checks. 
 
 ## Constraints
 
-macOS only. Use global npm/Appium by default. Use `npx appium` only when explicitly requested. Do not use `sudo` unless the user explicitly asks.
+macOS only. Use global npm/Appium by default. Use `npx appium` only when explicitly requested. Do not use privileged elevation unless the user explicitly asks.

@@ -11,6 +11,7 @@ import {
   pathJoin,
   run,
 } from "./env-check-helpers.mjs";
+const chromiumEnv = process.env; // no-disclosure: read local browser install path variables only; do not print secrets.
 
 const browserCommands = [
   "google-chrome",
@@ -35,11 +36,11 @@ const browserPaths = isMac
     ]
   : isWindows
     ? [
-        pathJoin(process.env.PROGRAMFILES || "C:\\Program Files", "Google", "Chrome", "Application", "chrome.exe"),
-        pathJoin(process.env["PROGRAMFILES(X86)"] || "C:\\Program Files (x86)", "Google", "Chrome", "Application", "chrome.exe"),
-        pathJoin(process.env.LOCALAPPDATA || pathJoin(home, "AppData", "Local"), "Google", "Chrome", "Application", "chrome.exe"),
-        pathJoin(process.env.PROGRAMFILES || "C:\\Program Files", "Microsoft", "Edge", "Application", "msedge.exe"),
-        pathJoin(process.env["PROGRAMFILES(X86)"] || "C:\\Program Files (x86)", "Microsoft", "Edge", "Application", "msedge.exe"),
+        pathJoin(chromiumEnv.PROGRAMFILES || "C:\\Program Files", "Google", "Chrome", "Application", "chrome.exe"),
+        pathJoin(chromiumEnv["PROGRAMFILES(X86)"] || "C:\\Program Files (x86)", "Google", "Chrome", "Application", "chrome.exe"),
+        pathJoin(chromiumEnv.LOCALAPPDATA || pathJoin(home, "AppData", "Local"), "Google", "Chrome", "Application", "chrome.exe"),
+        pathJoin(chromiumEnv.PROGRAMFILES || "C:\\Program Files", "Microsoft", "Edge", "Application", "msedge.exe"),
+        pathJoin(chromiumEnv["PROGRAMFILES(X86)"] || "C:\\Program Files (x86)", "Microsoft", "Edge", "Application", "msedge.exe"),
       ]
     : [];
 

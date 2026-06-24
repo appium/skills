@@ -1,6 +1,13 @@
 ---
 owner: appium
+policy_scope: "contexts/tools/appium/real-device/references/real-device-procedure-part8.md"
 id: appium.real-device.references.real-device-procedure-part8
+network_allowed: true
+external_upload_allowed: false
+secrets_allowed: true
+allowed_data:
+  - contexts/tools/appium/real-device/references/real-device-procedure-part8.md local workflow inputs, public URLs, and sanitized diagnostics
+  - contexts/tools/appium/real-device/references/real-device-procedure-part8.md bounded command output, local paths, driver names, IDs, and logs
 
 ---
 

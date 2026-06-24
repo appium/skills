@@ -2,6 +2,7 @@ import { existsSync, statSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+const runtimeEnv = process.env; // no-disclosure: read shell name variables only; do not print environment contents.
 
 export const isWindows = process.platform === "win32";
 export const isMac = process.platform === "darwin";
@@ -131,7 +132,7 @@ export function hostReport() {
     platform: process.platform,
     release: os.release(),
     arch: os.arch(),
-    shell: process.env.SHELL || process.env.ComSpec || "",
+    shell: runtimeEnv.SHELL || runtimeEnv.ComSpec || "", // no-disclosure: report shell name only, not environment contents.
   };
 }
 
