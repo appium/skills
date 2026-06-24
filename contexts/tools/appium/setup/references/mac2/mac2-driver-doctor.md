@@ -11,7 +11,7 @@ description: "Install and validate Appium Mac2 driver and doctor behavior"
 ## Install And List
 
 ```bash
-npm install -g appium
+npm install -g appium@3.5.2
 appium driver install mac2
 appium driver list --installed --json
 ```

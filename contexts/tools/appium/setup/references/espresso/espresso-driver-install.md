@@ -11,7 +11,7 @@ description: "Install and verify the Appium Espresso driver in global command mo
 ## Install
 
 ```bash
-npm install -g appium
+npm install -g appium@3.5.2
 appium driver install espresso
 ```
 

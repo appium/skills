@@ -25,8 +25,10 @@ id: appium.real-device.references.real-device-procedure-part4
    - **Expired profiles are rejected** by `resigner` as "not usable".
    - Always confirm profile validity before running:
    ```bash
-   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > /tmp/profile.plist
-   /usr/libexec/PlistBuddy -c "Print :ExpirationDate" /tmp/profile.plist
+   PROFILE_PLIST="$(mktemp -t wda-profile.XXXXXX)"
+   trap 'rm -f "$PROFILE_PLIST"' EXIT
+   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > "$PROFILE_PLIST"
+   /usr/libexec/PlistBuddy -c "Print :ExpirationDate" "$PROFILE_PLIST"
    date
    ```
 
@@ -47,4 +49,3 @@ id: appium.real-device.references.real-device-procedure-part4
    Proceed to step 5 to verify the signature.
 
    ---
-

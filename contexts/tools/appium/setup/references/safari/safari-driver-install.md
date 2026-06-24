@@ -18,7 +18,7 @@ safaridriver --version
 ## Install Driver
 
 ```bash
-npm install -g appium
+npm install -g appium@3.5.2
 appium driver install safari
 appium driver list --installed --json
 ```

@@ -13,7 +13,7 @@ description: "Install and verify the Appium UiAutomator2 driver in global comman
 Use global Appium mode unless the user explicitly asks for local `npx` mode:
 
 ```bash
-npm install -g appium
+npm install -g appium@3.5.2
 appium driver install uiautomator2
 ```
 

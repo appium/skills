@@ -43,10 +43,13 @@ Use `summary.requiredOk: true` as the read-only setup gate after the user explic
    ```
 
 2. **Install FFmpeg when missing**
+   These commands intentionally use the current package from the selected OS package manager because FFmpeg package names and version pin syntax differ by repository. Confirm with the user before installing, and record the installed version from `ffmpeg -version`.
+
    macOS (Homebrew):
    ```bash
-   brew install ffmpeg
+   brew info ffmpeg@7
    ```
+   After user approval, install the versioned Homebrew formula `ffmpeg@7`.
    Linux (Debian/Ubuntu):
    ```bash
    sudo apt-get update

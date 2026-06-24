@@ -23,20 +23,23 @@ description: "Install Android SDK command-line tools only when the SDK path is m
 macOS CLI tools example:
 
 ```bash
-curl -L -o /tmp/commandlinetools-mac-latest.zip https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip
-unzip -q /tmp/commandlinetools-mac-latest.zip -d /tmp/android-cmdline-tools
+ANDROID_CMDLINE_TOOLS_VERSION=14742923
+ANDROID_CMDLINE_TOOLS_WORKDIR="$(mktemp -d -t android-cmdline-tools.XXXXXX)"
+ANDROID_CMDLINE_TOOLS_ZIP="$ANDROID_CMDLINE_TOOLS_WORKDIR/commandlinetools-mac-${ANDROID_CMDLINE_TOOLS_VERSION}.zip"
+curl -L -o "$ANDROID_CMDLINE_TOOLS_ZIP" "https://dl.google.com/android/repository/commandlinetools-mac-${ANDROID_CMDLINE_TOOLS_VERSION}_latest.zip"
+unzip -q "$ANDROID_CMDLINE_TOOLS_ZIP" -d "$ANDROID_CMDLINE_TOOLS_WORKDIR"
 export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 if [ ! -d "$JAVA_HOME" ]; then
   export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 fi
 export PATH="$JAVA_HOME/bin:$PATH"
-/tmp/android-cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/Library/Android/sdk" "cmdline-tools;latest"
+"$ANDROID_CMDLINE_TOOLS_WORKDIR/cmdline-tools/bin/sdkmanager" --sdk_root="$HOME/Library/Android/sdk" "cmdline-tools;latest"
 ```
 
 macOS Homebrew fallback:
 
 ```bash
-test -d "/Applications/Android Studio.app" || brew install --cask android-commandlinetools
+test -d "/Applications/Android Studio.app" || echo "Install Android command-line tools with a user-approved, pinned Homebrew cask or Android Studio package."
 mkdir -p "$HOME/Library/Android/sdk/cmdline-tools/latest"
 cp -R /opt/homebrew/share/android-commandlinetools/* "$HOME/Library/Android/sdk/cmdline-tools/latest/"
 ```

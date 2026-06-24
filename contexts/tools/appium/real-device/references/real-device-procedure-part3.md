@@ -58,12 +58,14 @@ id: appium.real-device.references.real-device-procedure-part3
    is not needed because remap flags are omitted.
    ```bash
    PROFILES_DIR="/path/to/profiles-directory"   # resigner --profile takes a directory
-   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > /tmp/profile.plist
+   PROFILE_PLIST="$(mktemp -t wda-profile.XXXXXX)"
+   trap 'rm -f "$PROFILE_PLIST"' EXIT
+   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > "$PROFILE_PLIST"
     # output example: TEAMID1234.com.example.wda  ->  TARGET_BUNDLE_ID=com.example.wda
-   /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" /tmp/profile.plist
-    /usr/libexec/PlistBuddy -c "Print :ExpirationDate" /tmp/profile.plist
+   /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROFILE_PLIST"
+    /usr/libexec/PlistBuddy -c "Print :ExpirationDate" "$PROFILE_PLIST"
 
-    APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" /tmp/profile.plist)
+    APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROFILE_PLIST")
     TARGET_BUNDLE_ID="${APP_ID#*.}"   # remove TEAMID. prefix if present
    ```
 
@@ -88,4 +90,3 @@ id: appium.real-device.references.real-device-procedure-part3
      "$WDA_APP"
    ```
    After `resigner` completes, the package is already signed; proceed directly to step 5 to verify.
-

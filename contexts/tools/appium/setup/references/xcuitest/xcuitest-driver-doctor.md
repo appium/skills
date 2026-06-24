@@ -11,7 +11,7 @@ description: "Install and validate Appium XCUITest driver and doctor required fi
 ## Install And List
 
 ```bash
-npm install -g appium
+npm install -g appium@3.5.2
 appium driver install xcuitest
 appium driver list --installed --json
 ```
