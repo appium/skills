@@ -27,22 +27,10 @@ id: appium.real-device.references.real-device-procedure-part3
    # binary is at: darwin-*/resigner
    ```
 
-   Export your signing certificate as a `.p12`. Use either method:
-
-   **GUI (Keychain Access):** locate your Apple Development certificate (the one with a
-   private key) → right-click → **Export** → choose **Personal Information Exchange
-   (.p12)** → set an export password.
-
-   **CLI (login keychain):**
-   ```bash
-   P12_PASS="<choose-a-password>"
-   security export \
-     -k ~/Library/Keychains/login.keychain-db \
-     -t identities \
-     -f pkcs12 \
-     -P "$P12_PASS" \
-     -o ~/sign/mysign.p12
-   ```
+   Prepare a local `.p12` signing archive outside the chat or agent context.
+   The human operator must create it locally, keep the password out of prompts,
+   logs, and diagnostics, and provide only a filesystem path placeholder when
+   documenting the workflow.
 
    Inspect the downloaded package to confirm current bundle IDs and signing state:
    ```bash
@@ -58,14 +46,17 @@ id: appium.real-device.references.real-device-procedure-part3
    is not needed because remap flags are omitted.
    ```bash
    PROFILES_DIR="/path/to/profiles-directory"   # resigner --profile takes a directory
-   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > /tmp/profile.plist
+   PROFILE_TMP_DIR="$(mktemp -d)"
+   PROFILE_PLIST="$PROFILE_TMP_DIR/profile.plist"
+   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > "$PROFILE_PLIST"
     # output example: TEAMID1234.com.example.wda  ->  TARGET_BUNDLE_ID=com.example.wda
-   /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" /tmp/profile.plist
-    /usr/libexec/PlistBuddy -c "Print :ExpirationDate" /tmp/profile.plist
+   /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROFILE_PLIST"
+    /usr/libexec/PlistBuddy -c "Print :ExpirationDate" "$PROFILE_PLIST"
 
-    APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" /tmp/profile.plist)
+    APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROFILE_PLIST")
     TARGET_BUNDLE_ID="${APP_ID#*.}"   # remove TEAMID. prefix if present
    ```
+   Delete `PROFILE_TMP_DIR` after the profile checks complete.
 
    Run `resigner` to embed the profile and sign. `--profile` accepts a **directory**
    path containing `.mobileprovision` files, not the `.mobileprovision` file itself;
@@ -88,4 +79,3 @@ id: appium.real-device.references.real-device-procedure-part3
      "$WDA_APP"
    ```
    After `resigner` completes, the package is already signed; proceed directly to step 5 to verify.
-

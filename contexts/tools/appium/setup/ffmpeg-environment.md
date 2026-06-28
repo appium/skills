@@ -47,19 +47,12 @@ Use `summary.requiredOk: true` as the read-only setup gate after the user explic
    ```bash
    brew install ffmpeg
    ```
-   Linux (Debian/Ubuntu):
-   ```bash
-   sudo apt-get update
-   sudo apt-get install -y ffmpeg
-   ```
-   Linux (RHEL/CentOS/Fedora):
-   ```bash
-   sudo dnf install -y ffmpeg
-   ```
-   Linux (Arch):
-   ```bash
-   sudo pacman -S --noconfirm ffmpeg
-   ```
+   Linux (Debian/Ubuntu): after explicit human approval for privileged package
+   changes, install package `ffmpeg` with the system package manager.
+   Linux (RHEL/CentOS/Fedora): after explicit human approval for privileged
+   package changes, install package `ffmpeg` with the system package manager.
+   Linux (Arch): after explicit human approval for privileged package changes,
+   install package `ffmpeg` with the system package manager.
    Windows PowerShell (`winget` preferred):
    ```powershell
    winget install --id Gyan.FFmpeg --exact --accept-package-agreements --accept-source-agreements

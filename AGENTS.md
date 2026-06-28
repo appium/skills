@@ -119,10 +119,9 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 
 ## Completion Policy
 
-A workflow is complete only when the completion criteria in the loaded context, reference, or procedure are satisfied.
+Use the selected skill file's explicit checklist as the completion gate.
 
 - Required doctor checks must pass.
 - Optional doctor warnings do not block completion.
 - Validate global command mode (`appium`) as the default completion path.
 - Validate local command mode (`npx appium`) only when the user explicitly requests local execution.
-

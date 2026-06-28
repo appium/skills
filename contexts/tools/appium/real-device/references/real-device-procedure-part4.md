@@ -25,10 +25,13 @@ id: appium.real-device.references.real-device-procedure-part4
    - **Expired profiles are rejected** by `resigner` as "not usable".
    - Always confirm profile validity before running:
    ```bash
-   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > /tmp/profile.plist
-   /usr/libexec/PlistBuddy -c "Print :ExpirationDate" /tmp/profile.plist
+   PROFILE_TMP_DIR="$(mktemp -d)"
+   PROFILE_PLIST="$PROFILE_TMP_DIR/profile.plist"
+   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > "$PROFILE_PLIST"
+   /usr/libexec/PlistBuddy -c "Print :ExpirationDate" "$PROFILE_PLIST"
    date
    ```
+   Delete `PROFILE_TMP_DIR` after the profile checks complete.
 
    > **Offline note (iOS 16+):** If the device has no reliable internet at test time,
    > set up an offline provisioning profile first. Follow the steps in the
@@ -47,4 +50,3 @@ id: appium.real-device.references.real-device-procedure-part4
    Proceed to step 5 to verify the signature.
 
    ---
-
