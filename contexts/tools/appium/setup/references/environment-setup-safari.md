@@ -40,4 +40,4 @@ Use `summary.requiredOk: true` as the read-only setup gate before smoke checks. 
 
 ## Constraints
 
-macOS only. Use global npm/Appium by default. Use `npx appium` only when explicitly requested. Do not use `sudo` unless the user explicitly asks.
+macOS only. Use global npm/Appium by default. Use `npx appium` only when explicitly requested. Require explicit human approval before privileged elevation.

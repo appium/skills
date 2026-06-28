@@ -16,7 +16,7 @@ Use the driver docs for the full strategy list and performance tradeoffs. Keep t
 - If the app is hybrid, confirm the current context before debugging native locators.
 - `-android uiautomator` is useful when ids or accessibility metadata are missing, but keep the query narrow and readable enough to debug from logs.
 - Treat a working `xpath` as proof that the node exists, not as the preferred final fix. Replace it with a stronger native locator when the source exposes one.
-- If the node is not present in source at all, this is usually an app-state, accessibility, or context problem rather than locator syntax.
+- If the target node is absent from the current page-source snapshot, this is usually an app-state, accessibility, or context problem rather than locator syntax.
 
 ## Hybrid App Checks
 - If the element is inside a WebView, confirm the failing lookup is happening in a `WEBVIEW_*` context rather than `NATIVE_APP`.

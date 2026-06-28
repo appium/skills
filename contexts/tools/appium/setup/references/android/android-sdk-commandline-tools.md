@@ -25,15 +25,17 @@ description: "Install Android SDK command-line tools only when the SDK path is m
 macOS CLI tools example:
 
 ```bash
-curl -L -o /tmp/commandlinetools-mac-latest.zip https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip
-unzip -q /tmp/commandlinetools-mac-latest.zip -d /tmp/android-cmdline-tools
+ANDROID_TOOLS_TMP_DIR="$(mktemp -d)"
+curl -L -o "$ANDROID_TOOLS_TMP_DIR/commandlinetools-mac-latest.zip" https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip
+unzip -q "$ANDROID_TOOLS_TMP_DIR/commandlinetools-mac-latest.zip" -d "$ANDROID_TOOLS_TMP_DIR/android-cmdline-tools"
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 if [ ! -d "$JAVA_HOME" ]; then
   export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 fi
 export PATH="$JAVA_HOME/bin:$PATH"
-/tmp/android-cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/Library/Android/sdk" "cmdline-tools;latest"
+"$ANDROID_TOOLS_TMP_DIR/android-cmdline-tools/cmdline-tools/bin/sdkmanager" --sdk_root="$HOME/Library/Android/sdk" "cmdline-tools;latest"
 ```
+Delete `ANDROID_TOOLS_TMP_DIR` after the command-line tools are installed.
 
 macOS Homebrew fallback:
 
@@ -43,11 +45,11 @@ mkdir -p "$HOME/Library/Android/sdk/cmdline-tools/latest"
 cp -R /opt/homebrew/share/android-commandlinetools/* "$HOME/Library/Android/sdk/cmdline-tools/latest/"
 ```
 
-Linux example:
+Linux package prerequisites, after explicit human approval for privileged
+package changes: `unzip`, `wget`, and `openjdk-21-jdk` on Debian/Ubuntu-style
+systems.
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y unzip wget openjdk-21-jdk
 mkdir -p "$HOME/Android/Sdk/cmdline-tools/latest"
 ```
 

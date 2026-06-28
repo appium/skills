@@ -42,4 +42,4 @@ Report OS, architecture, shell, `node -v`, `npm -v`, active Node executable path
 
 ## Constraints
 
-Prefer maintained LTS Node versions and user-space installs. Avoid `sudo`. Use global npm/Appium mode unless the user explicitly asks for local `npx` mode.
+Prefer maintained LTS Node versions and user-space installs. Require explicit human approval before any privileged elevation. Use global npm/Appium mode unless the user explicitly asks for local `npx` mode.
