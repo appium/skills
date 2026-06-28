@@ -11,10 +11,10 @@ description: "Configure Java for Android setup only when java or javac is missin
 ## macOS Primary
 
 ```bash
-if [ -d "$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
-  export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
-elif [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
+if [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
   export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+elif [ -d "$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
+  export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 fi
 if [ -n "$JAVA_HOME" ] && [ -d "$JAVA_HOME" ]; then
   export PATH="$JAVA_HOME/bin:$PATH"
@@ -73,3 +73,7 @@ javac -version
 ## Windows Fallback
 
 Use Microsoft OpenJDK only when Android Studio JBR is unavailable and Java is missing.
+
+## macOS Learned Constraint
+
+When installing Android Studio during setup, prefer `/Applications/Android Studio.app` so `JAVA_HOME=/Applications/Android Studio.app/Contents/jbr/Contents/Home` is stable across shells and matches Appium doctor output. Preserve an existing working Java setup unless Java or `javac` is missing.

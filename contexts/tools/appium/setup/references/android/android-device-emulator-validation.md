@@ -18,6 +18,8 @@ node tools/appium/setup/scripts/check-android-env.mjs
 
 Use `checks.devices`, `checks.avds`, `summary.connectedDeviceCount`, and `summary.avdCount`.
 
+In managed sandboxes, `adb devices -l` can fail while starting the ADB daemon with a smartsocket error such as `could not install *smartsocket* listener: Operation not permitted`. Treat that as an expected sandbox limitation when `adb version`, Appium doctor, SDK package checks, and `emulator -list-avds` otherwise pass. Re-run `adb devices -l` outside the sandbox for final device inventory evidence before claiming host-level device visibility.
+
 Skip emulator creation when either condition is true:
 
 - `adb devices` shows at least one `device` entry.

@@ -17,17 +17,19 @@ description: "Install Android SDK command-line tools only when the SDK path is m
 ## macOS Android Studio Path
 
 - Download Android Studio from `https://developer.android.com/studio`.
-- Check both `/Applications/Android Studio.app` and `$HOME/Applications/Android Studio.app`.
+- Prefer installing `Android Studio.app` in `/Applications`; use `$HOME/Applications/Android Studio.app` only when the user explicitly requests a user-local app install or `/Applications` is unavailable.
+- Check `/Applications/Android Studio.app` before `$HOME/Applications/Android Studio.app`.
 - Use Android Studio's bundled JBR when command-line tools require Java.
+- Keep the Android SDK at the macOS user-local default `$HOME/Library/Android/sdk`, even when Android Studio itself is installed in `/Applications`.
 
 macOS CLI tools example:
 
 ```bash
 curl -L -o /tmp/commandlinetools-mac-latest.zip https://dl.google.com/android/repository/commandlinetools-mac-14742923_latest.zip
 unzip -q /tmp/commandlinetools-mac-latest.zip -d /tmp/android-cmdline-tools
-export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 if [ ! -d "$JAVA_HOME" ]; then
-  export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+  export JAVA_HOME="$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 fi
 export PATH="$JAVA_HOME/bin:$PATH"
 /tmp/android-cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root="$HOME/Library/Android/sdk" "cmdline-tools;latest"
