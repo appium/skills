@@ -9,6 +9,7 @@ Each workflow includes or delegates to a self-improvement prompt in the loaded c
 | Skill | Description |
 |---|---|
 | [setup](skills/setup/SKILL.md) | Routes Appium environment setup to canonical contexts for Node.js, Android, UiAutomator2, Espresso, Chromium, Gecko, Mac2, Safari, XCUITest, FFmpeg, or bundletool procedures |
+| [prepare-development-environment](skills/prepare-development-environment/SKILL.md) | Prepares this repository for local Appium skills development by checking Git, Node, npm, helper-script readiness, and routing driver-specific setup |
 | [appium-troubleshooting](skills/appium-troubleshooting/SKILL.md) | Troubleshoots UiAutomator2 or XCUITest failures with a driver-scoped workflow that starts from the failing symptom and re-checks the smallest reproduction after each fix |
 | [xcuitest-real-device-config](skills/xcuitest-real-device-config/SKILL.md) | Prepares a real iOS/tvOS device for Appium XCUITest automation |
 
