@@ -15,7 +15,7 @@ Use this context to prepare the Appium skills repository for local development, 
 1. Load `AGENTS.md`, the selected skill entrypoint, and this context.
 2. Inspect the workspace without changing it:
    - `git status --short`
-   - `rg --files`
+   - `find . -type f`
    - `node --version`
    - `npm --version`
    - `npm config get registry`
