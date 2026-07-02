@@ -2,7 +2,7 @@
 owner: appium
 name: "setup"
 description: "Route Appium environment setup requests to canonical setup contexts for Node.js, Appium drivers, Android, XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, bundletool, FFmpeg, and smoke validation evidence."
-requires_context: contexts/tools/appium/setup/routing.md, contexts/tools/appium/setup/node-environment.md, contexts/tools/appium/setup/uiautomator2-environment.md, contexts/tools/appium/setup/espresso-environment.md, contexts/tools/appium/setup/gecko-environment.md, contexts/tools/appium/setup/mac2-environment.md, contexts/tools/appium/setup/ffmpeg-environment.md
+requires_context: contexts/tools/appium/setup/routing.md
 ---
 
 # Appium Router Entry
