@@ -16,7 +16,7 @@ Prepare Appium Safari Driver by validating macOS, Node/Appium, `safaridriver`, S
 
 Load these references in order:
 
-1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
+1. `contexts/tools/appium/setup-basics.md` for Node.js and npm.
 2. `contexts/tools/appium/setup/references/safari/safari-decision-logic.md` for macOS-only gates and authorization boundaries.
 3. `contexts/tools/appium/setup/references/safari/safari-driver-install.md` for Appium Safari driver installation and `safaridriver` checks.
 4. `contexts/tools/appium/setup/references/safari/safari-smoke-status.md` for `/status`, log evidence, and cleanup.

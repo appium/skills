@@ -12,7 +12,7 @@ description: "macOS-only XCUITest setup gates and optional dependency boundaries
 
 - If host OS is not macOS: stop.
 - If Xcode is missing or command-line tools are unconfigured: install or configure them before continuing.
-- If Node.js or npm needs repair: run `contexts/tools/appium/setup/node-environment.md`.
+- If Node.js or npm needs repair: run `contexts/tools/appium/setup-basics.md`.
 - If Appium CLI or `xcuitest` driver is missing: install with Appium CLI.
 - If install returns "already installed": continue.
 - Run `contexts/tools/appium/setup/ffmpeg-environment.md` only when the user explicitly requests media capabilities.

@@ -17,7 +17,7 @@ description: "Decide Gecko setup path from host OS, Appium mode, Firefox channel
 
 ## Required Gates
 
-1. Node.js and npm satisfy `contexts/tools/appium/setup/node-environment.md`.
+1. Node.js and npm satisfy `contexts/tools/appium/setup-basics.md`.
 2. `appium -v` succeeds and Appium major version is `>= 3`.
 3. `appium driver list --installed` includes `gecko`.
 4. A Firefox executable is available or the user provides one through capabilities.

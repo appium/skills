@@ -2,7 +2,7 @@
 owner: appium
 id: setup-references-android-android-decision-logic
 status: stable
-source: contexts/tools/appium/setup/android-decision-logic.md
+source: contexts/platform/android/decision-logic.md
 
 ---
 

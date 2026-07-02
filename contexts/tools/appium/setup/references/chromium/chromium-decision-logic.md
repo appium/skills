@@ -11,7 +11,7 @@ description: "Chromium Appium setup triggers, browser gates, and driver validati
 ## Decision Logic
 
 - If host OS is not macOS, Linux, or Windows: stop.
-- If Node.js or npm does not satisfy Appium/Chromium driver engines: run `contexts/tools/appium/setup/node-environment.md`.
+- If Node.js or npm does not satisfy Appium/Chromium driver engines: run `contexts/tools/appium/setup-basics.md`.
 - If Appium CLI is missing or Appium major version is `< 3`: install or upgrade global Appium.
 - If `chromium` driver is missing: install it with Appium CLI.
 - If no Chrome, Chromium, or Edge browser is available: install one appropriate to the host.

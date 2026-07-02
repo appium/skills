@@ -1,13 +1,13 @@
 ---
 owner: appium
-id: appium.setup.references.environment-setup-android
-name: "environment-setup-android"
-description: "Route Android SDK, Java, ADB, package, and emulator setup references for Appium Android drivers"
+id: platform.android.emulator-setup
+name: "android-emulator-setup"
+description: "Route Android SDK, Java, ADB, package, device, and emulator setup references for Android automation"
 last_modified: "Mon, 27 Apr 2026 GMT"
 
 ---
 
-# environment-setup-android
+# Android Emulator Setup
 
 ## Goal
 
@@ -17,12 +17,12 @@ Prepare Android automation by validating Java, Android SDK command-line tools, S
 
 Load these references in order:
 
-1. `contexts/tools/appium/setup/android-decision-logic.md` for supported hosts, preservation rules, optional dependency boundaries, and install triggers.
-2. `android/android-detect-base-tooling.md` for OS, Java, Android SDK, ADB, and emulator binary detection.
-3. `android/android-sdk-commandline-tools.md` for platform default SDK paths and command-line tools bootstrap.
-4. `android/android-java-configuration.md` for Java setup only when `java` or `javac` is missing.
-5. `android/android-sdk-packages-and-path.md` for `ANDROID_HOME`, `PATH`, licenses, and required SDK packages.
-6. `android/android-device-emulator-validation.md` for device inventory, emulator creation, final validation, and evidence.
+1. `contexts/platform/android/decision-logic.md` for supported hosts, preservation rules, optional dependency boundaries, and install triggers.
+2. `contexts/platform/android/references/detect-base-tooling.md` for OS, Java, Android SDK, ADB, and emulator binary detection.
+3. `contexts/platform/android/references/sdk-commandline-tools.md` for platform default SDK paths and command-line tools bootstrap.
+4. `contexts/platform/android/references/java-configuration.md` for Java setup only when `java` or `javac` is missing.
+5. `contexts/platform/android/references/sdk-packages-and-path.md` for `ANDROID_HOME`, `PATH`, licenses, and required SDK packages.
+6. `contexts/platform/android/references/device-emulator-validation.md` for device inventory, emulator creation, final validation, and evidence.
 
 For deterministic read-only validation, run:
 
