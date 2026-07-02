@@ -24,5 +24,5 @@ Each workflow includes or delegates to a self-improvement prompt in the loaded c
 
 ## Agent Instructions
 
-- See [AGENTS.md](AGENTS.md) for strict execution rules and routing guidance.
-- Use the workflow section matching your target (`uiautomator2`, `espresso`, `chromium`, `gecko`, `mac2`, `safari`, `xcuitest`, `xcuitest real device`, or `troubleshooting`) and run skills in the documented order.
+- See [AGENTS.md](AGENTS.md) for repository-level execution rules and skill entrypoint guidance.
+- Use the selected `SKILL.md` and its routed `contexts/` assets for target-specific step order.
