@@ -13,7 +13,8 @@ Appium Safari Driver on macOS.
 3. Load `contexts/platform/macos/profile.md`.
 4. Load `contexts/tools/appium/setup/profiles/safari.md`.
 5. Load `contexts/tools/appium/setup-basics.md`.
-6. Load `contexts/tools/appium/setup/references/environment-setup-safari.md`.
+6. Load `contexts/browser/safari/prereqs.md`.
+7. Load `contexts/tools/appium/setup/references/environment-setup-safari.md`.
 
 Rules:
 

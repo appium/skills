@@ -1,12 +1,11 @@
 ---
 owner: appium
-id: appium.setup.profiles.linux
+id: platform.linux.profile
+status: stable
 
 ---
 
 # Linux Setup Profile
-
-Base skill: `skills/setup/SKILL.md`
 
 Use this profile when setup is running on Linux.
 

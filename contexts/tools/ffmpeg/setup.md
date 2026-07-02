@@ -1,15 +1,15 @@
 ---
 owner: appium
-id: setup-references-environment-setup-ffmpeg
+id: tools.ffmpeg.setup
 status: stable
-source: contexts/tools/appium/setup/ffmpeg-environment.md
+source: contexts/tools/ffmpeg/setup.md
 
 ---
 
-# FFmpeg Environment
+# FFmpeg Setup
 
 ## Goal
-Installs and validates FFmpeg in a cross-platform way so Appium environments can use optional media-related capabilities when explicitly requested.
+Install and validate FFmpeg in a cross-platform way so Appium and other workflows can use optional media-related capabilities when explicitly requested.
 
 ## Validation Command
 
@@ -22,7 +22,7 @@ Use `summary.requiredOk: true` as the read-only setup gate after the user explic
 ## Decision Logic
 - If host OS is unsupported: stop and ask the user to run on macOS, Linux, or Windows.
 - If `ffmpeg` is already available in `PATH`: do not reinstall; only validate version output.
-- If user has not explicitly requested FFmpeg-related capability: skip this skill.
+- If user has not explicitly requested FFmpeg-related capability: skip this context.
 - If host OS is macOS: prefer Homebrew install.
 - If host OS is Linux: use distro package manager install.
 - If host OS is Windows: prefer `winget`; fallback to Chocolatey if `winget` is unavailable.
@@ -96,12 +96,12 @@ Mark complete only when all are true:
 
 ## Self-Improvement Prompt
 
-Before the final response, run the FFmpeg self-improvement check. Report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the skill unless asked.
+Before the final response, run the FFmpeg self-improvement check. Report any missing, ambiguous, outdated, or retry-causing instruction with section and proposed wording. Do not edit the context unless asked.
 
 ## Constraints
 
-- This optional skill requires explicit user request before installing FFmpeg.
-- This is an optional skill; run only when the user explicitly requests FFmpeg-related setup.
+- This optional context requires explicit user request before installing FFmpeg.
+- This is an optional context; run only when the user explicitly requests FFmpeg-related setup.
 - Ask before installing optional dependencies.
 - If privileged commands are required, pause and provide exact commands for user execution.
-- Do not modify unrelated Appium, Java, Android SDK, or Xcode configuration in this skill.
+- Do not modify unrelated Appium, Java, Android SDK, or Xcode configuration in this context.
