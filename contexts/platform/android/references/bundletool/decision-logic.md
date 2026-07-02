@@ -1,8 +1,9 @@
 ---
 owner: appium
-id: appium.setup.references.bundletool.bundletool-decision-logic
+id: platform.android.bundletool.decision-logic
 name: "bundletool-decision-logic"
 description: "Optional bundletool setup gates and install triggers"
+status: stable
 
 ---
 

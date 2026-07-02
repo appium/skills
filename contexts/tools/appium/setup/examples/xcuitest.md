@@ -9,7 +9,7 @@ id: appium.setup.examples.xcuitest
 Use this repository's skills to prepare macOS + XCUITest.
 
 1. Load `skills/setup/SKILL.md`.
-2. Load `contexts/tools/appium/setup/profiles/macos.md`.
+2. Load `contexts/platform/macos/profile.md`.
 3. Load `contexts/tools/appium/setup/profiles/xcuitest.md`.
 4. Load `contexts/tools/appium/setup-basics.md`.
 5. Load `contexts/platform/ios/simulator-setup.md`.

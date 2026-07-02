@@ -1,12 +1,13 @@
 ---
 owner: appium
-id: appium.setup.references.environment-setup-bundletool
-name: "environment-setup-bundletool"
+id: platform.android.bundletool
+name: "android-bundletool"
 description: "Route optional bundletool.jar setup for Android App Bundle support"
+status: stable
 
 ---
 
-# environment-setup-bundletool
+# Android Bundletool
 
 ## Goal
 
@@ -16,9 +17,9 @@ Install and validate `bundletool.jar` from official Google bundletool releases o
 
 Load these references in order:
 
-1. `contexts/tools/appium/setup/references/bundletool/bundletool-decision-logic.md` for optional-use gates and install triggers.
-2. `contexts/tools/appium/setup/references/bundletool/bundletool-install.md` for download and PATH setup.
-3. `contexts/tools/appium/setup/references/bundletool/bundletool-validation.md` for version evidence and completion criteria.
+1. `contexts/platform/android/references/bundletool/decision-logic.md` for optional-use gates and install triggers.
+2. `contexts/platform/android/references/bundletool/install.md` for download and PATH setup.
+3. `contexts/platform/android/references/bundletool/validation.md` for version evidence and completion criteria.
 
 ## Validation Command
 

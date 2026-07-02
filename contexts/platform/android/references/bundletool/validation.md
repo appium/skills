@@ -1,8 +1,9 @@
 ---
 owner: appium
-id: appium.setup.references.bundletool.bundletool-validation
+id: platform.android.bundletool.validation
 name: "bundletool-validation"
 description: "Validate bundletool.jar path, version, and setup evidence"
+status: stable
 
 ---
 

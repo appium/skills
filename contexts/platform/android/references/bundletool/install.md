@@ -1,8 +1,9 @@
 ---
 owner: appium
-id: appium.setup.references.bundletool.bundletool-install
+id: platform.android.bundletool.install
 name: "bundletool-install"
 description: "Download bundletool.jar from official GitHub releases and place it on user PATH"
+status: stable
 
 ---
 

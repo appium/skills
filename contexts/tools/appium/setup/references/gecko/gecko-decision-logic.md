@@ -32,4 +32,4 @@ Appium Gecko Driver can manage GeckoDriver in normal flows, but an externally in
 - If Firefox is missing, ask before installing it.
 - If the user provides a Firefox executable path, validate that path before installing another browser.
 - If doctor is unsupported, continue only when Appium version, driver installation, Firefox availability, and smoke checks pass.
-- If Linux browser startup fails, load `gecko-browser-prereqs.md` and validate shared library/display prerequisites before retrying sessions.
+- If Linux browser startup fails, load `contexts/browser/firefox/prereqs.md` and validate shared library/display prerequisites before retrying sessions.

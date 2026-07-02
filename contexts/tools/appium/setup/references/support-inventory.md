@@ -13,14 +13,14 @@ Static reachability for nested setup support files:
 - `contexts/tools/appium/setup/references/espresso/espresso-doctor-validation.md`
 - `contexts/tools/appium/setup/references/espresso/espresso-driver-install.md`
 - `contexts/tools/appium/setup/references/espresso/espresso-smoke-status.md`
-- `contexts/tools/appium/setup/references/gecko/gecko-browser-prereqs.md`
+- `contexts/browser/firefox/prereqs.md`
 - `contexts/tools/appium/setup/references/gecko/gecko-decision-logic.md`
 - `contexts/tools/appium/setup/references/gecko/gecko-driver-validation.md`
 - `contexts/tools/appium/setup/references/gecko/gecko-smoke-status.md`
 - `contexts/tools/appium/setup/references/mac2/mac2-decision-logic.md`
 - `contexts/tools/appium/setup/references/mac2/mac2-driver-doctor.md`
 - `contexts/tools/appium/setup/references/mac2/mac2-smoke-status.md`
-- `contexts/tools/appium/setup/references/mac2/mac2-xcode-prereqs.md`
+- `contexts/platform/macos/xcode-command-line-tools.md`
 - `contexts/tools/appium/setup/references/node/node-decision-logic.md`
 - `contexts/tools/appium/setup/references/node/node-npm-health.md`
 - `contexts/tools/appium/setup/references/node/node-validation-evidence.md`

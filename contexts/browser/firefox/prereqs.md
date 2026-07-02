@@ -1,12 +1,13 @@
 ---
 owner: appium
-id: appium.setup.references.gecko.gecko-browser-prereqs
-name: "gecko-browser-prereqs"
-description: "Validate Firefox browser availability and host prerequisites for Appium Gecko Driver"
+id: browser.firefox.prereqs
+name: "firefox-prereqs"
+description: "Validate Firefox browser availability and host prerequisites"
+status: stable
 
 ---
 
-# gecko-browser-prereqs
+# Firefox Browser Prerequisites
 
 ## Firefox Detection
 

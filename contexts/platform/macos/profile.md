@@ -1,12 +1,11 @@
 ---
 owner: appium
-id: appium.setup.profiles.macos
+id: platform.macos.profile
+status: stable
 
 ---
 
 # macOS Setup Profile
-
-Base skill: `skills/setup/SKILL.md`
 
 Use this profile when setup is running on macOS.
 

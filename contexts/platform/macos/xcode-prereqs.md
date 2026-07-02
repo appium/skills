@@ -1,12 +1,13 @@
 ---
 owner: appium
-id: appium.setup.references.xcuitest.xcuitest-xcode-prereqs
-name: "xcuitest-xcode-prereqs"
+id: platform.macos.xcode-prereqs
+name: "macos-xcode-prereqs"
 description: "Validate Xcode, command-line tools, license, first launch, and simulator inventory"
+status: stable
 
 ---
 
-# xcuitest-xcode-prereqs
+# macOS Xcode Prerequisites
 
 ## Xcode Checks
 
