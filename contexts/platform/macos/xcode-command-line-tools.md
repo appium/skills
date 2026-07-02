@@ -1,12 +1,13 @@
 ---
 owner: appium
-id: appium.setup.references.mac2.mac2-xcode-prereqs
-name: "mac2-xcode-prereqs"
-description: "Validate Xcode and macOS command-line tooling for Appium Mac2 Driver"
+id: platform.macos.xcode-command-line-tools
+name: "macos-xcode-command-line-tools"
+description: "Validate Xcode and macOS command-line tooling for macOS automation"
+status: stable
 
 ---
 
-# mac2-xcode-prereqs
+# macOS Xcode Command-Line Tools
 
 ## Read-Only Checks
 

@@ -11,7 +11,7 @@ description: "Espresso setup triggers, dependency order, optional boundaries, an
 ## Decision Logic
 
 - If host OS is not macOS, Linux, or Windows: stop.
-- Before Espresso-specific steps, complete the shared Node/Appium setup in `contexts/tools/appium/setup/node-environment.md` and the Android prerequisite checks in `contexts/tools/appium/setup/references/environment-setup-android.md`.
+- Before Espresso-specific steps, complete the shared Node/Appium setup in `contexts/tools/appium/setup-basics.md` and the Android prerequisite checks in `contexts/platform/android/emulator-setup.md`.
 - Use global npm/Appium unless the user explicitly asks for `npx appium`.
 - If Appium CLI is missing: install `appium` globally under the active Node runtime.
 - If the `espresso` driver is not installed: install it with Appium CLI.

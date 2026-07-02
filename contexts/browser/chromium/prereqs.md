@@ -1,12 +1,13 @@
 ---
 owner: appium
-id: appium.setup.references.chromium.chromium-browser-prereqs
-name: "chromium-browser-prereqs"
+id: browser.chromium.prereqs
+name: "chromium-prereqs"
 description: "Install or validate Chrome, Chromium, Edge, and Linux browser dependencies"
+status: stable
 
 ---
 
-# chromium-browser-prereqs
+# Chromium Browser Prerequisites
 
 ## Browser Checks
 

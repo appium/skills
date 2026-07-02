@@ -10,16 +10,17 @@ description: "Route Appium Safari driver setup for macOS Safari and optional iOS
 
 ## Goal
 
-Prepare Appium Safari Driver by validating macOS, Node/Appium, `safaridriver`, Safari driver installation, optional doctor behavior, and smoke checks.
+Prepare Appium Safari Driver by validating macOS, Node/Appium, Safari prerequisites, Safari driver installation, optional doctor behavior, and smoke checks.
 
 ## Routing
 
 Load these references in order:
 
-1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
+1. `contexts/tools/appium/setup-basics.md` for Node.js and npm.
 2. `contexts/tools/appium/setup/references/safari/safari-decision-logic.md` for macOS-only gates and authorization boundaries.
-3. `contexts/tools/appium/setup/references/safari/safari-driver-install.md` for Appium Safari driver installation and `safaridriver` checks.
-4. `contexts/tools/appium/setup/references/safari/safari-smoke-status.md` for `/status`, log evidence, and cleanup.
+3. `contexts/browser/safari/prereqs.md` for Safari and `safaridriver` availability plus authorization boundaries.
+4. `contexts/tools/appium/setup/references/safari/safari-driver-install.md` for Appium Safari driver installation.
+5. `contexts/tools/appium/setup/references/safari/safari-smoke-status.md` for `/status`, log evidence, and cleanup.
 
 ## Validation Command
 

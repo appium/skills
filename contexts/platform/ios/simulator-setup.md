@@ -1,12 +1,12 @@
 ---
 owner: appium
-id: appium.setup.references.environment-setup-xcuitest
-name: "environment-setup-xcuitest"
-description: "Route macOS XCUITest Appium driver setup, Xcode validation, doctor checks, and smoke tests"
+id: platform.ios.simulator-setup
+name: "ios-simulator-setup"
+description: "Route iOS simulator, Xcode, XCUITest driver, doctor, and smoke validation setup"
 
 ---
 
-# appium-xcuitest-environment-setup
+# iOS Simulator Setup
 
 ## Goal
 
@@ -16,9 +16,9 @@ Prepare Appium XCUITest on macOS by validating Node/Appium, Xcode, driver instal
 
 Load these references in order:
 
-1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
+1. `contexts/tools/appium/setup-basics.md` for Node.js and npm.
 2. `contexts/tools/appium/setup/references/xcuitest/xcuitest-decision-logic.md` for macOS-only setup gates and optional dependency boundaries.
-3. `contexts/tools/appium/setup/references/xcuitest/xcuitest-xcode-prereqs.md` for Xcode, command-line tools, license, and first-launch checks.
+3. `contexts/platform/macos/xcode-prereqs.md` for Xcode, command-line tools, license, and first-launch checks.
 4. `contexts/tools/appium/setup/references/xcuitest/xcuitest-driver-doctor.md` for driver install and doctor pass criteria.
 5. `contexts/tools/appium/setup/references/xcuitest/xcuitest-smoke-status.md` for simulator inventory, `/status`, log evidence, and cleanup.
 

@@ -9,10 +9,10 @@ id: appium.real-device.examples.real-device
 Use this repository's skills to prepare macOS + XCUITest for a real iOS or tvOS device.
 
 1. Load `skills/setup/SKILL.md`.
-2. Load `contexts/tools/appium/setup/profiles/macos.md`.
+2. Load `contexts/platform/macos/profile.md`.
 3. Load `contexts/tools/appium/setup/profiles/xcuitest.md`.
-4. Load `contexts/tools/appium/setup/node-environment.md`.
-5. Load `contexts/tools/appium/setup/references/environment-setup-xcuitest.md`.
+4. Load `contexts/tools/appium/setup-basics.md`.
+5. Load `contexts/platform/ios/simulator-setup.md`.
 6. Load `skills/xcuitest-real-device-config/SKILL.md`.
 7. Load the signing and WDA deployment profiles that match the user's path.
 8. Load `contexts/tools/appium/real-device/references/real-device-procedure-part1.md`, `contexts/tools/appium/real-device/references/real-device-procedure-part2.md`, `contexts/tools/appium/real-device/references/real-device-procedure-part3.md`, `contexts/tools/appium/real-device/references/real-device-procedure-part4.md`, `contexts/tools/appium/real-device/references/real-device-procedure-part5.md`, `contexts/tools/appium/real-device/references/real-device-procedure-part6.md`, `contexts/tools/appium/real-device/references/real-device-procedure-part7.md`, `contexts/tools/appium/real-device/references/real-device-procedure-part8.md`, and `contexts/tools/appium/real-device/references/real-device-procedure-part9.md` in order.

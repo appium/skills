@@ -10,10 +10,11 @@ Appium Safari Driver on macOS.
 
 1. Load `skills/setup/SKILL.md`.
 2. Load `contexts/tools/appium/setup/profiles/global-appium.md` unless the user explicitly asks for local `npx appium`.
-3. Load `contexts/tools/appium/setup/profiles/macos.md`.
+3. Load `contexts/platform/macos/profile.md`.
 4. Load `contexts/tools/appium/setup/profiles/safari.md`.
-5. Load `contexts/tools/appium/setup/node-environment.md`.
-6. Load `contexts/tools/appium/setup/references/environment-setup-safari.md`.
+5. Load `contexts/tools/appium/setup-basics.md`.
+6. Load `contexts/browser/safari/prereqs.md`.
+7. Load `contexts/tools/appium/setup/references/environment-setup-safari.md`.
 
 Rules:
 

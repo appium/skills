@@ -13,9 +13,9 @@ Prepare Appium Gecko Driver by validating Node/Appium, Firefox availability, dri
 
 ## Routing
 
-1. `contexts/tools/appium/setup/node-environment.md` for Node.js and npm.
+1. `contexts/tools/appium/setup-basics.md` for Node.js and npm.
 2. `contexts/tools/appium/setup/references/gecko/gecko-decision-logic.md` for host, Appium, Firefox, and GeckoDriver gates.
-3. `contexts/tools/appium/setup/references/gecko/gecko-browser-prereqs.md` for Firefox release, ESR, Developer Edition, Nightly, and Linux dependency setup.
+3. `contexts/browser/firefox/prereqs.md` for Firefox release, ESR, Developer Edition, Nightly, and Linux dependency setup.
 4. `contexts/tools/appium/setup/references/gecko/gecko-driver-validation.md` for Appium driver installation and doctor handling.
 5. `contexts/tools/appium/setup/references/gecko/gecko-smoke-status.md` for `/status`, log evidence, and cleanup.
 

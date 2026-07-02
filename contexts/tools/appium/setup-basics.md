@@ -1,16 +1,16 @@
 ---
 owner: appium
-id: setup-references-environment-setup-node
+id: appium.setup.basics
 status: stable
-source: contexts/tools/appium/setup/node-environment.md
+source: contexts/tools/appium/setup-basics.md
 
 ---
 
-# Node Environment
+# Appium Setup Basics
 
 ## Goal
 
-Prepare a stable Node.js and npm environment by validating the active runtime, npm availability, registry connectivity, and engine compatibility needed by Appium setup workflows.
+Prepare the shared Appium setup baseline by validating the active Node.js runtime, npm availability, registry connectivity, command mode, and engine compatibility needed by Appium setup workflows.
 
 ## Routing
 
