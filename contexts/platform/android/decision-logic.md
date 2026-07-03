@@ -26,7 +26,7 @@ source: contexts/platform/android/decision-logic.md
 
 - Do not reconfigure Java when `java` and `javac` already work.
 - Do not install optional FFmpeg or bundletool dependencies from this reference.
-- Ask before using privileged package manager commands such as `sudo apt-get`.
+- Require explicit human approval before using privileged system package managers.
 - Prefer user-space installs and platform default SDK paths.
 - Re-run validation commands after each environment change.
 - Do not claim success if `adb`, emulator binary, Java, or required SDK package checks fail.
