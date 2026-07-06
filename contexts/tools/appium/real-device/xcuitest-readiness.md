@@ -2,7 +2,8 @@
 owner: appium
 id: xcuitest-real-device-readiness
 status: stable
-optional_context: contexts/tools/appium/real-device/references/support-inventory.md
+optional_context:
+  - contexts/tools/appium/real-device/references/support-inventory.md
 
 ---
 

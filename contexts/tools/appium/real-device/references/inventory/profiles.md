@@ -2,7 +2,14 @@
 owner: appium
 id: xcuitest-real-device-inventory-profiles
 status: stable
-optional_context: contexts/tools/appium/real-device/examples/real-device.md, contexts/tools/appium/real-device/profiles/enterprise-profile.md, contexts/tools/appium/real-device/profiles/free-apple-id.md, contexts/tools/appium/real-device/profiles/paid-developer.md, contexts/tools/appium/real-device/profiles/prebuilt-wda.md, contexts/tools/appium/real-device/profiles/preinstalled-wda.md, contexts/tools/appium/real-device/profiles/running-wda-url.md
+optional_context:
+  - contexts/tools/appium/real-device/examples/real-device.md
+  - contexts/tools/appium/real-device/profiles/enterprise-profile.md
+  - contexts/tools/appium/real-device/profiles/free-apple-id.md
+  - contexts/tools/appium/real-device/profiles/paid-developer.md
+  - contexts/tools/appium/real-device/profiles/prebuilt-wda.md
+  - contexts/tools/appium/real-device/profiles/preinstalled-wda.md
+  - contexts/tools/appium/real-device/profiles/running-wda-url.md
 
 ---
 
