@@ -2,7 +2,8 @@
 owner: appium
 id: appium-setup-routing
 status: stable
-optional_context: contexts/tools/appium/setup/references/support-inventory.md
+optional_context:
+  - contexts/tools/appium/setup/references/support-inventory.md
 
 ---
 
