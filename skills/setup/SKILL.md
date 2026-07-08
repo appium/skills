@@ -1,6 +1,8 @@
 ---
 owner: appium
+id: skill.setup
 name: "setup"
+title: Appium Router Entry
 description: "Route Appium environment setup requests to canonical setup contexts for Node.js, Appium drivers, Android, XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, bundletool, FFmpeg, and smoke validation evidence."
 requires_context: contexts/tools/appium/setup/routing.md
 ---

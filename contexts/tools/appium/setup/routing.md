@@ -1,6 +1,7 @@
 ---
 owner: appium
 id: appium-setup-routing
+title: Appium Setup Routing Context
 status: stable
 optional_context:
   - contexts/tools/appium/setup/references/support-inventory.md
