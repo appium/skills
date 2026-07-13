@@ -5,9 +5,9 @@ id: appium.setup.examples.xcuitest
 
 ---
 
-# Example: macOS + XCUITest Setup
+# Example: iOS/tvOS + XCUITest Setup
 
-Use this repository's skills to prepare macOS + XCUITest.
+Use this repository's skills to prepare iOS/tvOS + XCUITest on macOS.
 
 1. Load `skills/setup/SKILL.md`.
 2. Load `contexts/platform/macos/profile.md`.

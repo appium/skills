@@ -5,6 +5,13 @@ id: platform.android.emulator-setup
 name: "android-emulator-setup"
 description: "Route Android SDK, Java, ADB, package, device, and emulator setup references for Android automation"
 last_modified: "Mon, 27 Apr 2026 GMT"
+optional_context:
+  - contexts/platform/android/decision-logic.md
+  - contexts/platform/android/references/detect-base-tooling.md
+  - contexts/platform/android/references/sdk-commandline-tools.md
+  - contexts/platform/android/references/java-configuration.md
+  - contexts/platform/android/references/sdk-packages-and-path.md
+  - contexts/platform/android/references/device-emulator-validation.md
 
 ---
 

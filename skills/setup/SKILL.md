@@ -1,15 +1,19 @@
 ---
 name: setup
-description: Interactively select and set up one or more Appium drivers, then route Node.js, Android, simulator XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, and smoke-validation work to canonical contexts. Use for requests such as "set up Appium," first-time installation, configuration, prerequisite repair, and doctor readiness. Ask which driver is needed when none is named; start the named driver routes without repeating that question. Do not use for an existing failing session or real iOS or tvOS signing and WebDriverAgent deployment; use appium-troubleshooting or xcuitest-real-device-config instead.
+description: Select and set up one or more Appium drivers using the repository's shared Node.js, Android, iOS/tvOS XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, and smoke-validation Context Assets and tools. Use for requests such as "set up Appium," first-time installation, configuration, prerequisite repair, and doctor readiness. Ask which driver is needed when none is named; start named driver workflows without repeating that question. Do not use for an existing failing session or real iOS or tvOS signing and WebDriverAgent deployment; use appium-troubleshooting or xcuitest-real-device-config instead.
 metadata:
   renma.id: skill.setup
-  renma.title: Appium Router Entry
+  renma.title: Appium Setup Workflow
   renma.owner: appium
   renma.requires-context: '["contexts/tools/appium/setup/routing.md"]'
   renma.security-profile: appium-local-workflows
 ---
 
-# Appium Router Entry
+# Appium Setup Workflow
+
+## Setup routing and selection
+
+Route first-time Appium installation, selected driver setup, prerequisite repair, and doctor readiness through this workflow. Hand an already failing session or command to `skills/appium-troubleshooting/SKILL.md`; hand real iOS or tvOS signing and WebDriverAgent deployment to `skills/xcuitest-real-device-config/SKILL.md`.
 
 ## Required inputs
 
@@ -21,19 +25,33 @@ Resolve the driver selection before changing the environment.
 
 After driver selection, confirm or detect the target platform, command mode (`appium` global by default or `npx appium` only when requested), host OS, relevant devices, simulators, or browsers, and available permissions. Ask only for inputs that cannot be detected safely. Optional dependencies such as FFmpeg or bundletool still require an explicit user request.
 
+## Workflow outline
+
+1. Load `contexts/tools/appium/setup/routing.md` and apply its driver-selection gate before changing the environment.
+2. Load the global command profile by default or the local `npx` profile only when explicitly requested. Load the host profile when host-specific constraints affect the route.
+3. For every selected driver, load only the setup Contexts, profiles, references, and examples named by the matching route. Load its shared capability Context only when capability selection affects setup.
+4. Run the matching read-only helper from `tools/appium/setup/scripts/`, apply required fixes in dependency order, and rerun the affected check after each change.
+5. Run the driver doctor and smoke checks required by the selected route. For multiple drivers, prepare shared prerequisites once and verify each route separately.
+
+## Setup safety and approval constraints
+
+- Use global npm/Appium commands by default; use local `npx appium` only when explicitly requested.
+- Ask before optional FFmpeg or bundletool setup, third-party real-device tooling, privileged commands, browser installation, or authorization changes.
+- Install only drivers selected by the user; if selection is still unclear, stop before environment changes and ask which driver is required.
+- Preserve working installations and prefer the smallest required change.
+
 ## Completion criteria
 
-The workflow is complete when the selected setup references have been loaded, required Appium doctor checks report `0 required fixes needed`, optional warnings are identified as non-blocking, requested setup changes are verified with the matching helper script or smoke command, and the final response summarizes the checked versions, remaining optional items, and any blocked steps.
+Finish the workflow only after these selected-route checks pass:
 
-## Route
+- The route's named Context Assets have been loaded.
+- Required Appium doctor checks report `0 required fixes needed`.
+- Optional doctor warnings are identified as non-blocking.
+- Requested changes pass the matching helper and `/status` smoke checks.
 
-Use this thin entrypoint for Appium environment setup work. Load `contexts/tools/appium/setup/routing.md` first and apply its driver-selection gate. After the user has selected one or more drivers, load only the setup contexts, profiles, references, examples, and scripts that match those drivers, platforms, and install mode. For multiple drivers, prepare shared prerequisites once, then execute and verify each selected driver route in dependency order. Canonical setup assets live under `contexts/tools/appium/setup/`; executable helpers live under `tools/appium/setup/scripts/`.
+## Evidence boundary
 
-## When Not To Use
-
-do not use for mismatched requests; choose the routed alternative below.
-
-Do not use this skill for diagnosing a failing session after setup has run; route that input to `skills/appium-troubleshooting/SKILL.md`. Do not use this skill for real iOS or tvOS signing and WebDriverAgent deployment; route that input to `skills/xcuitest-real-device-config/SKILL.md`.
+Provide the selected driver names and versions, helper `requiredOk` summary, doctor required/optional summary, `/status` result, remaining optional items, and any blocked manual step. If additional evidence is requested, quote only the relevant helper or doctor command's sanitized lines.
 
 ## Evidence
 

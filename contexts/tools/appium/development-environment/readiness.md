@@ -24,8 +24,10 @@ Use this context to prepare the Appium skills repository for local development, 
    - `node tools/appium/setup/scripts/check-node-env.mjs`
 4. Treat Node.js 20 or newer and working npm as the baseline for local helper-script development. If the helper reports `requiredOk: false`, fix only the smallest required issue and rerun the helper.
 5. Run repository quality validation:
+   - `renma --version`
    - `renma scan .`
-6. Fix Renma findings that apply to the requested work. Preserve thin `skills/*/SKILL.md` entrypoints by moving reusable procedures into canonical `contexts/**` assets with stable metadata.
+   Use a repository-pinned Renma version when one exists. If the repository has no version pin, use the active installed CLI and report its version with the validation result.
+6. Require the configured Renma blocking gate to pass. Review all remaining advisories, address the applicable ones, and explicitly accept deferred or inapplicable advisories with a documented rationale. Preserve focused `skills/*/SKILL.md` workflow entry points while keeping reusable or selectively loaded procedures in canonical `contexts/**` assets.
 7. For skill edits, run the available skill validator if the skill-creator tooling is present. If the validator cannot run because of missing local dependencies, report that blocker and use a manual YAML/frontmatter check as supporting evidence.
 8. Route driver-specific setup to `skills/setup/SKILL.md`, real-device XCUITest setup to `skills/xcuitest-real-device-config/SKILL.md`, and existing Appium failures to `skills/appium-troubleshooting/SKILL.md`.
 
@@ -43,7 +45,7 @@ Use this context to prepare the Appium skills repository for local development, 
 Use the narrowest verification that matches the work:
 
 - Repository development readiness: report `node`, `npm`, registry, helper-script `requiredOk`, and Renma diagnostics.
-- Renma validation: `renma scan .` should report `Diagnostics: 0`; if findings remain, list them with severity and rationale for deferring.
+- Renma validation: `renma scan .` must pass the configured blocking threshold. Review every remaining diagnostic or advisory; report its severity, disposition, and rationale when accepted.
 - Driver-specific setup: required Appium doctor checks must report `0 required fixes needed`; optional warnings are non-blocking.
 - Context or script edits: run the edited helper or a representative helper script when practical, then rerun `renma scan .`.
 - Skill edits: validate skill frontmatter and UI metadata, then rerun `renma scan .`.

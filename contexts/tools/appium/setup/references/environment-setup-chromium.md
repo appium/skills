@@ -4,6 +4,12 @@ owner: appium
 id: appium.setup.references.environment-setup-chromium
 name: "environment-setup-chromium"
 description: "Route Appium Chromium driver setup, browser prerequisites, doctor handling, and smoke checks"
+optional_context:
+  - contexts/tools/appium/setup-basics.md
+  - contexts/browser/chromium/prereqs.md
+  - contexts/tools/appium/setup/references/chromium/chromium-decision-logic.md
+  - contexts/tools/appium/setup/references/chromium/chromium-driver-validation.md
+  - contexts/tools/appium/setup/references/chromium/chromium-smoke-status.md
 
 ---
 

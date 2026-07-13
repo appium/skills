@@ -3,6 +3,12 @@ security_profile: appium-local-workflows
 owner: appium
 id: setup-references-environment-setup-gecko
 status: stable
+optional_context:
+  - contexts/tools/appium/setup-basics.md
+  - contexts/browser/firefox/prereqs.md
+  - contexts/tools/appium/setup/references/gecko/gecko-decision-logic.md
+  - contexts/tools/appium/setup/references/gecko/gecko-driver-validation.md
+  - contexts/tools/appium/setup/references/gecko/gecko-smoke-status.md
 
 ---
 
