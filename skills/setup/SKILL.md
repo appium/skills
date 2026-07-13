@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Set up Appium environments by routing Node.js, Appium drivers, Android, simulator XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, bundletool, FFmpeg, and smoke-validation work to canonical contexts. Use for first-time installation, configuration, prerequisite repair, and doctor readiness. Do not use for an existing failing session or real iOS or tvOS signing and WebDriverAgent deployment; use appium-troubleshooting or xcuitest-real-device-config instead.
+description: Interactively select and set up one or more Appium drivers, then route Node.js, Android, simulator XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, and smoke-validation work to canonical contexts. Use for requests such as "set up Appium," first-time installation, configuration, prerequisite repair, and doctor readiness. Ask which driver is needed when none is named; start the named driver routes without repeating that question. Do not use for an existing failing session or real iOS or tvOS signing and WebDriverAgent deployment; use appium-troubleshooting or xcuitest-real-device-config instead.
 metadata:
   renma.id: skill.setup
   renma.title: Appium Router Entry
@@ -13,7 +13,13 @@ metadata:
 
 ## Required inputs
 
-Before running this workflow, confirm the target platform, Appium driver, command mode (`appium` global by default or `npx appium` only when requested), host OS, relevant devices or simulators, available permissions, and whether the user explicitly requested optional dependencies such as FFmpeg or bundletool.
+Resolve the driver selection before changing the environment.
+
+- If the user explicitly names one or more drivers, accept those drivers as the selection and begin their setup routes without asking which driver is needed. For example, `Set up the UiAutomator2 and XCUITest drivers` selects both routes.
+- If the user asks only to set up Appium, or otherwise names no driver, pause before installation and ask which Appium driver or drivers they need. Offer concise choices based on the selection guide in `contexts/tools/appium/setup/routing.md`, then install only the selected drivers.
+- Treat only drivers explicitly selected by the user as requested setup targets. Use existing installations as evidence for preflight checks, not as a driver-selection decision.
+
+After driver selection, confirm or detect the target platform, command mode (`appium` global by default or `npx appium` only when requested), host OS, relevant devices, simulators, or browsers, and available permissions. Ask only for inputs that cannot be detected safely. Optional dependencies such as FFmpeg or bundletool still require an explicit user request.
 
 ## Completion criteria
 
@@ -21,7 +27,7 @@ The workflow is complete when the selected setup references have been loaded, re
 
 ## Route
 
-Use this thin entrypoint for Appium environment setup work. Load `contexts/tools/appium/setup/routing.md` first, then load only the setup contexts, profiles, references, examples, and scripts that match the requested driver, platform, and install mode. Canonical setup assets live under `contexts/tools/appium/setup/`; executable helpers live under `tools/appium/setup/scripts/`.
+Use this thin entrypoint for Appium environment setup work. Load `contexts/tools/appium/setup/routing.md` first and apply its driver-selection gate. After the user has selected one or more drivers, load only the setup contexts, profiles, references, examples, and scripts that match those drivers, platforms, and install mode. For multiple drivers, prepare shared prerequisites once, then execute and verify each selected driver route in dependency order. Canonical setup assets live under `contexts/tools/appium/setup/`; executable helpers live under `tools/appium/setup/scripts/`.
 
 ## When Not To Use
 
@@ -31,4 +37,8 @@ Do not use this skill for diagnosing a failing session after setup has run; rout
 
 ## Evidence
 
-Example input: `Set up Appium UiAutomator2 and verify Android SDK, Java, ADB, emulator, and driver readiness.` Verify by running the matching helper from `tools/appium/setup/scripts/` when a context asks for it, then report pass/fail evidence.
+Examples:
+
+- Input: `Set up Appium.` Ask which driver or drivers are needed before running setup commands.
+- Input: `Set up the UiAutomator2 and XCUITest drivers.` Begin both selected routes without asking for driver selection again.
+- Input: `Set up Appium UiAutomator2 and verify Android SDK, Java, ADB, emulator, and driver readiness.` Verify by running the matching helper from `tools/appium/setup/scripts/` when a context asks for it, then report pass/fail evidence.
