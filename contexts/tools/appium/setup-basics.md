@@ -4,6 +4,11 @@ owner: appium
 id: appium.setup.basics
 status: stable
 source: contexts/tools/appium/setup-basics.md
+optional_context:
+  - contexts/tools/appium/setup/references/node/node-decision-logic.md
+  - contexts/tools/appium/setup/references/node/node-version-manager-setup.md
+  - contexts/tools/appium/setup/references/node/node-npm-health.md
+  - contexts/tools/appium/setup/references/node/node-validation-evidence.md
 
 ---
 

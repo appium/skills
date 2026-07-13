@@ -4,6 +4,12 @@ owner: appium
 id: setup-references-environment-setup-mac2
 status: stable
 source: contexts/tools/appium/setup/mac2-environment.md
+optional_context:
+  - contexts/tools/appium/setup-basics.md
+  - contexts/platform/macos/xcode-command-line-tools.md
+  - contexts/tools/appium/setup/references/mac2/mac2-decision-logic.md
+  - contexts/tools/appium/setup/references/mac2/mac2-driver-doctor.md
+  - contexts/tools/appium/setup/references/mac2/mac2-smoke-status.md
 
 ---
 

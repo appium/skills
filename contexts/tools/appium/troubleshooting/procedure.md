@@ -12,7 +12,7 @@ source: contexts/tools/appium/troubleshooting/procedure.md
 Triage one Appium driver failure, apply the smallest plausible fix, and re-check until confirmed or handed back.
 
 ## Decision Logic
-- Identify the active automation driver first (`uiautomator2` or `xcuitest`). If unknown, stop and ask for the failing session capabilities/log line that names the driver.
+- Identify the active automation driver first (`uiautomator2` or `xcuitest`). If unknown, stop and ask for the failing session capabilities or log line that names the driver. If another driver is named, report that this repository does not implement a troubleshooting route for it and hand off to the driver's official guidance.
 - If the failure is an environment or driver-install problem (`node`, `npm`, `appium`, Java, Android SDK, `Xcode`, doctor failures): run the matching setup skill for the selected driver first.
 - UiAutomator2 path only:
   - session startup, wrong activity, early drop, or `socket hang up`: read `contexts/tools/appium/troubleshooting/references/uiautomator2-session-startup.md`.
@@ -33,9 +33,7 @@ Triage one Appium driver failure, apply the smallest plausible fix, and re-check
    If the error text already points to a known issue, open the matching driver-specific official reference first and confirm the closest symptom before changing anything. Then collect what is needed:
    - `appium -v` and `appium driver list --installed --json` (fallback to `appium driver list --installed` if `--json` is unsupported) — to confirm driver presence and version.
    - UiAutomator2: `adb devices -l` and `appium driver doctor uiautomator2 --json || appium driver doctor uiautomator2` — only if the error suggests a device connectivity or prerequisite problem.
-   - Espresso: `adb devices -l`, emulator/device inventory, and `appium driver doctor espresso --json || appium driver doctor espresso` — only if the error suggests a device, instrumentation, Android build, or prerequisite problem.
    - XCUITest: `xcodebuild -version` and `appium driver doctor xcuitest --json || appium driver doctor xcuitest` — only if the error suggests a build, signing, WDA, or toolchain problem.
-   - Chromium: browser version, selected browser executable, chromedriver/msedgedriver version, and `appium driver doctor chromium --json || appium driver doctor chromium` when supported — only if the error suggests browser startup, driver matching, or prerequisite problems.
    If any doctor or prerequisite check fails, switch to the matching setup skill before deeper troubleshooting. Use `contexts/tools/appium/troubleshooting/references/community-search.md` only after the relevant official reference does not explain the exact stack trace or symptom.
 
 3. **Open only the references that match the selected driver and symptom**
@@ -48,10 +46,8 @@ Triage one Appium driver failure, apply the smallest plausible fix, and re-check
    Official references for this skill:
    - `https://appium.io/docs/en/latest/`
    - `https://github.com/appium/appium-uiautomator2-driver`
-   - `https://github.com/appium/appium-espresso-driver`
    - `https://appium.github.io/appium-xcuitest-driver/latest/`
    - `https://github.com/appium/appium-xcuitest-driver`
-   - `https://github.com/appium/appium-chromium-driver`
    Use `discuss.appium.io` only after the official references are exhausted, searching with exact error text plus driver name and platform version.
 
 6. **Report the outcome with command evidence**
@@ -72,5 +68,5 @@ After use, always run this self-improvement check before the final response. Rep
 - Prefer doctor `--json` output when supported and fall back to text summaries only when JSON is unavailable.
 - Use global `appium` command mode by default unless the user explicitly asks for local `npx appium`.
 - Prefer the official Appium driver docs referenced by this skill before using community answers.
-- Keep troubleshooting scoped to one driver path (`uiautomator2`, `espresso`, `xcuitest`, or `chromium`) per run unless the user explicitly asks for cross-driver comparison.
+- Keep troubleshooting scoped to one implemented driver path (`uiautomator2` or `xcuitest`) per run.
 - Do not claim success from a theory alone; always tie the conclusion to a reproduced symptom or a passing re-check.

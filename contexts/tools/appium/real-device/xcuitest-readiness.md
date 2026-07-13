@@ -4,7 +4,16 @@ owner: appium
 id: xcuitest-real-device-readiness
 status: stable
 optional_context:
-  - contexts/tools/appium/real-device/references/support-inventory.md
+  - contexts/tools/appium/setup/routing.md
+  - contexts/tools/appium/capabilities.md
+  - contexts/tools/appium/real-device/profiles/enterprise-profile.md
+  - contexts/tools/appium/real-device/profiles/free-apple-id.md
+  - contexts/tools/appium/real-device/profiles/paid-developer.md
+  - contexts/tools/appium/real-device/profiles/prebuilt-wda.md
+  - contexts/tools/appium/real-device/profiles/preinstalled-wda.md
+  - contexts/tools/appium/real-device/profiles/running-wda-url.md
+  - contexts/tools/appium/real-device/references/real-device-procedure.md
+  - contexts/tools/appium/real-device/examples/real-device.md
 
 ---
 
@@ -24,9 +33,9 @@ Completion requires the device to appear in `xcrun xctrace list devices`, a sign
 4. Load `contexts/tools/appium/real-device/references/real-device-procedure.md`.
 5. Use `contexts/tools/appium/real-device/examples/real-device.md` as the worked example when needed.
 
-## Optional Context Inventory
+## Selective Profile Loading
 
-Profiles:
+Load exactly the signing and WDA deployment profiles that match the selected route:
 
 - `contexts/tools/appium/real-device/profiles/enterprise-profile.md`
 - `contexts/tools/appium/real-device/profiles/free-apple-id.md`
@@ -35,6 +44,6 @@ Profiles:
 - `contexts/tools/appium/real-device/profiles/preinstalled-wda.md`
 - `contexts/tools/appium/real-device/profiles/running-wda-url.md`
 
-Procedure:
+Then load the shared procedure:
 
 - `contexts/tools/appium/real-device/references/real-device-procedure.md`

@@ -4,6 +4,12 @@ owner: appium
 id: platform.ios.simulator-setup
 name: "ios-simulator-setup"
 description: "Route iOS simulator, Xcode, XCUITest driver, doctor, and smoke validation setup"
+optional_context:
+  - contexts/tools/appium/setup-basics.md
+  - contexts/platform/macos/xcode-prereqs.md
+  - contexts/tools/appium/setup/references/xcuitest/xcuitest-decision-logic.md
+  - contexts/tools/appium/setup/references/xcuitest/xcuitest-driver-doctor.md
+  - contexts/tools/appium/setup/references/xcuitest/xcuitest-smoke-status.md
 
 ---
 

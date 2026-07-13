@@ -4,6 +4,13 @@ owner: appium
 id: setup-references-environment-setup-espresso
 status: stable
 source: contexts/tools/appium/setup/espresso-environment.md
+optional_context:
+  - contexts/tools/appium/setup-basics.md
+  - contexts/platform/android/emulator-setup.md
+  - contexts/tools/appium/setup/references/espresso/espresso-decision-logic.md
+  - contexts/tools/appium/setup/references/espresso/espresso-driver-install.md
+  - contexts/tools/appium/setup/references/espresso/espresso-doctor-validation.md
+  - contexts/tools/appium/setup/references/espresso/espresso-smoke-status.md
 
 ---
 

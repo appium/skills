@@ -1,31 +1,41 @@
 ---
 name: appium-troubleshooting
-description: Diagnose existing Appium failures by routing failed commands, session or app startup, driver startup, device connectivity, WebDriverAgent, browser automation, locator, and element lookup symptoms to canonical troubleshooting contexts. Use when Appium behavior is already failing. Do not use for first-time installation or pre-failure real-device signing and provisioning; use setup or xcuitest-real-device-config instead.
+description: Diagnose existing UiAutomator2 session-startup, app-activity, adb transport, helper-server, native or hybrid locator failures, and XCUITest WebDriverAgent, session-startup, app install or launch, device or simulator state, alert, element-source, or locator failures. Use when a session or command under one of those drivers already fails. Do not use for first-time setup, pre-failure real-device provisioning, or Espresso, Chromium, Gecko, Safari, or Mac2 failures; use setup, xcuitest-real-device-config, or driver-specific official guidance instead.
 metadata:
   renma.owner: appium
   renma.requires-context: '["contexts/tools/appium/troubleshooting/triage.md","contexts/tools/appium/troubleshooting/procedure.md"]'
   renma.security-profile: appium-local-workflows
 ---
 
-# Appium Router Entry
+# Appium Troubleshooting Workflow
+
+## Routing and selection boundary
+
+Route only implemented UiAutomator2 and XCUITest failures through this workflow. If the driver is unknown, capture capabilities or Appium session logs before proceeding. Hand setup and doctor failures to `skills/setup/SKILL.md`, and hand real-device signing or provisioning work that exists before a failing session to `skills/xcuitest-real-device-config/SKILL.md`. The repository does not yet implement dedicated troubleshooting routes for Espresso, Chromium, Gecko, Safari, or Mac2.
 
 ## Required inputs
 
-Before running this workflow, confirm the failing Appium command or symptom, target platform and driver, command mode (`appium` global or `npx appium`), host OS, device or simulator state, relevant capabilities, recent logs or doctor output, and available permissions for rerunning checks.
+Confirm the exact failing command and error, UiAutomator2 or XCUITest driver, target platform, global `appium` or explicitly requested local `npx appium` mode, host OS, device or simulator state, relevant capabilities, recent server or device logs, smallest reproduction, and permissions for rerunning checks.
+
+## Workflow outline
+
+1. Load `contexts/tools/appium/troubleshooting/triage.md` and `contexts/tools/appium/troubleshooting/procedure.md`.
+2. Lock the run to UiAutomator2 or XCUITest and load that driver's profile.
+3. Load only the reference matching the observed symptom. Load the triage Context's shared capability option when capability values are part of the suspected cause, and use the matching example only when it clarifies the reproduction.
+4. If a prerequisite or doctor check fails, pause this workflow and use the selected driver route in `skills/setup/SKILL.md` before deeper troubleshooting.
+5. Apply one targeted change and rerun the smallest failing command, session start, WDA check, or locator lookup.
+6. Use the community-search Context only after the matching official reference does not explain the exact symptom.
+
+## Hard safety and approval constraints
+
+- Start with targeted evidence and the smallest reversible change; stop and request approval before any evidence-backed broad reset, reinstall, device erase, signing change, or unrelated capability change.
+- Preserve global command mode unless the user explicitly requests local mode.
+- Require the same approvals as the setup or real-device workflow before crossing into installation, privileged, signing, trust, or provisioning changes.
+- Report success only from a passing re-check; otherwise stop with a precisely isolated manual blocker and next action.
 
 ## Completion criteria
 
-The workflow is complete when the relevant triage and symptom references have been loaded, the root cause or most likely unresolved blocker is stated, each applied fix is rerun with targeted evidence, required doctor checks pass or the remaining failure is documented, and the final response summarizes commands run, results, and next manual action if needed.
-
-## Route
-
-Use this thin entrypoint for Appium failure diagnosis. Load `contexts/tools/appium/troubleshooting/triage.md` first, then follow `contexts/tools/appium/troubleshooting/procedure.md` and the relevant profiles, references, and examples under `contexts/tools/appium/troubleshooting/`.
-
-## When Not To Use
-
-do not use for mismatched requests; choose the routed alternative below.
-
-Do not use this skill for first-time environment installation; route that input to `skills/setup/SKILL.md`. Do not use this skill for real-device signing or provisioning before any failure exists; route that input to `skills/xcuitest-real-device-config/SKILL.md`.
+Complete the workflow when the failing check passes after a verified fix, or when the exact blocker is isolated with command evidence and a concrete next manual action. Report the loaded symptom route, commands and results, change made, re-check evidence, and any required doctor result when prerequisite repair was involved.
 
 ## Evidence
 

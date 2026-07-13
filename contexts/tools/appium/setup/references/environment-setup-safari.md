@@ -4,6 +4,12 @@ owner: appium
 id: appium.setup.references.environment-setup-safari
 name: "environment-setup-safari"
 description: "Route Appium Safari driver setup for macOS Safari and optional iOS Safari targets"
+optional_context:
+  - contexts/tools/appium/setup-basics.md
+  - contexts/browser/safari/prereqs.md
+  - contexts/tools/appium/setup/references/safari/safari-decision-logic.md
+  - contexts/tools/appium/setup/references/safari/safari-driver-install.md
+  - contexts/tools/appium/setup/references/safari/safari-smoke-status.md
 
 ---
 

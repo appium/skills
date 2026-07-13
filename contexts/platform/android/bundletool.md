@@ -5,6 +5,10 @@ id: platform.android.bundletool
 name: "android-bundletool"
 description: "Route optional bundletool.jar setup for Android App Bundle support"
 status: stable
+optional_context:
+  - contexts/platform/android/references/bundletool/decision-logic.md
+  - contexts/platform/android/references/bundletool/install.md
+  - contexts/platform/android/references/bundletool/validation.md
 
 ---
 

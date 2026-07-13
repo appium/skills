@@ -5,7 +5,36 @@ id: appium-setup-routing
 title: Appium Setup Routing Context
 status: stable
 optional_context:
-  - contexts/tools/appium/setup/references/support-inventory.md
+  - contexts/tools/appium/capabilities.md
+  - contexts/tools/appium/setup-basics.md
+  - contexts/tools/appium/setup/profiles/global-appium.md
+  - contexts/tools/appium/setup/profiles/local-npx.md
+  - contexts/platform/android/profile.md
+  - contexts/platform/linux/profile.md
+  - contexts/platform/macos/profile.md
+  - contexts/platform/windows/profile.md
+  - contexts/platform/android/emulator-setup.md
+  - contexts/platform/ios/simulator-setup.md
+  - contexts/tools/appium/setup/espresso-environment.md
+  - contexts/tools/appium/setup/gecko-environment.md
+  - contexts/tools/appium/setup/mac2-environment.md
+  - contexts/tools/appium/setup/references/environment-setup-chromium.md
+  - contexts/tools/appium/setup/references/environment-setup-safari.md
+  - contexts/tools/appium/setup/uiautomator2-environment.md
+  - contexts/tools/appium/setup/profiles/chromium.md
+  - contexts/tools/appium/setup/profiles/gecko.md
+  - contexts/tools/appium/setup/profiles/mac2.md
+  - contexts/tools/appium/setup/profiles/safari.md
+  - contexts/tools/appium/setup/profiles/xcuitest.md
+  - contexts/tools/appium/setup/examples/chromium.md
+  - contexts/tools/appium/setup/examples/espresso.md
+  - contexts/tools/appium/setup/examples/gecko.md
+  - contexts/tools/appium/setup/examples/mac2.md
+  - contexts/tools/appium/setup/examples/safari.md
+  - contexts/tools/appium/setup/examples/uiautomator2.md
+  - contexts/tools/appium/setup/examples/xcuitest.md
+  - contexts/platform/android/bundletool.md
+  - contexts/tools/ffmpeg/setup.md
 
 ---
 
@@ -40,7 +69,7 @@ If the user selects XCUITest for a real iOS or tvOS device rather than a simulat
 
 Use the matching route for the requested target. Load only the listed assets and any references they explicitly require.
 
-Use `contexts/tools/appium/setup/references/support-inventory.md` as a scoped index when a setup route needs nested profiles, examples, or driver references not listed below.
+Each route Context below owns the loading order for its nested driver and platform references. Load the matching host and command-mode profiles only when they affect execution, and load optional FFmpeg or bundletool Contexts only after an explicit request.
 
 ### Android + UiAutomator2
 

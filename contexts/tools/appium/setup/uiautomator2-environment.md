@@ -3,6 +3,13 @@ security_profile: appium-local-workflows
 owner: appium
 id: setup-references-environment-setup-uiautomator2
 status: stable
+optional_context:
+  - contexts/tools/appium/setup-basics.md
+  - contexts/platform/android/emulator-setup.md
+  - contexts/tools/appium/setup/references/uiautomator2/uiautomator2-decision-logic.md
+  - contexts/tools/appium/setup/references/uiautomator2/uiautomator2-driver-install.md
+  - contexts/tools/appium/setup/references/uiautomator2/uiautomator2-doctor-validation.md
+  - contexts/tools/appium/setup/references/uiautomator2/uiautomator2-smoke-status.md
 
 ---
 
