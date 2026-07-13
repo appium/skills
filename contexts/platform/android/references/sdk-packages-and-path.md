@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.android.android-sdk-packages-and-path
 name: "android-sdk-packages-and-path"

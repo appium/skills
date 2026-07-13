@@ -3,6 +3,7 @@ import os from "node:os";
 import {
   appiumDriverChecks,
   commandExists,
+  environmentValues,
   existingPaths,
   hostReport,
   isLinux,
@@ -24,6 +25,11 @@ const browserCommands = [
 ];
 
 const home = os.homedir();
+const windowsEnvironment = environmentValues([
+  "LOCALAPPDATA",
+  "PROGRAMFILES",
+  "PROGRAMFILES(X86)",
+]);
 const browserPaths = isMac
   ? [
       "/Applications/Google Chrome.app",
@@ -35,11 +41,11 @@ const browserPaths = isMac
     ]
   : isWindows
     ? [
-        pathJoin(process.env.PROGRAMFILES || "C:\\Program Files", "Google", "Chrome", "Application", "chrome.exe"),
-        pathJoin(process.env["PROGRAMFILES(X86)"] || "C:\\Program Files (x86)", "Google", "Chrome", "Application", "chrome.exe"),
-        pathJoin(process.env.LOCALAPPDATA || pathJoin(home, "AppData", "Local"), "Google", "Chrome", "Application", "chrome.exe"),
-        pathJoin(process.env.PROGRAMFILES || "C:\\Program Files", "Microsoft", "Edge", "Application", "msedge.exe"),
-        pathJoin(process.env["PROGRAMFILES(X86)"] || "C:\\Program Files (x86)", "Microsoft", "Edge", "Application", "msedge.exe"),
+        pathJoin(windowsEnvironment.PROGRAMFILES || "C:\\Program Files", "Google", "Chrome", "Application", "chrome.exe"),
+        pathJoin(windowsEnvironment["PROGRAMFILES(X86)"] || "C:\\Program Files (x86)", "Google", "Chrome", "Application", "chrome.exe"),
+        pathJoin(windowsEnvironment.LOCALAPPDATA || pathJoin(home, "AppData", "Local"), "Google", "Chrome", "Application", "chrome.exe"),
+        pathJoin(windowsEnvironment.PROGRAMFILES || "C:\\Program Files", "Microsoft", "Edge", "Application", "msedge.exe"),
+        pathJoin(windowsEnvironment["PROGRAMFILES(X86)"] || "C:\\Program Files (x86)", "Microsoft", "Edge", "Application", "msedge.exe"),
       ]
     : [];
 

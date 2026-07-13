@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: platform.android.emulator-setup
 name: "android-emulator-setup"

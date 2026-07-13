@@ -1,8 +1,10 @@
 ---
-owner: appium
-name: "appium-troubleshooting"
-description: "Route Appium failure diagnosis to canonical troubleshooting context assets for failed commands, session startup, app launch, driver startup, device connectivity, WebDriverAgent behavior, browser automation, locator strategy, and element lookup issues."
-requires_context: contexts/tools/appium/troubleshooting/triage.md, contexts/tools/appium/troubleshooting/procedure-part1.md
+name: appium-troubleshooting
+description: Diagnose existing Appium failures by routing failed commands, session or app startup, driver startup, device connectivity, WebDriverAgent, browser automation, locator, and element lookup symptoms to canonical troubleshooting contexts. Use when Appium behavior is already failing. Do not use for first-time installation or pre-failure real-device signing and provisioning; use setup or xcuitest-real-device-config instead.
+metadata:
+  renma.owner: appium
+  renma.requires-context: '["contexts/tools/appium/troubleshooting/triage.md","contexts/tools/appium/troubleshooting/procedure.md"]'
+  renma.security-profile: appium-local-workflows
 ---
 
 # Appium Router Entry
@@ -17,7 +19,7 @@ The workflow is complete when the relevant triage and symptom references have be
 
 ## Route
 
-Use this thin entrypoint for Appium failure diagnosis. Load `contexts/tools/appium/troubleshooting/triage.md` first, then follow `contexts/tools/appium/troubleshooting/procedure-part1.md` and the relevant profiles, references, and examples under `contexts/tools/appium/troubleshooting/`.
+Use this thin entrypoint for Appium failure diagnosis. Load `contexts/tools/appium/troubleshooting/triage.md` first, then follow `contexts/tools/appium/troubleshooting/procedure.md` and the relevant profiles, references, and examples under `contexts/tools/appium/troubleshooting/`.
 
 ## When Not To Use
 

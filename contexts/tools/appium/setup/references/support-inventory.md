@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: setup-support-inventory
 status: stable
@@ -7,8 +8,7 @@ optional_context:
   - contexts/tools/appium/setup/references/inventory/setup-routes.md
   - contexts/tools/appium/setup/references/inventory/android.md
   - contexts/tools/appium/setup/references/inventory/browser-examples.md
-  - contexts/tools/appium/setup/references/inventory/driver-refs-a.md
-  - contexts/tools/appium/setup/references/inventory/driver-refs-b.md
+  - contexts/tools/appium/setup/references/inventory/driver-references.md
   - contexts/tools/appium/setup/references/inventory/node-xcuitest.md
 
 ---

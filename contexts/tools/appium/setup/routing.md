@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium-setup-routing
 title: Appium Setup Routing Context
@@ -10,11 +11,30 @@ optional_context:
 
 # Appium Setup Routing Context
 
-Reusable setup-routing contract for Appium environment work.
+Reusable driver-selection and setup-routing contract for Appium environment work.
 
-Confirm target platform, driver, host OS, command mode, available devices or browsers, and optional dependency requests before changing the environment. Use global `appium` commands by default and use `npx appium` only when local mode is explicitly requested.
+Resolve the driver-selection gate below before changing the environment. Then confirm or safely detect the target platform, host OS, command mode, available devices or browsers, and optional dependency requests. Use global `appium` commands by default and use `npx appium` only when local mode is explicitly requested.
 
 Completion requires the selected reference criteria. Driver doctor required fixes must be `0` when doctor is supported; optional warnings do not block completion.
+
+## Driver Selection Gate
+
+Treat explicit driver names in the user's request or follow-up selection as authorization to set up those driver routes. Normalize common names such as `uia2` to UiAutomator2, but preserve every explicitly selected driver. If multiple drivers are named, do not ask the user to choose between them: prepare shared prerequisites once, then run and verify each route in dependency order.
+
+When no driver is named, do not run installation or environment-changing commands. Ask the user which Appium driver or drivers they need, and use any platform or application hints to recommend the smallest relevant set:
+
+| Intended target | Driver choice |
+| --- | --- |
+| Android native or hybrid apps | UiAutomator2 (recommended default) or Espresso |
+| iOS or tvOS simulators | XCUITest |
+| Chrome or Chromium desktop browsers | Chromium |
+| Firefox desktop browsers | Gecko |
+| Safari on macOS | Safari |
+| Native macOS apps | Mac2 |
+
+Use a concise question such as: `Which Appium driver or drivers do you want to set up? For example: UiAutomator2 for Android, XCUITest for iOS simulators, Chromium for Chrome, Gecko for Firefox, Safari, or Mac2.` Do not install all drivers by default and do not treat currently installed drivers as the user's selection.
+
+If the user selects XCUITest for a real iOS or tvOS device rather than a simulator, route signing and WebDriverAgent deployment to `skills/xcuitest-real-device-config/SKILL.md`. Ask whether the target is a simulator or real device only when that distinction remains unknown and is required to choose the correct skill.
 
 ## Recommended Setup Routes
 

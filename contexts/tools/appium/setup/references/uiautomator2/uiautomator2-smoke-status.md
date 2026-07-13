@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.uiautomator2.uiautomator2-smoke-status
 name: "uiautomator2-smoke-status"

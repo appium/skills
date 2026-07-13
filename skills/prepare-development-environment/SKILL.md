@@ -1,8 +1,10 @@
 ---
-owner: appium
 name: prepare-development-environment
-description: Prepare this Appium skills repository for local development, contribution, or validation work. Use when Codex needs to inspect and ready the repo workspace, confirm Git/Node/npm health, choose the right Appium setup route for driver-specific development, or verify that helper scripts and required doctor checks can run before editing skills, contexts, examples, or setup tooling.
-requires_context: contexts/tools/appium/development-environment/readiness.md
+description: Prepare this Appium skills repository for local development, contribution, and Renma validation by checking the workspace, Git, Node, npm, helper scripts, and routing readiness. Use before editing or validating repository skills, contexts, examples, or setup tooling. Do not use for driver installation or repair, existing Appium failures, or real-device signing; use setup, appium-troubleshooting, or xcuitest-real-device-config instead.
+metadata:
+  renma.owner: appium
+  renma.requires-context: '["contexts/tools/appium/development-environment/readiness.md"]'
+  renma.security-profile: appium-local-workflows
 ---
 
 # Appium Router Entry

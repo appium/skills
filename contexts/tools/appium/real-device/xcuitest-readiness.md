@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: xcuitest-real-device-readiness
 status: stable
@@ -20,7 +21,7 @@ Completion requires the device to appear in `xcrun xctrace list devices`, a sign
 1. Complete the iOS + XCUITest simulator setup path in `contexts/tools/appium/setup/routing.md` first.
 2. Load `skills/xcuitest-real-device-config/SKILL.md`.
 3. Load the matching profile from `contexts/tools/appium/real-device/profiles/`: free Apple ID, paid developer, enterprise, preinstalled WDA, prebuilt WDA, or running WDA URL.
-4. Load `contexts/tools/appium/real-device/references/real-device-procedure-part1.md` through `real-device-procedure-part9.md` in order.
+4. Load `contexts/tools/appium/real-device/references/real-device-procedure.md`.
 5. Use `contexts/tools/appium/real-device/examples/real-device.md` as the worked example when needed.
 
 ## Optional Context Inventory
@@ -34,14 +35,6 @@ Profiles:
 - `contexts/tools/appium/real-device/profiles/preinstalled-wda.md`
 - `contexts/tools/appium/real-device/profiles/running-wda-url.md`
 
-Procedure parts:
+Procedure:
 
-- `contexts/tools/appium/real-device/references/real-device-procedure-part1.md`
-- `contexts/tools/appium/real-device/references/real-device-procedure-part2.md`
-- `contexts/tools/appium/real-device/references/real-device-procedure-part3.md`
-- `contexts/tools/appium/real-device/references/real-device-procedure-part4.md`
-- `contexts/tools/appium/real-device/references/real-device-procedure-part5.md`
-- `contexts/tools/appium/real-device/references/real-device-procedure-part6.md`
-- `contexts/tools/appium/real-device/references/real-device-procedure-part7.md`
-- `contexts/tools/appium/real-device/references/real-device-procedure-part8.md`
-- `contexts/tools/appium/real-device/references/real-device-procedure-part9.md`
+- `contexts/tools/appium/real-device/references/real-device-procedure.md`

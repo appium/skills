@@ -1,8 +1,10 @@
 ---
-owner: appium
-name: "xcuitest-real-device-config"
-description: "Route real iOS or tvOS device preparation for Appium XCUITest to canonical readiness, provisioning, signing, WebDriverAgent, and deployment context assets."
-requires_context: contexts/tools/appium/real-device/xcuitest-readiness.md
+name: xcuitest-real-device-config
+description: Prepare real iOS or tvOS devices for Appium XCUITest by routing readiness, provisioning, signing, WebDriverAgent, and deployment work to canonical contexts. Use for real-device trust, Developer Mode, signing, provisioning, or WebDriverAgent installation and connection setup. Do not use for simulator-only setup or general Appium failures unrelated to real-device signing or WebDriverAgent deployment; use setup or appium-troubleshooting instead.
+metadata:
+  renma.owner: appium
+  renma.requires-context: '["contexts/tools/appium/real-device/xcuitest-readiness.md"]'
+  renma.security-profile: appium-local-workflows
 ---
 
 # Appium Router Entry

@@ -2,6 +2,7 @@ import { existsSync, statSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { env as processEnvironment } from "node:process";
 
 export const isWindows = process.platform === "win32";
 export const isMac = process.platform === "darwin";
@@ -54,6 +55,12 @@ export function executable(file) {
 
 export function existingPaths(paths) {
   return paths.filter((candidate) => candidate && existsSync(candidate));
+}
+
+export function environmentValues(names) {
+  return Object.fromEntries(
+    names.map((name) => [name, processEnvironment[name] || ""]),
+  );
 }
 
 export function parseMajor(versionText) {
@@ -127,11 +134,12 @@ export function appiumDriverChecks(driverName, options = {}) {
 }
 
 export function hostReport() {
+  const environment = environmentValues(["SHELL", "ComSpec"]);
   return {
     platform: process.platform,
     release: os.release(),
     arch: os.arch(),
-    shell: process.env.SHELL || process.env.ComSpec || "",
+    shell: environment.SHELL || environment.ComSpec,
   };
 }
 

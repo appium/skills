@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.mac2.mac2-decision-logic
 name: "mac2-decision-logic"

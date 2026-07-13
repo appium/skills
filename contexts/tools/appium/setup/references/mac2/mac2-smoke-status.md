@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.mac2.mac2-smoke-status
 name: "mac2-smoke-status"

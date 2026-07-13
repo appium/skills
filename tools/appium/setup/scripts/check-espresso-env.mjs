@@ -4,6 +4,7 @@ import { existsSync } from "node:fs";
 import {
   appiumDriverChecks,
   commandPath,
+  environmentValues,
   executable,
   hostReport,
   isWindows,
@@ -12,7 +13,11 @@ import {
 } from "./env-check-helpers.mjs";
 
 const home = os.homedir();
-const env = process.env;
+const env = environmentValues([
+  "ANDROID_HOME",
+  "ANDROID_SDK_ROOT",
+  "LOCALAPPDATA",
+]);
 const androidHome =
   env.ANDROID_HOME ||
   env.ANDROID_SDK_ROOT ||

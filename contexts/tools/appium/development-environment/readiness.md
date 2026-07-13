@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 id: appium-development-environment-readiness
 owner: appium
 status: stable

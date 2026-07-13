@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.espresso.espresso-doctor-validation
 name: "espresso-doctor-validation"

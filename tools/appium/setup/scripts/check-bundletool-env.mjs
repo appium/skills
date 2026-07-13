@@ -2,11 +2,12 @@
 import { existsSync } from "node:fs";
 import {
   commandPath,
+  environmentValues,
   hostReport,
   run,
 } from "./env-check-helpers.mjs";
 
-const env = process.env;
+const env = environmentValues(["BUNDLETOOL_JAR", "BUNDLETOOL_PATH"]);
 const bundletoolJar =
   env.BUNDLETOOL_JAR ||
   env.BUNDLETOOL_PATH ||

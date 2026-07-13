@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.android.android-device-emulator-validation
 name: "android-device-emulator-validation"
