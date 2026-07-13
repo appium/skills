@@ -9,7 +9,7 @@ metadata:
 
 # XCUITest Real-Device Configuration Workflow
 
-## Routing and selection boundary
+## Real-device routing and handoffs
 
 Route real iOS or tvOS trust, Developer Mode, signing, provisioning, WebDriverAgent installation, prebuilt or preinstalled WDA, and attachment to a running WDA through this workflow. Hand general iOS/tvOS XCUITest setup to `skills/setup/SKILL.md` and post-setup Appium failures outside real-device signing or WDA deployment to `skills/appium-troubleshooting/SKILL.md`.
 
@@ -25,7 +25,7 @@ Confirm the iOS or tvOS device, global `appium` or explicitly requested local `n
 4. Run the device, signing, provisioning, code-signature, deployment, and WDA connectivity checks required by the selected profiles.
 5. Re-run the narrowest failed check after each approved change and record the evidence.
 
-## Hard safety and approval constraints
+## Real-device safety and approval constraints
 
 - Redact Apple credentials, provisioning secrets, private keys, and signing identifiers from evidence; if evidence cannot be sanitized, stop and ask the user to verify it locally.
 - Require explicit approval before privileged commands, trust changes, signing modifications, bundle changes, or device installation.

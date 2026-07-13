@@ -9,7 +9,7 @@ metadata:
 
 # Appium Troubleshooting Workflow
 
-## Routing and selection boundary
+## Troubleshooting routing and handoffs
 
 Route only implemented UiAutomator2 and XCUITest failures through this workflow. If the driver is unknown, capture capabilities or Appium session logs before proceeding. Hand setup and doctor failures to `skills/setup/SKILL.md`, and hand real-device signing or provisioning work that exists before a failing session to `skills/xcuitest-real-device-config/SKILL.md`. The repository does not yet implement dedicated troubleshooting routes for Espresso, Chromium, Gecko, Safari, or Mac2.
 
@@ -26,7 +26,7 @@ Confirm the exact failing command and error, UiAutomator2 or XCUITest driver, ta
 5. Apply one targeted change and rerun the smallest failing command, session start, WDA check, or locator lookup.
 6. Use the community-search Context only after the matching official reference does not explain the exact symptom.
 
-## Hard safety and approval constraints
+## Troubleshooting safety and approval constraints
 
 - Start with targeted evidence and the smallest reversible change; stop and request approval before any evidence-backed broad reset, reinstall, device erase, signing change, or unrelated capability change.
 - Preserve global command mode unless the user explicitly requests local mode.

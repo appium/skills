@@ -9,7 +9,7 @@ metadata:
 
 # Appium Repository Development Workflow
 
-## Routing and selection boundary
+## Repository-readiness routing and handoffs
 
 Route repository development readiness and repository-wide validation through this workflow. Hand Appium driver installation or doctor repair to `skills/setup/SKILL.md`, supported existing runtime failures to `skills/appium-troubleshooting/SKILL.md`, and real-device signing or WebDriverAgent deployment to `skills/xcuitest-real-device-config/SKILL.md`.
 
@@ -26,7 +26,7 @@ Confirm the repository root, requested validation or edit scope, host OS and she
 5. Validate every changed or in-scope Agent Skill, repository-local path and declared Context relationship, and JavaScript module syntax as directed by the readiness Context.
 6. Review every remaining Renma advisory; address applicable advisories and document the rationale for accepting any deferred or inapplicable advisory.
 
-## Hard safety and approval constraints
+## Repository-editing safety and approval constraints
 
 - Preserve uncommitted user work and avoid unrelated edits.
 - If work requires Appium drivers, optional dependencies, or privileged system packages, stop repository readiness and hand that work to the appropriate setup workflow and approval gate.
@@ -35,7 +35,19 @@ Confirm the repository root, requested validation or edit scope, host OS and she
 
 ## Completion criteria
 
-Complete the workflow only when the Node readiness helper reports `requiredOk: true`, Renma exits successfully at the configured blocking threshold, the Agent Skill validator reports no invalid Skills, local path and declared Context relationship checks report no broken targets, and JavaScript module syntax checks pass. Assign each remaining Renma advisory an addressed, deferred, or inapplicable disposition. Limit evidence to command status summaries, advisory rule ID, severity, disposition, rationale, and any unresolved external blocker.
+Finish the workflow only after these local checks pass:
+
+- The Node readiness helper reports `requiredOk: true`.
+- Renma exits successfully at the configured blocking threshold.
+- The Agent Skill validator reports no invalid Skills.
+- Local path and declared Context relationship checks report no broken targets.
+- JavaScript module syntax checks pass.
+
+Assign each remaining Renma advisory an addressed, deferred, or inapplicable disposition.
+
+## Evidence boundary
+
+Provide command status summaries; advisory rule ID, severity, disposition, and rationale; and any unresolved external blocker. If additional evidence is requested, quote only the relevant command's sanitized lines.
 
 ## Evidence
 

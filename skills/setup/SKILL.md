@@ -11,7 +11,7 @@ metadata:
 
 # Appium Setup Workflow
 
-## Routing and selection boundary
+## Setup routing and selection
 
 Route first-time Appium installation, selected driver setup, prerequisite repair, and doctor readiness through this workflow. Hand an already failing session or command to `skills/appium-troubleshooting/SKILL.md`; hand real iOS or tvOS signing and WebDriverAgent deployment to `skills/xcuitest-real-device-config/SKILL.md`.
 
@@ -33,7 +33,7 @@ After driver selection, confirm or detect the target platform, command mode (`ap
 4. Run the matching read-only helper from `tools/appium/setup/scripts/`, apply required fixes in dependency order, and rerun the affected check after each change.
 5. Run the driver doctor and smoke checks required by the selected route. For multiple drivers, prepare shared prerequisites once and verify each route separately.
 
-## Hard safety and approval constraints
+## Setup safety and approval constraints
 
 - Use global npm/Appium commands by default; use local `npx appium` only when explicitly requested.
 - Ask before optional FFmpeg or bundletool setup, third-party real-device tooling, privileged commands, browser installation, or authorization changes.
@@ -42,7 +42,16 @@ After driver selection, confirm or detect the target platform, command mode (`ap
 
 ## Completion criteria
 
-Complete the workflow when each explicitly selected driver route has loaded its required Context Assets, required Appium doctor checks report `0 required fixes needed`, optional warnings are identified as non-blocking, and requested changes pass the matching helper and `/status` smoke checks. Limit evidence to the selected driver names and versions, helper `requiredOk` summary, doctor required/optional summary, `/status` result, remaining optional items, and any blocked manual step.
+Finish the workflow only after these selected-route checks pass:
+
+- The route's named Context Assets have been loaded.
+- Required Appium doctor checks report `0 required fixes needed`.
+- Optional doctor warnings are identified as non-blocking.
+- Requested changes pass the matching helper and `/status` smoke checks.
+
+## Evidence boundary
+
+Provide the selected driver names and versions, helper `requiredOk` summary, doctor required/optional summary, `/status` result, remaining optional items, and any blocked manual step. If additional evidence is requested, quote only the relevant helper or doctor command's sanitized lines.
 
 ## Evidence
 
