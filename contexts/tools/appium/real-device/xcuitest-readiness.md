@@ -27,7 +27,7 @@ Completion requires the device to appear in `xcrun xctrace list devices`, a sign
 
 ## Recommended Route
 
-1. Complete the iOS + XCUITest simulator setup path in `contexts/tools/appium/setup/routing.md` first.
+1. Complete the iOS/tvOS + XCUITest setup path in `contexts/tools/appium/setup/routing.md` first.
 2. Load `skills/xcuitest-real-device-config/SKILL.md`.
 3. Load the matching profile from `contexts/tools/appium/real-device/profiles/`: free Apple ID, paid developer, enterprise, preinstalled WDA, prebuilt WDA, or running WDA URL.
 4. Load `contexts/tools/appium/real-device/references/real-device-procedure.md`.

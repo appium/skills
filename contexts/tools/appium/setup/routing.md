@@ -55,15 +55,15 @@ When no driver is named, do not run installation or environment-changing command
 | Intended target | Driver choice |
 | --- | --- |
 | Android native or hybrid apps | UiAutomator2 (recommended default) or Espresso |
-| iOS or tvOS simulators | XCUITest |
+| iOS or tvOS | XCUITest |
 | Chrome or Chromium desktop browsers | Chromium |
 | Firefox desktop browsers | Gecko |
 | Safari on macOS | Safari |
 | Native macOS apps | Mac2 |
 
-Use a concise question such as: `Which Appium driver or drivers do you want to set up? For example: UiAutomator2 for Android, XCUITest for iOS simulators, Chromium for Chrome, Gecko for Firefox, Safari, or Mac2.` Do not install all drivers by default and do not treat currently installed drivers as the user's selection.
+Use a concise question such as: `Which Appium driver or drivers do you want to set up? For example: UiAutomator2 for Android, XCUITest for iOS/tvOS, Chromium for Chrome, Gecko for Firefox, Safari, or Mac2.` Do not install all drivers by default and do not treat currently installed drivers as the user's selection.
 
-If the user selects XCUITest for a real iOS or tvOS device rather than a simulator, route signing and WebDriverAgent deployment to `skills/xcuitest-real-device-config/SKILL.md`. Ask whether the target is a simulator or real device only when that distinction remains unknown and is required to choose the correct skill.
+Use this setup workflow for shared iOS/tvOS XCUITest prerequisites. When the target is a real device, additionally route signing and WebDriverAgent deployment to `skills/xcuitest-real-device-config/SKILL.md`. Ask whether the target is a simulator or real device only when that distinction is required to determine whether the additional real-device workflow applies.
 
 ## Recommended Setup Routes
 
@@ -124,7 +124,7 @@ Each route Context below owns the loading order for its nested driver and platfo
 6. `contexts/tools/appium/setup/references/environment-setup-safari.md`
 7. Example: `contexts/tools/appium/setup/examples/safari.md`
 
-### iOS + XCUITest Simulator
+### iOS/tvOS + XCUITest
 
 1. `skills/setup/SKILL.md`
 2. `contexts/platform/macos/profile.md`

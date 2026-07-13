@@ -3,7 +3,7 @@ security_profile: appium-local-workflows
 owner: appium
 id: platform.ios.simulator-setup
 name: "ios-simulator-setup"
-description: "Route iOS simulator, Xcode, XCUITest driver, doctor, and smoke validation setup"
+description: "Route iOS/tvOS XCUITest prerequisites, driver doctor, simulator inventory, and smoke validation"
 optional_context:
   - contexts/tools/appium/setup-basics.md
   - contexts/platform/macos/xcode-prereqs.md
@@ -13,11 +13,11 @@ optional_context:
 
 ---
 
-# iOS Simulator Setup
+# iOS/tvOS XCUITest Setup
 
 ## Goal
 
-Prepare Appium XCUITest on macOS by validating Node/Appium, Xcode, driver installation, doctor checks, simulator readiness, and server smoke evidence until required fixes are zero.
+Prepare Appium XCUITest for iOS/tvOS on macOS by validating Node/Appium, Xcode, driver installation, doctor checks, applicable simulator readiness, and server smoke evidence until required fixes are zero.
 
 ## Routing
 

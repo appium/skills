@@ -12,7 +12,7 @@ Each workflow includes or delegates to a self-improvement prompt in the loaded c
 
 | Skill | Description |
 |---|---|
-| [setup](skills/setup/SKILL.md) | Selects and sets up UiAutomator2, Espresso, Chromium, Gecko, Mac2, Safari, or simulator XCUITest, loading only the shared Context Assets and tools required for the selected drivers |
+| [setup](skills/setup/SKILL.md) | Selects and sets up UiAutomator2, Espresso, Chromium, Gecko, Mac2, Safari, or iOS/tvOS XCUITest, loading only the shared Context Assets and tools required for the selected drivers |
 | [prepare-development-environment](skills/prepare-development-environment/SKILL.md) | Prepares this repository for local development and validation by checking Git, Node, npm, helper scripts, Agent Skills, repository relationships, and the configured Renma gate |
 | [appium-troubleshooting](skills/appium-troubleshooting/SKILL.md) | Diagnoses implemented UiAutomator2 startup, transport, and locator failures or XCUITest WDA, startup, device-state, and element-lookup failures, re-checking the smallest reproduction after each fix |
 | [xcuitest-real-device-config](skills/xcuitest-real-device-config/SKILL.md) | Prepares a real iOS/tvOS device for Appium XCUITest automation |

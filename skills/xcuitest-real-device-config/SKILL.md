@@ -1,6 +1,6 @@
 ---
 name: xcuitest-real-device-config
-description: Prepare real iOS or tvOS devices for Appium XCUITest by validating readiness, provisioning, signing, WebDriverAgent deployment, and connectivity with shared repository Context Assets. Use for real-device trust, Developer Mode, signing, provisioning, or WebDriverAgent installation and connection setup. Do not use for simulator-only setup or general Appium failures unrelated to real-device signing or WebDriverAgent deployment; use setup or appium-troubleshooting instead.
+description: Prepare real iOS or tvOS devices for Appium XCUITest by validating readiness, provisioning, signing, WebDriverAgent deployment, and connectivity with shared repository Context Assets. Use for real-device trust, Developer Mode, signing, provisioning, or WebDriverAgent installation and connection setup. Do not use for general iOS/tvOS XCUITest setup or Appium failures unrelated to real-device signing or WebDriverAgent deployment; use setup or appium-troubleshooting instead.
 metadata:
   renma.owner: appium
   renma.requires-context: '["contexts/tools/appium/real-device/xcuitest-readiness.md","contexts/tools/appium/real-device/references/real-device-procedure.md"]'
@@ -11,7 +11,7 @@ metadata:
 
 ## Routing and selection boundary
 
-Route real iOS or tvOS trust, Developer Mode, signing, provisioning, WebDriverAgent installation, prebuilt or preinstalled WDA, and attachment to a running WDA through this workflow. Hand simulator-only XCUITest setup to `skills/setup/SKILL.md` and general post-setup Appium failures outside real-device signing or WDA deployment to `skills/appium-troubleshooting/SKILL.md`.
+Route real iOS or tvOS trust, Developer Mode, signing, provisioning, WebDriverAgent installation, prebuilt or preinstalled WDA, and attachment to a running WDA through this workflow. Hand general iOS/tvOS XCUITest setup to `skills/setup/SKILL.md` and post-setup Appium failures outside real-device signing or WDA deployment to `skills/appium-troubleshooting/SKILL.md`.
 
 ## Required inputs
 
@@ -19,7 +19,7 @@ Confirm the iOS or tvOS device, global `appium` or explicitly requested local `n
 
 ## Workflow outline
 
-1. Load `contexts/tools/appium/real-device/xcuitest-readiness.md` and complete its simulator/setup prerequisite handoff when required.
+1. Load `contexts/tools/appium/real-device/xcuitest-readiness.md` and complete its iOS/tvOS XCUITest setup prerequisite handoff when required.
 2. Select and load the one signing profile and one WebDriverAgent deployment profile that match the user's configuration.
 3. Load `contexts/tools/appium/real-device/references/real-device-procedure.md`; load the readiness Context's shared capability option when choosing or validating real-device capabilities.
 4. Run the device, signing, provisioning, code-signature, deployment, and WDA connectivity checks required by the selected profiles.
