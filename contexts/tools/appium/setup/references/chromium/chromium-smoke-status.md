@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.chromium.chromium-smoke-status
 name: "chromium-smoke-status"

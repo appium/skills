@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: xcuitest-real-device-support-inventory
 status: stable

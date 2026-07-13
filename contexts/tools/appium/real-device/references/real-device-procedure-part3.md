@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.real-device.references.real-device-procedure-part3
 
@@ -27,7 +28,7 @@ id: appium.real-device.references.real-device-procedure-part3
    # binary is at: darwin-*/resigner
    ```
 
-   Prepare a local `.p12` signing archive outside the chat or agent context.
+   Prepare a local `.p12` signing archive outside the chat or agent context; never upload, attach, copy, print, or log the archive.
    The human operator must create it locally, keep the password out of prompts,
    logs, and diagnostics, and provide only a filesystem path placeholder when
    documenting the workflow.
@@ -48,7 +49,7 @@ id: appium.real-device.references.real-device-procedure-part3
    PROFILES_DIR="/path/to/profiles-directory"   # resigner --profile takes a directory
    PROFILE_TMP_DIR="$(mktemp -d)"
    PROFILE_PLIST="$PROFILE_TMP_DIR/profile.plist"
-   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > "$PROFILE_PLIST"
+   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > "$PROFILE_PLIST" # never print, log, or upload profile contents
     # output example: TEAMID1234.com.example.wda  ->  TARGET_BUNDLE_ID=com.example.wda
    /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROFILE_PLIST"
     /usr/libexec/PlistBuddy -c "Print :ExpirationDate" "$PROFILE_PLIST"
@@ -59,7 +60,7 @@ id: appium.real-device.references.real-device-procedure-part3
    Delete `PROFILE_TMP_DIR` after the profile checks complete.
 
    Run `resigner` to embed the profile and sign. `--profile` accepts a **directory**
-   path containing `.mobileprovision` files, not the `.mobileprovision` file itself;
+   path containing `.mobileprovision` files, not the `.mobileprovision` file itself; never upload, attach, print, or log those files.
    resigner selects the matching profile automatically. Include `--bundle-id-remap`
    flags only when your profile app identifier is not a true wildcard (`*`). Each
    remap must use `old.bundle.id=new.bundle.id` syntax:
@@ -69,7 +70,7 @@ id: appium.real-device.references.real-device-procedure-part3
    # Partial wildcards (e.g. io.appium.* or com.example.*) still require --bundle-id-remap
 
    resigner \
-     --p12-file "<path-to-your.p12>" \
+     --p12-file "<local-signing-archive-path>" \
      --p12-password "<p12-password>" \
      --profile "$PROFILES_DIR" \
      --force \

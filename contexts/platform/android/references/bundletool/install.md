@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: platform.android.bundletool.install
 name: "bundletool-install"

@@ -1,10 +1,12 @@
 ---
-owner: appium
-id: skill.setup
-name: "setup"
-title: Appium Router Entry
-description: "Route Appium environment setup requests to canonical setup contexts for Node.js, Appium drivers, Android, XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, bundletool, FFmpeg, and smoke validation evidence."
-requires_context: contexts/tools/appium/setup/routing.md
+name: setup
+description: Set up Appium environments by routing Node.js, Appium drivers, Android, simulator XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, bundletool, FFmpeg, and smoke-validation work to canonical contexts. Use for first-time installation, configuration, prerequisite repair, and doctor readiness. Do not use for an existing failing session or real iOS or tvOS signing and WebDriverAgent deployment; use appium-troubleshooting or xcuitest-real-device-config instead.
+metadata:
+  renma.id: skill.setup
+  renma.title: Appium Router Entry
+  renma.owner: appium
+  renma.requires-context: '["contexts/tools/appium/setup/routing.md"]'
+  renma.security-profile: appium-local-workflows
 ---
 
 # Appium Router Entry

@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.environment-setup-chromium
 name: "environment-setup-chromium"

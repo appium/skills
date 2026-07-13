@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.real-device.references.real-device-procedure-part4
 
@@ -27,7 +28,7 @@ id: appium.real-device.references.real-device-procedure-part4
    ```bash
    PROFILE_TMP_DIR="$(mktemp -d)"
    PROFILE_PLIST="$PROFILE_TMP_DIR/profile.plist"
-   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > "$PROFILE_PLIST"
+   security cms -D -i "$PROFILES_DIR/<profile>.mobileprovision" > "$PROFILE_PLIST" # never print, log, or upload profile contents
    /usr/libexec/PlistBuddy -c "Print :ExpirationDate" "$PROFILE_PLIST"
    date
    ```

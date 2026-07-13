@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: platform.android.bundletool.validation
 name: "bundletool-validation"

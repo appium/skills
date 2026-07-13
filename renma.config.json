@@ -1,0 +1,22 @@
+{
+  "layout": {
+    "tool_namespace": "appium",
+    "workflow_aliases": {
+      "appium-troubleshooting": "troubleshooting",
+      "xcuitest-real-device-config": "real-device"
+    }
+  },
+  "security": {
+    "profiles": {
+      "appium-local-workflows": {
+        "allowedData": [
+          "repo-local-files",
+          "skill-bundled-context",
+          "public-docs",
+          "disclosed-user-provided-data",
+          "sanitized-ci-diagnostics"
+        ]
+      }
+    }
+  }
+}

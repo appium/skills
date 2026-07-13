@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: platform.macos.xcode-command-line-tools
 name: "macos-xcode-command-line-tools"

@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.android.android-sdk-commandline-tools
 name: "android-sdk-commandline-tools"
@@ -37,13 +38,7 @@ export PATH="$JAVA_HOME/bin:$PATH"
 ```
 Delete `ANDROID_TOOLS_TMP_DIR` after the command-line tools are installed.
 
-macOS Homebrew fallback:
-
-```bash
-test -d "/Applications/Android Studio.app" || brew install --cask android-commandlinetools
-mkdir -p "$HOME/Library/Android/sdk/cmdline-tools/latest"
-cp -R /opt/homebrew/share/android-commandlinetools/* "$HOME/Library/Android/sdk/cmdline-tools/latest/"
-```
+Do not use the mutable Homebrew `android-commandlinetools` cask as an automated fallback. Use the versioned command-line tools archive above or a repository-approved, pinned installation source.
 
 Linux package prerequisites, after explicit human approval for privileged
 package changes: `unzip`, `wget`, and `openjdk-21-jdk` on Debian/Ubuntu-style

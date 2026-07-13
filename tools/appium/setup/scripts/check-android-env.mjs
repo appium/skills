@@ -2,6 +2,7 @@
 
 import {
   commandExists,
+  environmentValues,
   executable,
   existingPaths,
   hostReport,
@@ -10,7 +11,15 @@ import {
   run,
 } from "./env-check-helpers.mjs";
 
-const env = process.env;
+const env = environmentValues([
+  "ANDROID_HOME",
+  "ANDROID_SDK_ROOT",
+  "HOME",
+  "JAVA_HOME",
+  "LOCALAPPDATA",
+  "PATH",
+  "USERPROFILE",
+]);
 const androidHome = env.ANDROID_HOME || env.ANDROID_SDK_ROOT || defaultAndroidHome();
 const exeExt = isWindows ? ".exe" : "";
 const cmdExt = isWindows ? ".bat" : "";

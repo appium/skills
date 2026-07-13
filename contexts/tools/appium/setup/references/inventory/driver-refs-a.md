@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium-setup-inventory-driver-refs-a
 status: stable

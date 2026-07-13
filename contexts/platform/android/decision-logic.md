@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: setup-references-android-android-decision-logic
 status: stable

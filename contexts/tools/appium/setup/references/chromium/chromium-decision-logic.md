@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.chromium.chromium-decision-logic
 name: "chromium-decision-logic"

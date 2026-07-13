@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.chromium.chromium-driver-validation
 name: "chromium-driver-validation"
@@ -11,7 +12,8 @@ description: "Install and validate Appium Chromium driver and doctor behavior"
 ## Install And List
 
 ```bash
-npm install -g appium
+: "${APPIUM_VERSION:?Set APPIUM_VERSION to the project's approved exact Appium 3.x version}"
+npm install -g "appium@$APPIUM_VERSION"
 appium driver install chromium
 appium driver list --installed --json
 ```

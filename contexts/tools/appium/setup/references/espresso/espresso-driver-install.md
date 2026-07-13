@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.setup.references.espresso.espresso-driver-install
 name: "espresso-driver-install"
@@ -11,7 +12,8 @@ description: "Install and verify the Appium Espresso driver in global command mo
 ## Install
 
 ```bash
-npm install -g appium
+: "${APPIUM_VERSION:?Set APPIUM_VERSION to the project's approved exact Appium 3.x version}"
+npm install -g "appium@$APPIUM_VERSION"
 appium driver install espresso
 ```
 

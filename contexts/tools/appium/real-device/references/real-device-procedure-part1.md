@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: appium.real-device.references.real-device-procedure-part1
 name: "xcuitest-real-device-config"

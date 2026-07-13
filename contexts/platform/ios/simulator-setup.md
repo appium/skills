@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: platform.ios.simulator-setup
 name: "ios-simulator-setup"

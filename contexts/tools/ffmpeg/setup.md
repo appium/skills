@@ -1,4 +1,5 @@
 ---
+security_profile: appium-local-workflows
 owner: appium
 id: tools.ffmpeg.setup
 status: stable
@@ -44,8 +45,11 @@ Use `summary.requiredOk: true` as the read-only setup gate after the user explic
 
 2. **Install FFmpeg when missing**
    macOS (Homebrew):
+   Set `FFMPEG_TAP` to the approved tap and `FFMPEG_FORMULA` to its exact versioned formula token. Do not substitute an unreviewed mutable formula name.
    ```bash
-   brew install ffmpeg
+   : "${FFMPEG_TAP:?Set the approved Homebrew tap}"
+   : "${FFMPEG_FORMULA:?Set the approved exact versioned formula token}"
+   brew install "$FFMPEG_TAP/$FFMPEG_FORMULA"
    ```
    Linux (Debian/Ubuntu): after explicit human approval for privileged package
    changes, install package `ffmpeg` with the system package manager.
