@@ -1,5 +1,6 @@
 ---
 description: "Repository-level execution rules for Appium skills. Use this guide to choose the correct skill entrypoint, enforce doctor-based verification, and preserve explicit approval gates for optional or privileged setup steps."
+security_profile: appium-local-workflows
 ---
 
 # AGENTS Guide for Appium Skills
@@ -66,6 +67,6 @@ Use the selected skill file's explicit checklist as the completion gate.
 - Optional doctor warnings do not block completion.
 - Validate global command mode (`appium`) as the default completion path.
 - Validate local command mode (`npx appium`) only when the user explicitly requests local execution.
-- For repository validation, require the configured Renma blocking gate to pass. Review all remaining advisories, address the applicable ones, and explicitly accept deferred or inapplicable advisories with a documented rationale.
+- For repository validation, run `renma scan . --fail-on high` and require the configured Renma blocking gate to pass. Review all remaining advisories, address the applicable ones, and explicitly accept deferred or inapplicable advisories with a documented rationale.
 - Do not require `Findings: 0`, `Diagnostics: 0`, a perfect readiness score, or the disappearance of all non-blocking advisories unless the configured blocking policy itself requires it.
 - Do not weaken specification, security, required-graph, or configured severity gates to obtain a passing result.

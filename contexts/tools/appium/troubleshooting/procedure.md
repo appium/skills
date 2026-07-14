@@ -9,7 +9,9 @@ source: contexts/tools/appium/troubleshooting/procedure.md
 # Appium Troubleshooting Procedure
 
 ## Goal
-Triage one Appium driver failure, apply the smallest plausible fix, and re-check until confirmed or handed back.
+Triage one Appium driver failure and isolate its cause. For a fix request, apply the smallest plausible fix and re-check until confirmed or handed back; for diagnosis-only work, stop before changing state and report the evidence-backed cause or next discriminating check.
+
+Resolve command mode once. Use `appium` by default; when the user explicitly selects local mode, run from the project root and replace every `appium ...` invocation in this procedure with `npx --no-install appium ...`. Never mix global and local modes in one run or allow `npx` to download a missing Appium package.
 
 ## Decision Logic
 - Identify the active automation driver first (`uiautomator2` or `xcuitest`). If unknown, stop and ask for the failing session capabilities or log line that names the driver. If another driver is named, report that this repository does not implement a troubleshooting route for it and hand off to the driver's official guidance.
@@ -39,8 +41,8 @@ Triage one Appium driver failure, apply the smallest plausible fix, and re-check
 3. **Open only the references that match the selected driver and symptom**
    Do not load both driver branches in one run. Start with the most direct reference for the observed symptom and only expand if that file does not explain the behavior.
 
-4. **Apply one targeted change, then re-run the smallest failing check**
-   Prefer narrow fixes such as capability corrections, driver cleanup, device reset, or locator updates before broader environment churn. Re-run the doctor command for prerequisite issues, the failing session launch for startup issues, or the failing locator lookup for element issues.
+4. **For a fix request, apply one targeted change, then re-run the smallest failing check**
+   Prefer reversible capability or locator corrections. Obtain explicit approval before any device reset or erase, component reinstall, signing or trust change, or other stateful reset. Re-run the doctor command for prerequisite issues, the failing session launch for startup issues, or the failing locator lookup for element issues. For diagnosis-only work, stop after evidence-backed cause isolation and present the targeted change as the next action without applying it.
 
 5. **Use official docs first, community second**
    Official references for this skill:
@@ -51,12 +53,13 @@ Triage one Appium driver failure, apply the smallest plausible fix, and re-check
    Use `discuss.appium.io` only after the official references are exhausted, searching with exact error text plus driver name and platform version.
 
 6. **Report the outcome with command evidence**
-   Include the baseline checks you ran, the change you made, and the smallest reproduction or check you re-ran to confirm the result.
+   Include the baseline checks you ran and the matching symptom evidence. For a fix request, include the change and smallest passing re-check. For diagnosis-only work, identify the isolated cause or remaining hypothesis and the next discriminating check without claiming a fix.
 
 ## Completion Criteria
 Mark troubleshooting complete only when one of these is true:
 - the failing check passes after a verified fix, or
-- the exact blocker is isolated to something the user must do manually (for example signing, device trust, app build defects), with the relevant command output and next action captured
+- the exact blocker is isolated to something the user must do manually (for example signing, device trust, app build defects), with the relevant command output and next action captured, or
+- for a diagnosis-only request, the cause is isolated from matching evidence and the smallest proposed fix or next discriminating check is reported without changing state
 
 ## Self-Improvement Prompt
 

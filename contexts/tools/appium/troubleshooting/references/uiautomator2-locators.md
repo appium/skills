@@ -13,6 +13,7 @@ id: appium.troubleshooting.references.uiautomator2-locators
 Use the driver docs for the full strategy list and performance tradeoffs. Keep this page for the extra triage that is easy to miss during debugging.
 
 ## Local Guidance
+- For the same single failing lookup, capture the locator strategy and value, screenshot, current context and context list, page source, Appium server-log window, app state, and timestamp. Keep this artifact set aligned to one screen state before comparing selectors.
 - Inspect the current page source before changing the selector. Verify whether the target is exposed as `content-desc`, resource id, text, or only as a visual label.
 - If the app is hybrid, confirm the current context before debugging native locators.
 - `-android uiautomator` is useful when ids or accessibility metadata are missing, but keep the query narrow and readable enough to debug from logs.

@@ -23,19 +23,20 @@ Resolve the driver selection before changing the environment.
 - If the user asks only to set up Appium, or otherwise names no driver, pause before installation and ask which Appium driver or drivers they need. Offer concise choices based on the selection guide in `contexts/tools/appium/setup/routing.md`, then install only the selected drivers.
 - Treat only drivers explicitly selected by the user as requested setup targets. Use existing installations as evidence for preflight checks, not as a driver-selection decision.
 
-After driver selection, confirm or detect the target platform, command mode (`appium` global by default or `npx appium` only when requested), host OS, relevant devices, simulators, or browsers, and available permissions. Ask only for inputs that cannot be detected safely. Optional dependencies such as FFmpeg or bundletool still require an explicit user request.
+After driver selection, confirm or detect the target platform, command mode (`appium` global by default or existing project-local `npx --no-install appium` only when requested), host OS, relevant devices, simulators, or browsers, and available permissions. Ask only for inputs that cannot be detected safely. Optional dependencies such as FFmpeg or bundletool still require an explicit user request.
 
 ## Workflow outline
 
 1. Load `contexts/tools/appium/setup/routing.md` and apply its driver-selection gate before changing the environment.
-2. Load the global command profile by default or the local `npx` profile only when explicitly requested. Load the host profile when host-specific constraints affect the route.
+2. Load the global command profile by default or the local `npx` profile only when explicitly requested. The selected profile is authoritative for every nested command example. Load the host profile when host-specific constraints affect the route.
 3. For every selected driver, load only the setup Contexts, profiles, references, and examples named by the matching route. Load its shared capability Context only when capability selection affects setup.
-4. Run the matching read-only helper from `tools/appium/setup/scripts/`, apply required fixes in dependency order, and rerun the affected check after each change.
+4. Run the matching read-only helper from `tools/appium/setup/scripts/`; pass `--appium-mode local` only when the user selected the local `npx` profile. Apply required fixes in dependency order and rerun the affected check after each change.
 5. Run the driver doctor and smoke checks required by the selected route. For multiple drivers, prepare shared prerequisites once and verify each route separately.
 
 ## Setup safety and approval constraints
 
-- Use global npm/Appium commands by default; use local `npx appium` only when explicitly requested.
+- Use global npm/Appium commands by default; use existing project-local `npx --no-install appium` only when explicitly requested.
+- In local mode, translate nested global examples through the local profile. If a route has no safe local equivalent, stop and report that command as a blocker instead of running a global install or global Appium command.
 - Ask before optional FFmpeg or bundletool setup, third-party real-device tooling, privileged commands, browser installation, or authorization changes.
 - Install only drivers selected by the user; if selection is still unclear, stop before environment changes and ask which driver is required.
 - Preserve working installations and prefer the smallest required change.
@@ -45,13 +46,17 @@ After driver selection, confirm or detect the target platform, command mode (`ap
 Finish the workflow only after these selected-route checks pass:
 
 - The route's named Context Assets have been loaded.
-- Required Appium doctor checks report `0 required fixes needed`.
+- When the selected driver supports doctor checks, required fixes report `0 required fixes needed`; otherwise doctor is reported as `not-supported` and the route's install, list, prerequisite, helper, and smoke gates pass.
 - Optional doctor warnings are identified as non-blocking.
-- Requested changes pass the matching helper and `/status` smoke checks.
+- Requested changes pass the matching helper and every smoke check named by the selected route, including `/status` where required.
 
 ## Evidence boundary
 
 Provide the selected driver names and versions, helper `requiredOk` summary, doctor required/optional summary, `/status` result, remaining optional items, and any blocked manual step. If additional evidence is requested, quote only the relevant helper or doctor command's sanitized lines.
+
+## Self-Improvement Prompt
+
+Before the final response, identify any missing, ambiguous, outdated, or retry-causing instruction in the loaded setup route. Report the asset path and proposed wording. When repository changes are outside the request, leave the asset unchanged.
 
 ## Evidence
 

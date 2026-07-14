@@ -74,7 +74,7 @@ const report = {
       adbVersion.ok &&
       devices.ok &&
       sdkPackages.ok &&
-      appium.requiredOk,
+      appium.strictDoctorGateOk,
     androidHomeExists: existsSync(androidHome),
     javaOk: java.ok,
     javacOk: javac.ok,

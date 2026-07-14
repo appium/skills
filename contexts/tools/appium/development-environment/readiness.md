@@ -25,11 +25,16 @@ Use this context to prepare the Appium skills repository for local development, 
 4. Treat Node.js 20 or newer and working npm as the baseline for local helper-script development. If the helper reports `requiredOk: false`, fix only the smallest required issue and rerun the helper.
 5. Run repository quality validation:
    - `renma --version`
-   - `renma scan .`
+   - `renma scan . --fail-on high`
+   - `renma readiness . --format json`
+   - `renma catalog . --format json`
+   - `renma graph . --format json`
    Use a repository-pinned Renma version when one exists. If the repository has no version pin, use the active installed CLI and report its version with the validation result.
-6. Require the configured Renma blocking gate to pass. Review all remaining advisories, address the applicable ones, and explicitly accept deferred or inapplicable advisories with a documented rationale. Preserve focused `skills/*/SKILL.md` workflow entry points while keeping reusable or selectively loaded procedures in canonical `contexts/**` assets.
-7. For skill edits, run the available skill validator if the skill-creator tooling is present. If the validator cannot run because of missing local dependencies, report that blocker and use a manual YAML/frontmatter check as supporting evidence.
-8. Route driver-specific setup to `skills/setup/SKILL.md`, real-device XCUITest setup to `skills/xcuitest-real-device-config/SKILL.md`, and existing Appium failures to `skills/appium-troubleshooting/SKILL.md`.
+6. Require `renma scan . --fail-on high` to pass and require every declared graph edge to resolve. Review `securityPolicyInventory.assetsWithoutEffectivePolicyList`, lifecycle and freshness coverage in the catalog, and every remaining diagnostic or advisory. Treat inventory gaps as review evidence rather than findings: address applicable items and explicitly accept deferred or inapplicable items with a documented rationale. Preserve focused `skills/*/SKILL.md` workflow entry points while keeping reusable or selectively loaded procedures in canonical `contexts/**` assets.
+7. When comparing repository revisions, use `renma diff . --from <ref> --to <ref>` or `renma ci-report . --from <ref> --to <ref>` only when both references exist. Generate a BOM only when the task requires a reproducible context manifest.
+8. Treat the `Agent Skills` result from `renma scan` as the canonical Skill validator and Renma dependency diagnostics as the declared-Context target check. Run the platform's Skill validator only as secondary evidence when it and its dependencies are already available; do not install validator dependencies without approval.
+9. Run `node --check <path>` for every changed `.js` or `.mjs` helper. For repository-wide helper edits, check every module under `tools/`.
+10. Route driver-specific setup to `skills/setup/SKILL.md`, real-device XCUITest setup to `skills/xcuitest-real-device-config/SKILL.md`, and existing Appium failures to `skills/appium-troubleshooting/SKILL.md`.
 
 ## Setup Rules
 
@@ -44,11 +49,11 @@ Use this context to prepare the Appium skills repository for local development, 
 
 Use the narrowest verification that matches the work:
 
-- Repository development readiness: report `node`, `npm`, registry, helper-script `requiredOk`, and Renma diagnostics.
-- Renma validation: `renma scan .` must pass the configured blocking threshold. Review every remaining diagnostic or advisory; report its severity, disposition, and rationale when accepted.
+- Repository development readiness: report `node`, `npm`, registry, helper-script `requiredOk`, Renma diagnostics, graph resolution, and reviewed inventory gaps.
+- Renma validation: `renma scan . --fail-on high` must pass. Review every remaining diagnostic, advisory, policy-coverage gap, and lifecycle or freshness gap; report its severity when present, disposition, and rationale when accepted.
 - Driver-specific setup: required Appium doctor checks must report `0 required fixes needed`; optional warnings are non-blocking.
-- Context or script edits: run the edited helper or a representative helper script when practical, then rerun `renma scan .`.
-- Skill edits: validate skill frontmatter and UI metadata, then rerun `renma scan .`.
+- Context or script edits: run the edited helper or a representative helper script when practical, check changed JavaScript modules with `node --check`, then rerun `renma scan . --fail-on high`.
+- Skill edits: validate Skill frontmatter through the Renma Agent Skills result, validate provider UI metadata when present, then rerun `renma scan . --fail-on high`.
 
 ## Self-Improvement Prompt
 

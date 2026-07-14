@@ -44,6 +44,7 @@ const java = run("java", ["-version"], { timeout: 15000 });
 const javac = run("javac", ["-version"], { timeout: 15000 });
 const adbVersion = run(adbCommand, ["version"], { timeout: 15000 });
 const devices = run(adbCommand, ["devices", "-l"], { timeout: 15000 });
+const emulatorVersion = run(emulatorCommand, ["-version"], { timeout: 15000 });
 const avds = run(emulatorCommand, ["-list-avds"], { timeout: 15000 });
 const sdkPackages = run(sdkmanagerCommand, ["--list_installed"], { timeout: 45000 });
 
@@ -57,6 +58,28 @@ const installed = {
   buildTools: /build-tools;\d+/.test(packageText),
   systemImage: /system-images;android-\d+/.test(packageText),
 };
+const connectedDeviceCount = devices.ok ? parseDeviceCount(devices.stdout) : 0;
+const avdCount = avds.ok && avds.stdout
+  ? avds.stdout.split(/\r?\n/).filter(Boolean).length
+  : 0;
+const baseToolingOk =
+  java.ok &&
+  javac.ok &&
+  existingPaths([androidHome]).length > 0 &&
+  (executable(paths.adb) || commandExists("adb").ok) &&
+  (executable(paths.emulator) || commandExists("emulator").ok) &&
+  (executable(paths.sdkmanager) || commandExists("sdkmanager").ok) &&
+  adbVersion.ok &&
+  emulatorVersion.ok &&
+  sdkPackages.ok &&
+  installed.platformTools &&
+  installed.emulator &&
+  installed.platform &&
+  installed.buildTools;
+const targetInventoryOk = devices.ok && avds.ok;
+const targetReady =
+  (devices.ok && connectedDeviceCount > 0) ||
+  (avds.ok && avdCount > 0);
 
 const report = {
   host: hostReport(),
@@ -82,32 +105,28 @@ const report = {
     javac,
     adbVersion,
     devices,
+    emulatorVersion,
     avds,
     sdkPackages,
   },
   installed,
   summary: {
-    requiredOk: false,
-    connectedDeviceCount: parseDeviceCount(devices.stdout),
-    avdCount: avds.ok && avds.stdout ? avds.stdout.split(/\r?\n/).filter(Boolean).length : 0,
+    requiredOk: baseToolingOk && targetInventoryOk && targetReady,
+    baseToolingOk,
+    targetInventoryOk,
+    targetReady,
+    connectedDeviceCount,
+    avdCount,
+    adbVersionOk: adbVersion.ok,
+    emulatorVersionOk: emulatorVersion.ok,
     deviceInventoryOk: devices.ok,
+    avdInventoryOk: avds.ok,
+    sdkInventoryOk: sdkPackages.ok,
     deviceInventoryNote: devices.ok
       ? ""
       : "Device inventory command failed. If stderr mentions smartsocket or Operation not permitted, retry outside the sandbox or with an already-running adb server.",
   },
 };
-
-report.summary.requiredOk =
-  java.ok &&
-  javac.ok &&
-  existingPaths([androidHome]).length > 0 &&
-  (executable(paths.adb) || commandExists("adb").ok) &&
-  (executable(paths.emulator) || commandExists("emulator").ok) &&
-  (executable(paths.sdkmanager) || commandExists("sdkmanager").ok) &&
-  installed.platformTools &&
-  installed.emulator &&
-  installed.platform &&
-  installed.buildTools;
 
 process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
 

@@ -3,6 +3,7 @@ import os from "node:os";
 import {
   appiumDriverChecks,
   commandExists,
+  driverDoctorStatus,
   environmentValues,
   existingPaths,
   hostReport,
@@ -62,6 +63,13 @@ const versionCommands = [
   .filter((name, index, names) => names.indexOf(name) === index)
   .map((name) => run(name, ["--version"], { timeout: 10000 }));
 const appium = appiumDriverChecks("chromium");
+const doctor = driverDoctorStatus(appium.checks.doctor);
+const appiumPrerequisitesOk =
+  appium.checks.appiumVersion.ok &&
+  appium.appiumMajor !== null &&
+  appium.appiumMajor >= 3 &&
+  appium.installed &&
+  (!doctor.supported || doctor.requiredOk);
 
 const report = {
   host: hostReport(),
@@ -72,16 +80,17 @@ const report = {
     supportedBrowserFound:
       commands.some((candidate) => candidate.ok) || paths.length > 0,
     linuxDependencyNote: isLinux
-      ? "If Chromium starts but sessions fail, validate distro browser dependencies from chromium-browser-prereqs.md."
+      ? "If Chromium starts but sessions fail, validate distro browser dependencies from contexts/browser/chromium/prereqs.md."
       : "",
   },
   appium,
   summary: {
-    requiredOk: appium.requiredOk &&
+    requiredOk: appiumPrerequisitesOk &&
       (commands.some((candidate) => candidate.ok) || paths.length > 0),
     appiumMajorAtLeast3: appium.appiumMajor !== null && appium.appiumMajor >= 3,
     driverInstalled: appium.installed,
-    doctorRequiredOk: /0 required fixes needed/i.test(appium.checks.doctor.stdout),
+    doctorSupported: doctor.supported,
+    doctorRequiredOk: doctor.requiredOk,
     supportedBrowserFound:
       commands.some((candidate) => candidate.ok) || paths.length > 0,
   },

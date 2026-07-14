@@ -1,4 +1,5 @@
 {
+  "fail_on": "high",
   "layout": {
     "tool_namespace": "appium",
     "workflow_aliases": {
@@ -15,7 +16,20 @@
           "public-docs",
           "disclosed-user-provided-data",
           "sanitized-ci-diagnostics"
-        ]
+        ],
+        "externalUploadAllowed": false,
+        "secretsAllowed": false
+      },
+      "appium-real-device-workflows": {
+        "allowedData": [
+          "repo-local-files",
+          "skill-bundled-context",
+          "public-docs",
+          "disclosed-user-provided-data",
+          "sanitized-ci-diagnostics"
+        ],
+        "networkAllowed": true,
+        "externalUploadAllowed": false
       }
     }
   }

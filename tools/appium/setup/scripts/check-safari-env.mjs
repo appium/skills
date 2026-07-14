@@ -3,6 +3,7 @@ import os from "node:os";
 import {
   appiumDriverChecks,
   commandPath,
+  driverDoctorStatus,
   existingPaths,
   hostReport,
   isMac,
@@ -19,6 +20,13 @@ const safariPaths = isMac
   : [];
 const safaridriverVersion = run("safaridriver", ["--version"], { timeout: 10000 });
 const appium = appiumDriverChecks("safari");
+const doctor = driverDoctorStatus(appium.checks.doctor);
+const appiumPrerequisitesOk =
+  appium.checks.appiumVersion.ok &&
+  appium.appiumMajor !== null &&
+  appium.appiumMajor >= 3 &&
+  appium.installed &&
+  (!doctor.supported || doctor.requiredOk);
 
 const report = {
   host: hostReport(),
@@ -37,11 +45,12 @@ const report = {
     requiredOk:
       isMac &&
       safaridriverVersion.ok &&
-      appium.requiredOk,
+      appiumPrerequisitesOk,
     macHost: isMac,
     safaridriverOk: safaridriverVersion.ok,
     driverInstalled: appium.installed,
-    doctorRequiredOk: /0 required fixes needed/i.test(appium.checks.doctor.stdout),
+    doctorSupported: doctor.supported,
+    doctorRequiredOk: doctor.requiredOk,
   },
 };
 

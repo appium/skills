@@ -4,6 +4,7 @@ import os from "node:os";
 import {
   appiumDriverChecks,
   commandExists,
+  driverDoctorStatus,
   existingPaths,
   hostReport,
   isLinux,
@@ -56,11 +57,8 @@ const geckodriverVersion = geckodriverCommand.ok
   ? run(geckodriverCommand.path, ["--version"], { timeout: 10000, maxOutput: 4000 })
   : { command: "geckodriver --version", ok: false, stdout: "", stderr: "No geckodriver executable found" };
 const appium = appiumDriverChecks("gecko");
-const doctorSupported = !/not supported|unknown command|unrecognized|not installed/i.test(
-  `${appium.checks.doctor.stdout}\n${appium.checks.doctor.stderr}`,
-);
-const doctorRequiredOk = /0 required fixes needed/i.test(appium.checks.doctor.stdout);
-const firefoxAvailable = availableCommands.length > 0 || appPaths.length > 0;
+const doctor = driverDoctorStatus(appium.checks.doctor);
+const firefoxAvailable = Boolean(selectedFirefox);
 
 const report = {
   host: hostReport(),
@@ -73,7 +71,7 @@ const report = {
       version: firefoxVersion,
     },
     linuxNote: isLinux
-      ? "If Firefox starts but sessions fail, validate display and distro browser dependencies from gecko-browser-prereqs.md."
+      ? "If Firefox starts but sessions fail, validate display and distro browser dependencies from contexts/browser/firefox/prereqs.md."
       : "",
   },
   geckodriver: {
@@ -85,15 +83,16 @@ const report = {
   summary: {
     requiredOk:
       firefoxAvailable &&
+      appium.checks.appiumVersion.ok &&
       appium.appiumMajor !== null &&
       appium.appiumMajor >= 3 &&
       appium.installed &&
-      (!doctorSupported || doctorRequiredOk),
+      (!doctor.supported || doctor.requiredOk),
     firefoxAvailable,
     appiumMajorOk: appium.appiumMajor !== null && appium.appiumMajor >= 3,
     driverInstalled: appium.installed,
-    doctorSupported,
-    doctorRequiredOk,
+    doctorSupported: doctor.supported,
+    doctorRequiredOk: doctor.requiredOk,
     geckodriverFound: geckodriverVersion.ok,
   },
 };

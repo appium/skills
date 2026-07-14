@@ -48,7 +48,7 @@ Use `summary.requiredOk: true` as the read-only setup gate after the user explic
    Set `FFMPEG_TAP` to the approved tap and `FFMPEG_FORMULA` to its exact versioned formula token. Do not substitute an unreviewed mutable formula name.
    ```bash
    : "${FFMPEG_TAP:?Set the approved Homebrew tap}"
-   : "${FFMPEG_FORMULA:?Set the approved exact versioned formula token}"
+: "${FFMPEG_FORMULA:?Set the approved exact versioned formula name}"
    brew install "$FFMPEG_TAP/$FFMPEG_FORMULA"
    ```
    Linux (Debian/Ubuntu): after explicit human approval for privileged package
