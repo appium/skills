@@ -35,16 +35,20 @@ Load these references in order:
 node tools/appium/setup/scripts/check-chromium-env.mjs
 ```
 
+Pass `--appium-mode local` only for the selected local profile. Use only the top-level
+`summary.requiredOk` as the route gate; nested `appium` fields are component evidence.
+
 Use `summary.requiredOk: true` as the read-only setup gate before smoke checks.
 
 ## Completion Criteria
 
-- `appium -v` succeeds and Appium major version is `>= 3`.
+- Appium succeeds in the selected command mode and its major version is `>= 3`.
 - Installed driver list includes `chromium`.
 - At least one supported Chromium browser is available.
 - Doctor reports `0 required fixes needed` when supported; otherwise install/list/smoke checks are the blocking gate.
-- `/status` returns a successful response and logs include `Available drivers:` with `chromium`.
+- `/status` returns a successful response, logs include `Available drivers:` with `chromium`, and one minimal Chromium browser session can be created and deleted without an unapproved driver download.
+- `node tools/appium/setup/scripts/smoke-chromium-session.mjs` reports top-level `summary.requiredOk: true` for that browser session.
 
 ## Constraints
 
-Use global npm/Appium by default. Use `npx appium` only when explicitly requested. Ask before privileged package-manager commands.
+Use global npm/Appium by default. Apply the selected local profile exactly when local mode is explicitly requested. Ask before privileged package-manager commands or a session-time browser-driver download.

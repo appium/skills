@@ -1,5 +1,5 @@
 ---
-security_profile: appium-local-workflows
+security_profile: appium-real-device-workflows
 owner: appium
 id: xcuitest-real-device-readiness
 status: stable
@@ -21,21 +21,21 @@ optional_context:
 
 Reusable readiness contract for real iOS or tvOS devices under Appium XCUITest.
 
-Confirm the host is macOS and identify the signing and WDA deployment path before changing anything: free Apple ID, paid Apple Developer account, enterprise profile, prebuilt WDA, preinstalled WDA, or running WDA URL.
+Confirm the host is macOS and select the WDA runtime route before changing anything. Select a free Apple ID, paid Apple Developer, or enterprise signing profile only when the route will build, sign, or install WDA; a running-WDA URL route does not require local signing or provisioning evidence.
 
-Completion requires the device to appear in `xcrun xctrace list devices`, a signing or provisioning path to apply without WDA install errors, code signatures to verify after any WDA bundle modification, and at least one WDA deployment method to work.
+Completion requires the device to appear in `xcrun xctrace list devices` and the selected WDA route to work. Build or install routes additionally require their applicable signing, provisioning, installation, and post-modification code-signature checks. A running-WDA URL route instead requires a reachable endpoint and one successful Appium attachment; it skips local signing, provisioning, artifact, and installation gates.
 
 ## Recommended Route
 
 1. Complete the iOS/tvOS + XCUITest setup path in `contexts/tools/appium/setup/routing.md` first.
 2. Load `skills/xcuitest-real-device-config/SKILL.md`.
-3. Load the matching profile from `contexts/tools/appium/real-device/profiles/`: free Apple ID, paid developer, enterprise, preinstalled WDA, prebuilt WDA, or running WDA URL.
+3. Load the runtime profile that matches the route. Load a signing profile only when local WDA build, signing, or installation work is in scope; for a running-WDA URL, load only that runtime profile.
 4. Load `contexts/tools/appium/real-device/references/real-device-procedure.md`.
 5. Use `contexts/tools/appium/real-device/examples/real-device.md` as the worked example when needed.
 
 ## Selective Profile Loading
 
-Load exactly the signing and WDA deployment profiles that match the selected route:
+Load exactly the signing and WDA runtime profiles that match the selected route. Do not load a signing profile for a running-WDA URL route:
 
 - `contexts/tools/appium/real-device/profiles/enterprise-profile.md`
 - `contexts/tools/appium/real-device/profiles/free-apple-id.md`

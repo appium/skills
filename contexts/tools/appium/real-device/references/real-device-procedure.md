@@ -1,5 +1,5 @@
 ---
-security_profile: appium-local-workflows
+security_profile: appium-real-device-workflows
 owner: appium
 id: appium.real-device.references.real-device-procedure
 name: xcuitest-real-device-procedure
@@ -20,27 +20,41 @@ status: stable
 - [Completion Criteria](#completion-criteria)
 
 ## Goal
-Prepare a physical iOS/tvOS device for Appium XCUITest by configuring trust,
-signing and deploying WebDriverAgent (WDA), verifying its signature, and selecting
-one runtime reuse pattern.
+Prepare a physical iOS/tvOS device for Appium XCUITest by configuring trust and
+validating one WebDriverAgent (WDA) runtime route: Appium-managed `xcodebuild`,
+a prepared or preinstalled artifact, or attachment to an already running WDA.
+Require signing, signature, and installation evidence only for routes that build,
+modify, sign, or install WDA locally.
+
+Resolve command mode once. Use `appium` by default; when the user explicitly
+selects local mode, run from the project root and replace every `appium ...`
+invocation in this procedure with `npx --no-install appium ...`. Never mix global
+and local modes in one run or allow `npx` to download a missing Appium package.
 
 ## Decision Logic
 - If host OS is not macOS: stop and tell the user this workflow is macOS-only.
-- If `environment-setup-xcuitest` has not been completed: require it first.
-- Before Option 2/3 signing steps, collect user inputs for bundle/team:
-  - Free Apple ID: use a bundle ID that Xcode has already accepted for that Apple ID.
-  - Paid Apple Developer: ask for the expected bundle ID and team ID used by their org.
-- WDA preparation (step 4) — try in priority order and stop at the first that succeeds:
+- If the iOS/tvOS + XCUITest route in `contexts/tools/appium/setup/routing.md` has not been completed: require it first.
+- Select one runtime route before preparing WDA:
+  - Default Appium-managed `xcodebuild`: let Appium build and sign WDA during the session; use step 4 only when signing needs separate validation.
+  - Prebuilt or preinstalled WDA: prepare or validate the artifact in steps 4 and 5 before deployment.
+  - Running WDA URL: skip local preparation, signing, and installation in steps 4 and 5; verify endpoint reachability and a successful Appium attachment in step 6.
+- Before changing device trust, Developer Mode, signing, provisioning, bundle contents, device registration, or installed apps, describe the exact change and obtain explicit approval. Treat `-allowProvisioningUpdates` and `-allowProvisioningDeviceRegistration` as state-changing.
+- Before any default or local signing route, have the human operator confirm locally
+  that the selected signing configuration covers the intended WDA identifier. For a
+  free Apple ID, use an identifier Xcode already accepted. For an organization account,
+  use its approved signing configuration. Return only redacted match/no-match results.
+- When the selected route requires a prepared local WDA artifact, try step 4 options in priority order and stop at the first that succeeds:
   1. Download a prebuilt WDA package from the GitHub releases page and sign with [`resigner`](https://github.com/appium/resigner) — handles profile embedding, optional bundle ID remapping, and signing in one step for any account type.
   2. Build WDA with `xcodebuild` passing explicit `PRODUCT_BUNDLE_IDENTIFIER`, `DEVELOPMENT_TEAM`, and `CODE_SIGN_IDENTITY` settings.
   3. Build WDA via Xcode UI (`appium driver run xcuitest open-wda`) as a last resort.
 - Run `appium driver run xcuitest open-wda` only for Option 3 (Xcode UI); skip for Options 1 and 2.
 - After any build by Xcode or xcodebuild on iOS/tvOS 17+: remove `Frameworks/` files, then re-sign before verifying.
-- For iOS/tvOS 17+, use the framework-removed and re-signed `.app` for Step 6/7 runtime checks; otherwise WDA may install but fail to launch.
+- For iOS/tvOS 17+, use the framework-removed and re-signed `.app` for step 6 runtime checks; otherwise WDA may install but fail to launch.
 - If a downloaded WDA package has no embedded provisioning profile: use `resigner` which handles profile embedding, optional bundle ID remapping, and signing in one step.
 - For free-account or enterprise-profile setups where first launch may be blocked by trust prompts, install and trust a sample app signed with the same provisioning profile before launching WDA.
-- For iOS/iPadOS 16+ without reliable internet: use an offline provisioning profile (see note in step 4, Option 1).
-- WDA deployment pattern is optional and user-driven; the default uses `xcodebuild` every session:
+- For iOS/iPadOS 16+ profiles intended for disconnected test runs, follow the
+  preparation note in step 4, Option 1 before the test run.
+- WDA runtime route is user-driven; the default uses Appium-managed `xcodebuild` every session:
   - For faster session start if WDA can remain installed between sessions → Run Preinstalled WDA (`appium:usePreinstalledWDA`).
   - For faster session start using a pre-built package (no xcodebuild at session time) → Run Prebuilt WDA (`appium:prebuiltWDAPath`).
   - For fully self-managed WDA lifecycle → Attach to Running WDA (`appium:webDriverAgentUrl`).
@@ -49,19 +63,22 @@ one runtime reuse pattern.
 
 ## Instructions
 
-### 1. Verify prerequisite: environment-setup-xcuitest completed
+### 1. Verify the iOS/tvOS + XCUITest setup prerequisite
 
    ```bash
    appium -v
-   appium driver list --installed --json || appium driver list --installed
+   appium driver list --installed --json
    ```
+   If the installed-list command does not support `--json`, run
+   `appium driver list --installed` as a separate fallback.
    Confirm `xcuitest` appears in the installed driver list before continuing. If it is
-   missing, complete `environment-setup-xcuitest` first.
+   missing, complete the iOS/tvOS + XCUITest route in
+   `contexts/tools/appium/setup/routing.md` first.
 
 ### 2. Connect device and confirm visibility
 
-   - Connect the device to the Mac via USB.
-   - If prompted on the device, tap **Trust** to trust the connected computer.
+   - Connect the device by USB when trust or initial device configuration is needed, or use an already paired wireless device. Either route must appear in `xcrun xctrace list devices`.
+   - If prompted on the device, describe the trust change and obtain explicit approval before asking the user to tap **Trust**.
    - Confirm the device is visible:
    ```bash
    xcrun xctrace list devices
@@ -73,6 +90,7 @@ one runtime reuse pattern.
 
 ### 3. Enable Developer Mode and required settings (iOS/iPadOS 16 and above)
 
+   - First have the user confirm the current Developer Mode and UI Automation state locally. If either setting is not already enabled, describe the state change and obtain explicit approval before continuing; do not toggle an already enabled setting.
    - On the device: **Settings → Privacy & Security → Developer Mode** → enable.
      Restart if prompted.
    - After restart: **Settings → Developer → Enable UI Automation** → enable.
@@ -85,9 +103,12 @@ one runtime reuse pattern.
 
 ### 4. Prepare WDA
 
-   Build or obtain a properly signed `WebDriverAgentRunner-Runner.app` before running
-   any Appium session. Try the options below in priority order and stop at the first
-   that succeeds.
+   Use this step only when the selected route needs a prepared local
+   `WebDriverAgentRunner-Runner.app` or when Appium-managed signing needs separate
+   validation. Skip it for a running-WDA URL route. Before running any command in
+   this step that changes signing, provisioning, bundle contents, device registration,
+   or device installation, obtain explicit approval. Try the options below in priority
+   order and stop at the first that succeeds.
 
    If `APPIUM_HOME` is set, use it. Otherwise fall back to `$HOME/.appium`:
    ```bash
@@ -103,7 +124,8 @@ one runtime reuse pattern.
    ```bash
    security find-identity -v -p codesigning
    ```
-   Note the identity string (e.g. `"Apple Development: you@example.com (TEAMID)"`).
+   Note the identity locally (e.g. `"Apple Development: you@example.com (TEAMID)"`).
+   Do not return the full identity in command evidence.
 
    ---
 
@@ -142,7 +164,9 @@ one runtime reuse pattern.
    ```
    The prebuilt package uses `com.facebook.WebDriverAgentRunner` as its root bundle ID.
 
-   Decode your provisioning profile to confirm its allowed bundle identifier.
+   Have the human operator decode the provisioning profile locally to confirm its
+   allowed bundle identifier. Do not run profile-decoding commands through an agent
+   tool that captures output; return only expiration-valid and identifier-match results.
    For free accounts (always specific-ID profiles), the output includes a `TEAMID.`
    prefix and you must strip it to get `TARGET_BUNDLE_ID`. For paid accounts, do this
    strip step only when using a specific-ID profile; if using `*`, `TARGET_BUNDLE_ID`
@@ -165,21 +189,26 @@ one runtime reuse pattern.
    path containing `.mobileprovision` files, not the `.mobileprovision` file itself; never upload, attach, print, or log those files.
    resigner selects the matching profile automatically. Include `--bundle-id-remap`
    flags only when your profile app identifier is not a true wildcard (`*`). Each
-   remap must use `old.bundle.id=new.bundle.id` syntax:
+   remap must use `old.bundle.id=new.bundle.id` syntax. Have the human operator set
+   `P12_PASSWORD` in the local shell outside the agent or chat context. Never pass the
+   password on the command line, echo it, log it, upload it, or return it as evidence;
+   unset it immediately after signing:
    ```bash
    TARGET_BUNDLE_ID="<bundle-id-covered-by-your-profile>"  # strip the TEAMID. prefix
    # Omit the --bundle-id-remap lines ONLY if your profile app identifier is exactly `*`
    # Partial wildcards (e.g. io.appium.* or com.example.*) still require --bundle-id-remap
+   : "${P12_PASSWORD:?Human operator must set P12_PASSWORD locally before signing}"
 
    resigner \
      --p12-file "<local-signing-archive-path>" \
-     --p12-password "<p12-password>" \
      --profile "$PROFILES_DIR" \
      --force \
      --bundle-id-remap "com.facebook.WebDriverAgentRunner=${TARGET_BUNDLE_ID}" \
      --bundle-id-remap "com.facebook.WebDriverAgentRunner.xctrunner=${TARGET_BUNDLE_ID}" \
      --bundle-id-remap "com.facebook.WebDriverAgentLib=${TARGET_BUNDLE_ID}" \
      "$WDA_APP"
+
+   unset P12_PASSWORD
    ```
    After `resigner` completes, the package is already signed; proceed directly to step 5 to verify.
 
@@ -212,8 +241,8 @@ Validate the result before install:
    ```
    Delete `PROFILE_TMP_DIR` after the profile checks complete.
 
-   > **Offline note (iOS 16+):** If the device has no reliable internet at test time,
-   > set up an offline provisioning profile first. Follow the steps in the
+   > **Disconnected-run note (iOS 16+):** To prepare a provisioning profile that
+   > remains usable during disconnected test runs, follow the steps in the
    > [Appium issue comment](https://github.com/appium/appium/issues/18378#issuecomment-1482678074).
 
     > **Fast prebuilt workflow (verified):** Use `resigner --inspect` first to get the
@@ -408,11 +437,30 @@ test ! -e "$WDA_APP"/Frameworks/libXCTestSwiftSupport.dylib || mv "$WDA_APP"/Fra
    provisioning profile/certificate, launch it once, and complete all trust prompts.
    This pre-trust step reduces WDA launch blocking on first run.
 
-### 6. Run Appium XCUITest with Prepared WDA
+### 6. Run Appium XCUITest with the selected WDA route
 
 Choose one mode only. Do not run all modes.
 
-#### Mode A — Reuse preinstalled WDA
+#### Mode A — Default Appium-managed xcodebuild
+
+   Use this default when Appium should build, sign, install, and launch WDA for
+   the session. Omit `appium:usePreinstalledWDA`, `appium:prebuiltWDAPath`, and
+   `appium:webDriverAgentUrl`. Supply the signing values validated for the selected
+   account without including their real values in shared evidence:
+   ```json
+   {
+     "platformName": "ios",
+     "appium:automationName": "xcuitest",
+     "appium:udid": "<device-udid>",
+     "appium:xcodeOrgId": "<team-id>",
+     "appium:xcodeSigningId": "Apple Development",
+     "appium:updatedWDABundleId": "<profile-covered-bundle-id>"
+   }
+   ```
+   Start one Appium session and require the Appium-managed WDA build, installation,
+   launch, and `/status` connection to succeed.
+
+#### Mode B — Reuse preinstalled WDA
 
    Install WDA once and reuse it across sessions without running `xcodebuild` each time.
    ```json
@@ -421,7 +469,7 @@ Choose one mode only. Do not run all modes.
      "appium:automationName": "xcuitest",
      "appium:udid": "<device-udid>",
      "appium:usePreinstalledWDA": true,
-     "appium:updatedWDABundleId": "com.yourteam.WebDriverAgentRunner"
+     "appium:updatedWDABundleId": "<wda-bundle-id>"
    }
    ```
    Notes:
@@ -439,11 +487,11 @@ Choose one mode only. Do not run all modes.
    }
    ```
 
-#### Mode B — Use prebuilt WDA app/xctestrun artifacts
+#### Mode C — Use prebuilt WDA app/xctestrun artifacts
 
    Skip build work at session time by using previously prepared artifacts.
 
-##### Option B1: Signed `.app` artifact
+##### Option C1: Signed `.app` artifact
 
    ```json
    {
@@ -455,7 +503,7 @@ Choose one mode only. Do not run all modes.
    }
    ```
 
-##### Option B2: `.xctestrun` artifact
+##### Option C2: `.xctestrun` artifact
 
    ```json
    {
@@ -469,29 +517,44 @@ Choose one mode only. Do not run all modes.
    If Appium expects `WebDriverAgentRunner_iphoneos-arm64.xctestrun` but build output
    is SDK-suffixed, copy/rename it to the expected filename in the same directory.
 
-#### Mode C — Attach to already running WDA
+#### Mode D — Attach to already running WDA
 
    Start WDA externally (Xcode/xcodebuild/tooling), then point Appium at it.
    ```json
    {
      "platformName": "ios",
      "appium:automationName": "xcuitest",
+     "appium:platformVersion": "<device-os-version>",
      "appium:udid": "<device-udid>",
+     "appium:deviceName": "<device-name>",
      "appium:webDriverAgentUrl": "http://<device-ip-or-localhost>:8100"
    }
    ```
    If the remote WDA port differs from local forwarding, add `appium:wdaRemotePort`.
+   Verify the URL without printing any credential-bearing URL components:
+   ```bash
+   WDA_URL="http://<device-ip-or-localhost>:8100"
+   curl -fsS "${WDA_URL%/}/status"
+   ```
+   Require the status request to exit successfully and return valid WDA status JSON.
+   Then start one Appium session and require successful attachment. Do not request
+   local signing, provisioning, artifact, or installation evidence for this route
+   unless the user separately asks to diagnose the running WDA.
 
 ## Evidence To Report
 
 - macOS version and Xcode version
-- target device name, UDID, OS version, and visibility in `xcrun xctrace list devices`
-- selected provisioning approach and bundle ID/team ID used
+- target device type, redacted UDID fingerprint, OS version, and visibility in `xcrun xctrace list devices`
+- selected provisioning approach when applicable, plus bundle-ID, Team-ID, certificate, and profile match/no-match results; never report their full values
 - WDA preparation mode: default `xcodebuild`, preinstalled, prebuilt, `.xctestrun`, or attach-to-running
 - whether the target OS supports `appium:usePreinstalledWDA` / `appium:prebuiltWDAPath`
-- `codesign --verify --deep --strict` result for any prepared WDA bundle
-- deployment command and smallest successful verification
+- `codesign --verify --deep --strict` result for any locally prepared WDA bundle
+- sanitized deployment or attachment command summary and smallest successful verification
 - any required on-device action that remains manual
+
+Never include a full UDID, Team ID, certificate identity, bundle ID, provisioning-
+profile contents, signing-archive path, signing password, private key, or credential in
+the report.
 
 ## Self-Improvement Prompt
 
@@ -499,9 +562,10 @@ Before the final response, run this self-improvement check. Report any missing, 
 
 ## Constraints
 - This workflow is macOS-only; do not provide Linux/Windows alternatives.
-- Complete `environment-setup-xcuitest` first.
-- Always verify the WDA signature with `codesign --verify --deep --strict` (step 5)
-  after any preparation step before deploying.
+- Complete the iOS/tvOS + XCUITest route in `contexts/tools/appium/setup/routing.md` first.
+- Verify every locally prepared WDA signature with `codesign --verify --deep --strict`
+  (step 5) before deploying. Do not require local signature evidence for a running-WDA
+  URL route.
 - Never skip re-signing after modifying a signed `.app` bundle (e.g. removing frameworks).
 - Mark paid-account-only steps; do not require them for free Apple IDs.
 - Ask the user before installing any 3rd-party device tool (ios-deploy, go-ios,
@@ -512,12 +576,18 @@ Before the final response, run this self-improvement check. Report any missing, 
   xcodebuild-per-session flow is still valid.
 
 ## Completion Criteria
-Mark the workflow complete only when all of the following are true:
-- Connected device is visible in `xcrun xctrace list devices` output.
-- A signed WDA `.app` has been prepared using one of the Options in step 4.
-- `codesign --verify --deep --strict` on the prepared WDA exits cleanly (step 5 passes).
-- At least one WDA runtime mode from step 6 is confirmed working (or default
-  xcodebuild-per-session install succeeds).
+Mark the workflow complete only when the shared prerequisites and the selected
+route's checks pass:
+- The connected device is visible in `xcrun xctrace list devices` output.
+- For default Appium-managed `xcodebuild`, one session completes WDA build, signing,
+  installation, launch, and connection successfully.
+- For a prebuilt route, the local artifact passes `codesign --verify --deep --strict`,
+  deployment succeeds, and one session connects.
+- For a preinstalled route, the installed runner launches and one session connects;
+  require a local signature check only when the workflow rebuilt or re-signed it.
+- For a running-WDA URL route, the endpoint is reachable and one Appium session
+  attaches successfully; steps 4 and 5 are not required.
 - Final report includes capability hints:
   - one copy-paste JSON capabilities snippet for the validated mode, and
-  - one additional fallback snippet.
+  - one attach-only fallback for a running-WDA route (for example, device IP versus an existing localhost port forward) when available, or an explicit note that the user's constraints exclude a safe fallback.
+  Use sanitized placeholders in every snippet.

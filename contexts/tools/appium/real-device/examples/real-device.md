@@ -1,5 +1,5 @@
 ---
-security_profile: appium-local-workflows
+security_profile: appium-real-device-workflows
 owner: appium
 id: appium.real-device.examples.real-device
 
@@ -15,7 +15,7 @@ Use this repository's skills to prepare macOS + XCUITest for a real iOS or tvOS 
 4. Load `contexts/tools/appium/setup-basics.md`.
 5. Load `contexts/platform/ios/simulator-setup.md`.
 6. Load `skills/xcuitest-real-device-config/SKILL.md`.
-7. Load the signing and WDA deployment profiles that match the user's path.
+7. Select the WDA runtime route. Load a signing profile only for local build, signing, or installation; for a running-WDA URL, load only that runtime profile.
 8. Load `contexts/tools/appium/real-device/references/real-device-procedure.md`.
 
 Rules:
@@ -27,6 +27,6 @@ Rules:
 Completion criteria:
 
 1. Device is visible in `xcrun xctrace list devices`.
-2. A provisioning profile approach has been fully applied without WDA install signing errors.
+2. For a build or install route, the applicable provisioning path succeeds without WDA signing errors.
 3. If WDA was modified, `codesign --verify --verbose` confirms a valid signature.
-4. At least one WDA deployment method is confirmed working.
+4. The selected WDA route works. For a running-WDA URL, the endpoint is reachable and one Appium session attaches without requiring local signing, provisioning, or installation evidence.

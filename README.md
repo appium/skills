@@ -13,7 +13,7 @@ Each workflow includes or delegates to a self-improvement prompt in the loaded c
 | Skill | Description |
 |---|---|
 | [setup](skills/setup/SKILL.md) | Selects and sets up UiAutomator2, Espresso, Chromium, Gecko, Mac2, Safari, or iOS/tvOS XCUITest, loading only the shared Context Assets and tools required for the selected drivers |
-| [prepare-development-environment](skills/prepare-development-environment/SKILL.md) | Prepares this repository for local development and validation by checking Git, Node, npm, helper scripts, Agent Skills, repository relationships, and the configured Renma gate |
+| [prepare-development-environment](skills/prepare-development-environment/SKILL.md) | Prepares this repository for local development and validation by checking Git, Node, npm, helper scripts, Skill structure, repository-local paths, and JavaScript syntax |
 | [appium-troubleshooting](skills/appium-troubleshooting/SKILL.md) | Diagnoses implemented UiAutomator2 startup, transport, and locator failures or XCUITest WDA, startup, device-state, and element-lookup failures, re-checking the smallest reproduction after each fix |
 | [xcuitest-real-device-config](skills/xcuitest-real-device-config/SKILL.md) | Prepares a real iOS/tvOS device for Appium XCUITest automation |
 
@@ -25,7 +25,7 @@ Each workflow includes or delegates to a self-improvement prompt in the loaded c
 - For FFmpeg-dependent capabilities, use `contexts/tools/ffmpeg/setup.md` only when explicitly requested.
 - For bundletool-dependent capabilities, use `contexts/platform/android/bundletool.md` only when explicitly requested.
 - For supported UiAutomator2 or XCUITest startup, WDA, transport, device-state, or locator failures after setup is complete, use `appium-troubleshooting` in a single driver path.
-- For Renma, require the configured blocking gate to pass. Review every remaining advisory and either address it or explicitly accept it with a documented rationale; non-blocking advisories do not have to disappear.
+- Repository authoring analyzers are maintainer-side tools and are not completion gates for Appium workflows.
 
 ## Future Work
 
@@ -35,3 +35,4 @@ Dedicated troubleshooting routes for Espresso, Chromium, Gecko, Safari, and Mac2
 
 - See [AGENTS.md](AGENTS.md) for repository-level execution rules and skill entrypoint guidance.
 - Use the selected `SKILL.md` and its routed `contexts/` assets for target-specific step order.
+- Renma metadata and `renma.config.json` are retained for optional maintainer analysis; Renma is not required to run or complete any repository skill.

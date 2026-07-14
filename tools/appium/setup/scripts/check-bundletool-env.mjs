@@ -8,12 +8,35 @@ import {
 } from "./env-check-helpers.mjs";
 
 const env = environmentValues(["BUNDLETOOL_JAR", "BUNDLETOOL_PATH"]);
-const bundletoolJar =
+const configuredBundletoolJar =
   env.BUNDLETOOL_JAR ||
   env.BUNDLETOOL_PATH ||
   "";
+const bundletoolJarOnPath = commandPath("bundletool.jar");
+const bundletoolJar =
+  configuredBundletoolJar ||
+  bundletoolJarOnPath ||
+  "";
+const resolvedJarSource = env.BUNDLETOOL_JAR
+  ? "BUNDLETOOL_JAR"
+  : env.BUNDLETOOL_PATH
+    ? "BUNDLETOOL_PATH"
+    : bundletoolJarOnPath
+      ? "PATH"
+      : "";
 const java = run("java", ["-version"], { timeout: 10000 });
-const bundletoolCommand = run("bundletool", ["version"], { timeout: 10000 });
+const bundletoolExecutable = commandPath("bundletool");
+const bundletoolCommand = bundletoolExecutable
+  ? run(bundletoolExecutable, ["version"], { timeout: 10000 })
+  : {
+      command: "bundletool version",
+      ok: false,
+      status: null,
+      signal: null,
+      stdout: "",
+      stderr: "",
+      error: "bundletool executable is not on PATH",
+    };
 const bundletoolJarVersion = bundletoolJar
   ? run("java", ["-jar", bundletoolJar, "version"], { timeout: 10000 })
   : {
@@ -23,15 +46,19 @@ const bundletoolJarVersion = bundletoolJar
       signal: null,
       stdout: "",
       stderr: "",
-      error: "BUNDLETOOL_JAR or BUNDLETOOL_PATH is not set",
+      error: "bundletool.jar was not found in BUNDLETOOL_JAR, BUNDLETOOL_PATH, or PATH",
     };
 
 const report = {
   host: hostReport(),
   bundletool: {
-    envPath: bundletoolJar,
-    envPathExists: Boolean(bundletoolJar) && existsSync(bundletoolJar),
-    executable: commandPath("bundletool"),
+    envPath: configuredBundletoolJar,
+    envPathExists: Boolean(configuredBundletoolJar) && existsSync(configuredBundletoolJar),
+    jarOnPath: bundletoolJarOnPath,
+    resolvedJarPath: bundletoolJar,
+    resolvedJarSource,
+    jarPathExists: Boolean(bundletoolJar) && existsSync(bundletoolJar),
+    executable: bundletoolExecutable,
     checks: {
       java,
       bundletoolCommand,
@@ -41,8 +68,9 @@ const report = {
   summary: {
     requiredOk:
       java.ok &&
-      (bundletoolCommand.ok ||
-        (Boolean(bundletoolJar) && existsSync(bundletoolJar) && bundletoolJarVersion.ok)),
+      Boolean(bundletoolJar) &&
+      existsSync(bundletoolJar) &&
+      bundletoolJarVersion.ok,
     javaOk: java.ok,
     bundletoolCommandOk: bundletoolCommand.ok,
     bundletoolJarOk:

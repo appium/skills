@@ -1,5 +1,5 @@
 ---
-security_profile: appium-local-workflows
+security_profile: appium-real-device-workflows
 owner: appium
 id: appium.real-device.profiles.paid-developer
 

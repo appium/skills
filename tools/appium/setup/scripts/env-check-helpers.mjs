@@ -96,35 +96,89 @@ export function doctorRequiredOk(output) {
   return /0 required fixes needed/i.test(output);
 }
 
+export function driverDoctorStatus(result) {
+  const output = [result.stdout, result.stderr, result.error]
+    .filter(Boolean)
+    .join("\n");
+  return {
+    supported: !/not supported|does not support(?: the)? doctor|unknown command|unrecognized command/i.test(output),
+    requiredOk: doctorRequiredOk(output),
+  };
+}
+
+export function resolveAppiumCommand(args = process.argv.slice(2)) {
+  let mode = "global";
+
+  for (let index = 0; index < args.length; index += 1) {
+    const argument = args[index];
+    if (argument === "--appium-mode") {
+      mode = args[index + 1] || "";
+      index += 1;
+    } else if (argument.startsWith("--appium-mode=")) {
+      mode = argument.slice("--appium-mode=".length);
+    }
+  }
+
+  if (!new Set(["global", "local"]).has(mode)) {
+    throw new Error("--appium-mode must be either 'global' or 'local'");
+  }
+
+  const executable = mode === "local" ? "npx" : "appium";
+  const prefixArgs = mode === "local" ? ["--no-install", "appium"] : [];
+  const display = [executable, ...prefixArgs].join(" ");
+
+  if (isWindows) {
+    return {
+      mode,
+      executable: processEnvironment.ComSpec || "cmd.exe",
+      prefixArgs: ["/d", "/s", "/c", executable, ...prefixArgs],
+      display,
+    };
+  }
+
+  return { mode, executable, prefixArgs, display };
+}
+
+export function runAppium(appiumCommand, args = [], options = {}) {
+  return run(
+    appiumCommand.executable,
+    [...appiumCommand.prefixArgs, ...args],
+    options,
+  );
+}
+
 export function appiumDriverChecks(driverName, options = {}) {
-  const appiumCommand = options.appiumCommand || "appium";
-  const appiumVersion = run(appiumCommand, ["-v"], { timeout: 10000 });
+  const appiumCommand = options.appiumCommand || resolveAppiumCommand();
+  const appiumVersion = runAppium(appiumCommand, ["-v"], { timeout: 10000 });
   const appiumMajor = parseMajor(appiumVersion.stdout);
-  const driverListJson = run(
+  const driverListJson = runAppium(
     appiumCommand,
     ["driver", "list", "--installed", "--json"],
     { timeout: 20000 },
   );
   const driverList = driverListJson.ok
     ? driverListJson
-    : run(appiumCommand, ["driver", "list", "--installed"], { timeout: 20000 });
-  const doctor = run(appiumCommand, ["driver", "doctor", driverName], {
+    : runAppium(appiumCommand, ["driver", "list", "--installed"], { timeout: 20000 });
+  const doctor = runAppium(appiumCommand, ["driver", "doctor", driverName], {
     timeout: options.doctorTimeout ?? 60000,
   });
   const version = parseDriverVersion(driverList.stdout, driverName);
   const installed = driverInstalled(driverList.stdout, driverName);
+  const doctorStatus = driverDoctorStatus(doctor);
 
   return {
-    appiumCommand,
+    appiumMode: appiumCommand.mode,
+    appiumCommand: appiumCommand.display,
     appiumMajor,
     version,
     installed,
-    requiredOk:
+    strictDoctorGateOk:
       appiumVersion.ok &&
       appiumMajor !== null &&
       appiumMajor >= 3 &&
       installed &&
-      doctorRequiredOk(doctor.stdout),
+      doctor.ok &&
+      doctorStatus.requiredOk,
     checks: {
       appiumVersion,
       driverList,

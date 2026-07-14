@@ -13,7 +13,7 @@ const xcode = xcodeReport({
   xcrunXcodebuild: run("xcrun", ["--find", "xcodebuild"], { timeout: 10000 }),
 });
 const appium = appiumDriverChecks("mac2", { doctorTimeout: 90000 });
-const appiumRequiredOk = appium.installed && doctorRequiredOk(appium.checks.doctor.stdout);
+const appiumRequiredOk = appium.strictDoctorGateOk;
 
 const report = {
   host: hostReport(),
@@ -41,6 +41,7 @@ const report = {
     licenseOk: xcode.checks.license.ok,
     firstLaunchOk: xcode.checks.firstLaunch.ok,
     xcrunXcodebuildOk: xcode.checks.xcrunXcodebuild.ok,
+    appiumMajorAtLeast3: appium.appiumMajor !== null && appium.appiumMajor >= 3,
     driverInstalled: appium.installed,
     doctorRequiredOk: doctorRequiredOk(appium.checks.doctor.stdout),
   },

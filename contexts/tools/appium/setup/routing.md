@@ -42,7 +42,9 @@ optional_context:
 
 Reusable driver-selection and setup-routing contract for Appium environment work.
 
-Resolve the driver-selection gate below before changing the environment. Then confirm or safely detect the target platform, host OS, command mode, available devices or browsers, and optional dependency requests. Use global `appium` commands by default and use `npx appium` only when local mode is explicitly requested.
+Resolve the driver-selection gate below before changing the environment. Then confirm or safely detect the target platform, host OS, command mode, available devices or browsers, and optional dependency requests. Use global `appium` commands by default. When local mode is explicitly requested, load `contexts/tools/appium/setup/profiles/local-npx.md` and treat it as authoritative over every unqualified global command example in nested assets.
+
+Command examples in route assets show the global default unless they explicitly show both modes. In local mode, run from the project root, replace every `appium ...` invocation with `npx --no-install appium ...`, and never run a nested `npm install -g` instruction. Install or upgrade project-local Appium only when project dependency changes are authorized; otherwise report the missing local component as a blocker.
 
 Completion requires the selected reference criteria. Driver doctor required fixes must be `0` when doctor is supported; optional warnings do not block completion.
 
