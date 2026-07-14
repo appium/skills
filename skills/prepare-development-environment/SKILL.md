@@ -1,6 +1,6 @@
 ---
 name: prepare-development-environment
-description: Prepare and validate this Appium Skills repository for local development or contribution by checking the workspace, Git, Node, npm, helper scripts, Agent Skills, repository-local relationships, and the configured Renma blocking gate. Use before editing or validating repository Skills, Context Assets, examples, or tools. Do not use for Appium driver setup, existing runtime failures, or real-device signing; use setup, appium-troubleshooting, or xcuitest-real-device-config instead.
+description: Prepare and validate this Appium Skills repository for local development or contribution by checking the workspace, Git, Node, npm, helper scripts, Skill entrypoint structure, repository-local paths, and JavaScript syntax. Use before editing or validating repository Skills, Context Assets, examples, or tools. Do not use for Appium driver setup, existing runtime failures, or real-device signing; use setup, appium-troubleshooting, or xcuitest-real-device-config instead.
 metadata:
   renma.owner: appium
   renma.requires-context: '["contexts/tools/appium/development-environment/readiness.md"]'
@@ -22,16 +22,15 @@ Confirm the repository root, requested validation or edit scope, host OS and she
 1. Load `contexts/tools/appium/development-environment/readiness.md` before making repository changes.
 2. Inspect the workspace and run the Node readiness helper named by that Context.
 3. Make only the repository changes in scope, preserving repository-first shared `contexts/` and `tools/` boundaries.
-4. Record `renma --version`, use a repository-pinned version when one exists, and otherwise report the active CLI version. Run `renma scan . --fail-on high` and require its configured blocking gate to pass.
-5. Inspect Renma readiness, catalog, and graph evidence as directed by the readiness Context so non-blocking policy, lifecycle, freshness, and relationship gaps are reviewed instead of hidden by a passing scan.
-6. Validate every changed or in-scope Agent Skill, repository-local path and declared Context relationship, and JavaScript module syntax as directed by the readiness Context.
-7. Review every remaining Renma advisory or inventory gap; address applicable items and document the rationale for accepting any deferred or inapplicable item.
+4. Validate every changed or in-scope Skill's required frontmatter, repository-local path, explicit Context relationship, and JavaScript module syntax as directed by the readiness Context.
+5. Run the edited helper or the narrowest representative repository check when practical.
+6. Run `git diff --check`, then review the final status and diff for unintended changes.
 
 ## Repository-editing safety and approval constraints
 
 - Preserve uncommitted user work and avoid unrelated edits.
 - If work requires Appium drivers, optional dependencies, or privileged system packages, stop repository readiness and hand that work to the appropriate setup workflow and approval gate.
-- Keep Renma specification, security, required-graph, and configured severity gates unchanged; address applicable findings or document accepted non-blocking advisories.
+- Do not install or require external repository analyzers or validator dependencies as part of this workflow. Already-available platform validators may provide optional supporting evidence, but they are not completion gates.
 - Retain reusable Context Assets and deterministic repository tools at the repository level. If a request instead requires standalone packaging, stop and treat it as a separate architecture change.
 
 ## Completion criteria
@@ -39,17 +38,16 @@ Confirm the repository root, requested validation or edit scope, host OS and she
 Finish the workflow only after these local checks pass:
 
 - The Node readiness helper reports `requiredOk: true`.
-- `renma scan . --fail-on high` exits successfully.
-- The Agent Skill validator reports no invalid Skills.
-- Local path and declared Context relationship checks report no broken targets.
+- `git status --short` has been reviewed so existing, in-scope, and unrelated changes are distinguished.
+- Every changed Skill contains its required `name` and `description` frontmatter.
+- Every changed or introduced repository-local path and explicit Context relationship resolves to an existing target.
 - JavaScript module syntax checks pass.
-
-Assign each remaining Renma advisory or reviewed inventory gap an addressed, deferred, or inapplicable disposition.
+- `git diff --check` passes and the final diff contains no unintended changes.
 
 ## Evidence boundary
 
-Provide command status summaries; advisory rule ID, severity, disposition, and rationale; and any unresolved external blocker. If additional evidence is requested, quote only the relevant command's sanitized lines.
+Provide command status summaries, paths checked, and any unresolved external blocker. If additional evidence is requested, quote only the relevant command's sanitized lines.
 
 ## Evidence
 
-Example input: `Prepare this Appium skills repo for development and validate it with renma.` Verify with Git workspace inspection, Node/npm readiness evidence, `node tools/appium/setup/scripts/check-node-env.mjs`, `renma scan . --fail-on high`, and the readiness, catalog, and graph views named by the readiness Context.
+Example input: `Prepare this Appium skills repo for development and validate the changed helpers.` Verify with Git workspace inspection, Node/npm readiness evidence, `node tools/appium/setup/scripts/check-node-env.mjs`, path checks, JavaScript syntax checks, and `git diff --check`.
