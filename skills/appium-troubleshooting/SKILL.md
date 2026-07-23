@@ -2,6 +2,9 @@
 name: appium-troubleshooting
 description: Diagnose existing UiAutomator2 session-startup, app-activity, adb transport, helper-server, native or hybrid locator failures, and XCUITest WebDriverAgent, session-startup, app install or launch, device or simulator state, alert, element-source, or locator failures. Use when a session or command under one of those drivers already fails. Do not use for first-time setup, pre-failure real-device provisioning, or Espresso, Chromium, Gecko, Safari, or Mac2 failures; use setup, xcuitest-real-device-config, or driver-specific official guidance instead.
 metadata:
+  renma.id: skill.appium-troubleshooting
+  renma.published-entrypoint: "true"
+  renma.continues-with: '["skill.setup"]'
   renma.owner: appium
   renma.requires-context: '["contexts/tools/appium/troubleshooting/triage.md","contexts/tools/appium/troubleshooting/procedure.md"]'
   renma.security-profile: appium-local-workflows

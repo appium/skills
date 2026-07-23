@@ -32,5 +32,8 @@
         "externalUploadAllowed": false
       }
     }
+  },
+  "skill_discovery": {
+    "adopted": true
   }
 }

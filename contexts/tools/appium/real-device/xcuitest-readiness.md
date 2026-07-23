@@ -13,6 +13,8 @@ optional_context:
   - contexts/tools/appium/real-device/profiles/preinstalled-wda.md
   - contexts/tools/appium/real-device/profiles/running-wda-url.md
   - contexts/tools/appium/real-device/references/real-device-procedure.md
+  - contexts/tools/appium/real-device/references/wda-preparation.md
+  - contexts/tools/appium/real-device/references/wda-runtime.md
   - contexts/tools/appium/real-device/examples/real-device.md
 
 ---
@@ -31,7 +33,9 @@ Completion requires the device to appear in `xcrun xctrace list devices` and the
 2. Load `skills/xcuitest-real-device-config/SKILL.md`.
 3. Load the runtime profile that matches the route. Load a signing profile only when local WDA build, signing, or installation work is in scope; for a running-WDA URL, load only that runtime profile.
 4. Load `contexts/tools/appium/real-device/references/real-device-procedure.md`.
-5. Use `contexts/tools/appium/real-device/examples/real-device.md` as the worked example when needed.
+5. Load `contexts/tools/appium/real-device/references/wda-runtime.md` before executing any numbered step so its route-wide constraints apply.
+6. When the selected route builds, modifies, signs, installs, or separately validates a local WDA bundle, load `contexts/tools/appium/real-device/references/wda-preparation.md` for steps 4 and 5.
+7. Use `contexts/tools/appium/real-device/examples/real-device.md` as the worked example when needed.
 
 ## Selective Profile Loading
 
@@ -44,6 +48,8 @@ Load exactly the signing and WDA runtime profiles that match the selected route.
 - `contexts/tools/appium/real-device/profiles/preinstalled-wda.md`
 - `contexts/tools/appium/real-device/profiles/running-wda-url.md`
 
-Then load the shared procedure:
+Then load the shared procedure and its routed parts:
 
 - `contexts/tools/appium/real-device/references/real-device-procedure.md`
+- `contexts/tools/appium/real-device/references/wda-runtime.md`
+- `contexts/tools/appium/real-device/references/wda-preparation.md` only for routes that prepare or separately validate a local WDA bundle
