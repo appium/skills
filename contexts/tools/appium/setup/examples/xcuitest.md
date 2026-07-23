@@ -7,13 +7,9 @@ id: appium.setup.examples.xcuitest
 
 # Example: iOS/tvOS + XCUITest Setup
 
-Use this repository's skills to prepare iOS/tvOS + XCUITest on macOS.
-
-1. Load `skills/setup/SKILL.md`.
-2. Load `contexts/platform/macos/profile.md`.
-3. Load `contexts/tools/appium/setup/profiles/xcuitest.md`.
-4. Load `contexts/tools/appium/setup-basics.md`.
-5. Load `contexts/platform/ios/simulator-setup.md`.
+Use `skills/setup-xcuitest/SKILL.md` to prepare iOS/tvOS + XCUITest on macOS.
+The Skill owns Context loading order, command-mode selection, approval gates,
+and completion criteria; this example only illustrates the smoke check.
 
 Rules:
 

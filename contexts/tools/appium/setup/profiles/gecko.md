@@ -7,7 +7,7 @@ id: appium.setup.profiles.gecko
 
 # Gecko Setup Profile
 
-Base skill: `skills/setup/SKILL.md`
+Base skill: `skills/setup-gecko/SKILL.md`
 
 Use this profile for desktop Firefox automation through Appium Gecko Driver.
 

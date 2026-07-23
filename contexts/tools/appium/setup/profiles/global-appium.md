@@ -7,7 +7,8 @@ id: appium.setup.profiles.global-appium
 
 # Global Appium Profile
 
-Base skill: `skills/setup/SKILL.md`
+Base workflows: the driver-specific setup Skills selected by
+`skills/setup/SKILL.md`.
 
 Use this profile when the user accepts the repository default global command mode.
 

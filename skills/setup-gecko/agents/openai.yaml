@@ -1,0 +1,4 @@
+interface:
+  display_name: "Set Up Gecko"
+  short_description: "Prepare and verify Appium Gecko"
+  default_prompt: "Use $setup-gecko to prepare and verify Appium Gecko."

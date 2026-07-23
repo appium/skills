@@ -1,0 +1,4 @@
+interface:
+  display_name: "Set Up Mac2"
+  short_description: "Prepare and verify Appium Mac2"
+  default_prompt: "Use $setup-mac2 to prepare and verify Appium Mac2."

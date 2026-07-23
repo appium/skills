@@ -7,7 +7,8 @@ id: appium.setup.profiles.android
 
 # Android Setup Profile
 
-Base skill: `skills/setup/SKILL.md`
+Base skills: `skills/setup-uiautomator2/SKILL.md` and
+`skills/setup-espresso/SKILL.md`
 
 Use this profile for UiAutomator2 or Espresso setup.
 

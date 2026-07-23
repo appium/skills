@@ -9,14 +9,11 @@ id: appium.real-device.examples.real-device
 
 Use this repository's skills to prepare macOS + XCUITest for a real iOS or tvOS device.
 
-1. Load `skills/setup/SKILL.md`.
-2. Load `contexts/platform/macos/profile.md`.
-3. Load `contexts/tools/appium/setup/profiles/xcuitest.md`.
-4. Load `contexts/tools/appium/setup-basics.md`.
-5. Load `contexts/platform/ios/simulator-setup.md`.
-6. Load `skills/xcuitest-real-device-config/SKILL.md`.
-7. Select the WDA runtime route. Load a signing profile only for local build, signing, or installation; for a running-WDA URL, load only that runtime profile.
-8. Load `contexts/tools/appium/real-device/references/real-device-procedure.md`.
+1. Complete `skills/setup-xcuitest/SKILL.md`.
+2. Continue to `skills/xcuitest-real-device-config/SKILL.md` only after its
+   shared setup gates pass.
+3. Follow the real-device Skill's runtime-route selection and Context loading
+   instructions. This example does not override their order or approval gates.
 
 Rules:
 

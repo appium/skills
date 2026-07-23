@@ -1,0 +1,4 @@
+interface:
+  display_name: "Set Up Chromium"
+  short_description: "Prepare and verify Appium Chromium"
+  default_prompt: "Use $setup-chromium to prepare and verify Appium Chromium."

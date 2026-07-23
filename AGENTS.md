@@ -19,9 +19,17 @@ Use this file to choose the correct Appium skill entrypoint and shared execution
 ## Skill Entrypoints
 
 - Repository development readiness: `skills/prepare-development-environment/SKILL.md`
-- Appium setup: `skills/setup/SKILL.md`
+- Appium setup selection: `skills/setup/SKILL.md`
+- UiAutomator2 setup: `skills/setup-uiautomator2/SKILL.md`
+- Espresso setup: `skills/setup-espresso/SKILL.md`
+- Chromium setup: `skills/setup-chromium/SKILL.md`
+- Gecko setup: `skills/setup-gecko/SKILL.md`
+- Mac2 setup: `skills/setup-mac2/SKILL.md`
+- Safari setup: `skills/setup-safari/SKILL.md`
+- XCUITest setup: `skills/setup-xcuitest/SKILL.md`
 - Existing Appium failures: `skills/appium-troubleshooting/SKILL.md`
-- iOS or tvOS real-device XCUITest configuration: `skills/xcuitest-real-device-config/SKILL.md`
+- iOS or tvOS real-device XCUITest continuation:
+  `skills/xcuitest-real-device-config/SKILL.md`
 
 Each Skill is a focused workflow entry point in a repository-first architecture. The Skill owns selection, inputs, safety boundaries, workflow outline, loading decisions, and completion criteria. Reusable or selectively loaded technical guidance belongs in top-level `contexts/`; deterministic inspection or execution belongs in top-level `tools/`.
 
@@ -43,7 +51,9 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 
 ## Execution Rules
 
-- Execute skills one at a time in dependency order.
+- Execute selected Skills one at a time in the order defined by the owning
+  Skill body and applicable handoff conditions. Do not infer execution order
+  from Renma declaration order.
 - Run commands step-by-step; avoid very long chained command blocks.
 - Re-run checks after each fix.
 - Use Appium doctor required fixes as the pass/fail gate:

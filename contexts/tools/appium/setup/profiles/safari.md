@@ -7,7 +7,7 @@ id: appium.setup.profiles.safari
 
 # Safari Setup Profile
 
-Base skill: `skills/setup/SKILL.md`
+Base skill: `skills/setup-safari/SKILL.md`
 
 Use this profile for Appium Safari Driver setup on macOS.
 

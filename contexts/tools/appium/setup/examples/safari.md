@@ -7,15 +7,9 @@ id: appium.setup.examples.safari
 
 # Example: Safari Setup
 
-Appium Safari Driver on macOS.
-
-1. Load `skills/setup/SKILL.md`.
-2. Load `contexts/tools/appium/setup/profiles/global-appium.md` unless the user explicitly asks for local `npx appium`.
-3. Load `contexts/platform/macos/profile.md`.
-4. Load `contexts/tools/appium/setup/profiles/safari.md`.
-5. Load `contexts/tools/appium/setup-basics.md`.
-6. Load `contexts/browser/safari/prereqs.md`.
-7. Load `contexts/tools/appium/setup/references/environment-setup-safari.md`.
+Follow `skills/setup-safari/SKILL.md` for macOS Safari setup. Use this example
+only for its final server check after the Skill has applied the selected
+command mode, authorization boundaries, and required gates.
 
 Rules:
 

@@ -7,14 +7,9 @@ id: appium.setup.examples.uiautomator2
 
 # Example: Android + UiAutomator2 Setup
 
-Use this repository's skills to prepare Android + UiAutomator2.
-
-1. Load `skills/setup/SKILL.md`.
-2. Load `contexts/tools/appium/setup/profiles/global-appium.md` unless the user requests local mode.
-3. Load `contexts/platform/android/profile.md`.
-4. Load `contexts/tools/appium/setup-basics.md`.
-5. Load `contexts/platform/android/emulator-setup.md`.
-6. Load `contexts/tools/appium/setup/uiautomator2-environment.md`.
+Use `skills/setup-uiautomator2/SKILL.md` to prepare Android + UiAutomator2.
+The Skill owns Context loading order, command-mode selection, approval gates,
+and completion criteria; this example only illustrates the smoke check.
 
 Smoke test:
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Set Up Safari"
+  short_description: "Prepare and verify Appium Safari"
+  default_prompt: "Use $setup-safari to prepare and verify Appium Safari."

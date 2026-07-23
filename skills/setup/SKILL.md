@@ -1,69 +1,89 @@
 ---
 name: setup
-description: Select and set up one or more Appium drivers using the repository's shared Node.js, Android, iOS/tvOS XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, and smoke-validation Context Assets and tools. Use for requests such as "set up Appium," first-time installation, configuration, prerequisite repair, and doctor readiness. Ask which driver is needed when none is named; start named driver workflows without repeating that question. Do not use for an existing failing session or real iOS or tvOS signing and WebDriverAgent deployment; use appium-troubleshooting or xcuitest-real-device-config instead.
+description: Route and coordinate one or more Appium driver setup requests by handing UiAutomator2, Espresso, Chromium, Gecko, Mac2, Safari, or XCUITest to its dedicated setup Skill and collecting multi-driver completion. Use for Appium setup requests with no driver, one named driver, or multiple named drivers. Do not perform driver-specific setup in this Skill; select the exact child Skill and hand off. Do not use for an existing failing session or command; use appium-troubleshooting instead.
 metadata:
   renma.id: skill.setup
   renma.published-entrypoint: "true"
-  renma.continues-with: '["skill.xcuitest-real-device-config"]'
-  renma.title: Appium Setup Workflow
+  renma.continues-with: '["skill.setup-uiautomator2","skill.setup-espresso","skill.setup-chromium","skill.setup-gecko","skill.setup-mac2","skill.setup-safari","skill.setup-xcuitest"]'
+  renma.title: Appium Setup Selection Workflow
   renma.owner: appium
-  renma.requires-context: '["contexts/tools/appium/setup/routing.md"]'
   renma.security-profile: appium-local-workflows
 ---
 
-# Appium Setup Workflow
+# Appium Setup Selection Workflow
 
 ## Setup routing and selection
 
-Route first-time Appium installation, selected driver setup, prerequisite repair, and doctor readiness through this workflow. Hand an already failing session or command to `skills/appium-troubleshooting/SKILL.md`; hand real iOS or tvOS signing and WebDriverAgent deployment to `skills/xcuitest-real-device-config/SKILL.md`.
+Select only the driver or drivers requested by the user. Treat each
+`renma.continues-with` item as a possible child Skill, not as execution order,
+priority, or automatic invocation.
+
+| Intended target | Child Skill |
+| --- | --- |
+| Android native or hybrid apps with UiAutomator2 | `skills/setup-uiautomator2/SKILL.md` |
+| Android native or hybrid apps with Espresso | `skills/setup-espresso/SKILL.md` |
+| Chrome, Chromium, or Edge desktop browsers | `skills/setup-chromium/SKILL.md` |
+| Firefox desktop browsers | `skills/setup-gecko/SKILL.md` |
+| Native macOS apps | `skills/setup-mac2/SKILL.md` |
+| Safari on macOS | `skills/setup-safari/SKILL.md` |
+| iOS or tvOS with XCUITest | `skills/setup-xcuitest/SKILL.md` |
+
+Normalize common names such as `uia2` to UiAutomator2. If no driver is named,
+pause before environment changes and ask which driver or drivers are needed.
+If one or more drivers are named, preserve every explicit selection and hand
+off without asking the user to choose again.
 
 ## Required inputs
 
-Resolve the driver selection before changing the environment.
-
-- If the user explicitly names one or more drivers, accept those drivers as the selection and begin their setup routes without asking which driver is needed. For example, `Set up the UiAutomator2 and XCUITest drivers` selects both routes.
-- If the user asks only to set up Appium, or otherwise names no driver, pause before installation and ask which Appium driver or drivers they need. Offer concise choices based on the selection guide in `contexts/tools/appium/setup/routing.md`, then install only the selected drivers.
-- Treat only drivers explicitly selected by the user as requested setup targets. Use existing installations as evidence for preflight checks, not as a driver-selection decision.
-
-After driver selection, confirm or detect the target platform, command mode (`appium` global by default or existing project-local `npx --no-install appium` only when requested), host OS, relevant devices, simulators, or browsers, and available permissions. Ask only for inputs that cannot be detected safely. Optional dependencies such as FFmpeg or bundletool still require an explicit user request.
+Resolve the selected drivers, global `appium` mode or explicitly requested
+local `npx appium` mode, target platforms, host OS, available devices,
+simulators, or browsers, permissions, and explicitly requested optional
+dependencies.
 
 ## Workflow outline
 
-1. Load `contexts/tools/appium/setup/routing.md` and apply its driver-selection gate before changing the environment.
-2. Load the global command profile by default or the local `npx` profile only when explicitly requested. The selected profile is authoritative for every nested command example. Load the host profile when host-specific constraints affect the route.
-3. For every selected driver, load only the setup Contexts, profiles, references, and examples named by the matching route. Load its shared capability Context only when capability selection affects setup.
-4. Run the matching read-only helper from `tools/appium/setup/scripts/`; pass `--appium-mode local` only when the user selected the local `npx` profile. Apply required fixes in dependency order and rerun the affected check after each change.
-5. Run the driver doctor and smoke checks required by the selected route. For multiple drivers, prepare shared prerequisites once and verify each route separately.
+1. Resolve the driver selection before changing the environment.
+2. Hand each selected driver to its exact child Skill.
+3. For multiple drivers, preserve the user's stated order. When the request
+   states no order, choose and report an order that reuses shared host
+   prerequisites, then execute the selected Skills one at a time. Metadata
+   declaration order has no execution meaning.
+4. Collect each child Skill's required doctor, helper, smoke, and evidence
+   result without weakening its completion gate.
 
-## Setup safety and approval constraints
+## Setup selection safety and approval constraints
 
-- Use global npm/Appium commands by default; use existing project-local `npx --no-install appium` only when explicitly requested.
-- In local mode, translate nested global examples through the local profile. If a route has no safe local equivalent, stop and report that command as a blocker instead of running a global install or global Appium command.
-- Ask before optional FFmpeg or bundletool setup, third-party real-device tooling, privileged commands, browser installation, or authorization changes.
-- Install only drivers selected by the user; if selection is still unclear, stop before environment changes and ask which driver is required.
+- Use global npm/Appium commands by default and local `npx --no-install appium`
+  only when explicitly requested.
+- Install only explicitly selected drivers.
+- Ask before optional FFmpeg or bundletool setup, third-party real-device
+  tooling, privileged commands, browser installation, or authorization
+  changes.
 - Preserve working installations and prefer the smallest required change.
 
 ## Completion criteria
 
-Finish the workflow only after these selected-route checks pass:
-
-- The route's named Context Assets have been loaded.
-- When the selected driver supports doctor checks, required fixes report `0 required fixes needed`; otherwise doctor is reported as `not-supported` and the route's install, list, prerequisite, helper, and smoke gates pass.
-- Optional doctor warnings are identified as non-blocking.
-- Requested changes pass the matching helper and every smoke check named by the selected route, including `/status` where required.
+Complete a single-driver request only after the selected child Skill reaches
+its completion criteria. Complete a multi-driver request only after every
+selected child Skill reaches its own completion criteria or reports an exact
+manual blocker. Optional warnings remain non-blocking.
 
 ## Evidence boundary
 
-Provide the selected driver names and versions, helper `requiredOk` summary, doctor required/optional summary, `/status` result, remaining optional items, and any blocked manual step. If additional evidence is requested, quote only the relevant helper or doctor command's sanitized lines.
+Report the selected child Skills, command mode, each child Skill's pass/fail
+result, remaining optional items, and exact blockers. Attribute selection and
+execution exclusively to decisions made by the workflow body.
 
 ## Self-Improvement Prompt
 
-Before the final response, identify any missing, ambiguous, outdated, or retry-causing instruction in the loaded setup route. Report the asset path and proposed wording. When repository changes are outside the request, leave the asset unchanged.
+Before the final response, identify any missing, ambiguous, outdated, or
+retry-causing instruction in this selection workflow or a loaded child Skill.
+Report the asset path and proposed wording. Leave unrelated files unchanged.
 
 ## Evidence
 
-Examples:
-
-- Input: `Set up Appium.` Ask which driver or drivers are needed before running setup commands.
-- Input: `Set up the UiAutomator2 and XCUITest drivers.` Begin both selected routes without asking for driver selection again.
-- Input: `Set up Appium UiAutomator2 and verify Android SDK, Java, ADB, emulator, and driver readiness.` Verify by running the matching helper from `tools/appium/setup/scripts/` when a context asks for it, then report pass/fail evidence.
+- Input: `Set up Appium.` Ask which driver or drivers are needed.
+- Input: `Set up UiAutomator2.` Continue with
+  `skills/setup-uiautomator2/SKILL.md`.
+- Input: `Set up UiAutomator2 and XCUITest.` Continue with both selected child
+  Skills and verify each independently.

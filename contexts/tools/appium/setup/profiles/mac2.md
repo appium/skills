@@ -7,7 +7,7 @@ id: appium.setup.profiles.mac2
 
 # Mac2 Setup Profile
 
-Base skill: `skills/setup/SKILL.md`
+Base skill: `skills/setup-mac2/SKILL.md`
 
 Use this profile for macOS desktop app automation through Appium Mac2 Driver.
 

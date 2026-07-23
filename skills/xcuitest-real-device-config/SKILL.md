@@ -1,11 +1,11 @@
 ---
 name: xcuitest-real-device-config
-description: Prepare real iOS or tvOS devices for Appium XCUITest by validating readiness, provisioning, signing, WebDriverAgent deployment, and connectivity with shared repository Context Assets. Use for real-device trust, Developer Mode, signing, provisioning, or WebDriverAgent installation and connection setup. Do not use for general iOS/tvOS XCUITest setup or Appium failures unrelated to real-device signing or WebDriverAgent deployment; use setup or appium-troubleshooting instead.
+description: Prepare real iOS or tvOS devices for Appium XCUITest by validating readiness, provisioning, signing, WebDriverAgent deployment, and connectivity. Use only after setup-xcuitest completes shared XCUITest prerequisites and continues to this Skill for a real-device target. Do not use for general XCUITest setup or later runtime failures unrelated to signing or WebDriverAgent deployment.
 metadata:
   renma.id: skill.xcuitest-real-device-config
-  renma.published-entrypoint: "true"
   renma.owner: appium
-  renma.requires-context: '["contexts/tools/appium/real-device/xcuitest-readiness.md","contexts/tools/appium/real-device/references/real-device-procedure.md","contexts/tools/appium/real-device/references/wda-preparation.md","contexts/tools/appium/real-device/references/wda-runtime.md"]'
+  renma.requires-context: '["contexts/tools/appium/real-device/xcuitest-readiness.md","contexts/tools/appium/real-device/references/real-device-procedure.md","contexts/tools/appium/real-device/references/wda-runtime.md"]'
+  renma.optional-context: '["contexts/tools/appium/capabilities.md","contexts/tools/appium/real-device/profiles/enterprise-profile.md","contexts/tools/appium/real-device/profiles/free-apple-id.md","contexts/tools/appium/real-device/profiles/paid-developer.md","contexts/tools/appium/real-device/profiles/prebuilt-wda.md","contexts/tools/appium/real-device/profiles/preinstalled-wda.md","contexts/tools/appium/real-device/profiles/running-wda-url.md","contexts/tools/appium/real-device/references/wda-preparation.md","contexts/tools/appium/real-device/examples/real-device.md"]'
   renma.security-profile: appium-real-device-workflows
 ---
 
@@ -13,7 +13,13 @@ metadata:
 
 ## Real-device routing and handoffs
 
-This workflow covers real iOS or tvOS trust, Developer Mode, signing, provisioning, WebDriverAgent installation, prebuilt or preinstalled WDA, and use of a running WDA endpoint. Use `skills/setup/SKILL.md` for general iOS/tvOS XCUITest setup and `skills/appium-troubleshooting/SKILL.md` for later runtime failures outside real-device signing or WDA deployment. Treat that later troubleshooting work as a new published entrypoint after this workflow ends, not as a continuation owned by real-device configuration.
+This workflow covers real iOS or tvOS trust, Developer Mode, signing,
+provisioning, WebDriverAgent installation, prebuilt or preinstalled WDA, and
+use of a running WDA endpoint. Enter only from
+`skills/setup-xcuitest/SKILL.md` after its shared prerequisite gates pass. Use
+`skills/appium-troubleshooting/SKILL.md` as a new published entrypoint for
+later runtime failures outside real-device signing or WDA deployment, not as a
+continuation owned by this workflow.
 
 ## Required inputs
 
@@ -21,9 +27,17 @@ Confirm the iOS or tvOS device, global `appium` or explicitly requested local `n
 
 ## Workflow outline
 
-1. Load `contexts/tools/appium/real-device/xcuitest-readiness.md` and complete its iOS/tvOS XCUITest setup prerequisite handoff when required.
+1. Confirm the handoff evidence from `skills/setup-xcuitest/SKILL.md`, then
+   load `contexts/tools/appium/real-device/xcuitest-readiness.md`. If the shared
+   XCUITest prerequisite evidence is missing or failing, stop this continuation
+   and report the setup blocker.
 2. Select the WDA runtime route first. Load one signing profile only when this workflow will build, re-sign, install, or validate local WDA signing. Load no reuse profile for the default Appium-managed `xcodebuild` route; otherwise load exactly one matching prebuilt, preinstalled, or running-WDA URL profile.
-3. Load `contexts/tools/appium/real-device/references/real-device-procedure.md`, then load `contexts/tools/appium/real-device/references/wda-runtime.md` before executing any numbered step. Also load `contexts/tools/appium/real-device/references/wda-preparation.md` when the selected route builds, modifies, signs, installs, or separately validates a local WDA bundle. Load the readiness Context's shared capability option when choosing or validating real-device capabilities.
+3. Load the required real-device procedure, then load the required WDA runtime
+   Context before executing any numbered step. Load the optional WDA
+   preparation Context declared in metadata only when the selected route
+   builds, modifies, signs, installs, or separately validates a local WDA
+   bundle. Load the optional shared capability Context only when choosing or
+   validating real-device capabilities.
 4. Run the device, signing, provisioning, code-signature, deployment, and WDA connectivity checks required by the selected profiles.
 5. Re-run the narrowest failed check after each approved change and record the evidence.
 

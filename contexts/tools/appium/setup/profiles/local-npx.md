@@ -7,7 +7,8 @@ id: appium.setup.profiles.local-npx
 
 # Local npx Profile
 
-Base skill: `skills/setup/SKILL.md`
+Base workflows: the driver-specific setup Skills selected by
+`skills/setup/SKILL.md`.
 
 Use this profile only when the user explicitly requests local Appium execution. Run each selected local Appium command from the project root.
 

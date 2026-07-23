@@ -7,13 +7,10 @@ id: appium.setup.examples.chromium
 
 # Example: Desktop Chromium Setup
 
-Use this repository's skills to prepare Appium Chromium Driver for desktop browser automation.
-
-1. Load `skills/setup/SKILL.md`.
-2. Load `contexts/tools/appium/setup/profiles/global-appium.md` by default or `contexts/tools/appium/setup/profiles/local-npx.md` only when the user requests local mode.
-3. Load `contexts/tools/appium/setup/profiles/chromium.md`.
-4. Load `contexts/tools/appium/setup-basics.md`.
-5. Load `contexts/tools/appium/setup/references/environment-setup-chromium.md`.
+Use `skills/setup-chromium/SKILL.md` to prepare Appium Chromium Driver for
+desktop browser automation. The Skill owns Context loading order, command-mode
+selection, approval gates, and completion criteria; this example only
+illustrates the smoke check.
 
 Rules:
 

@@ -7,7 +7,7 @@ id: appium.setup.profiles.chromium
 
 # Chromium Setup Profile
 
-Base skill: `skills/setup/SKILL.md`
+Base skill: `skills/setup-chromium/SKILL.md`
 
 Use this profile for desktop Chrome, Chromium, or Edge automation.
 

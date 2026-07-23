@@ -1,0 +1,4 @@
+interface:
+  display_name: "Set Up XCUITest"
+  short_description: "Prepare and verify Appium XCUITest"
+  default_prompt: "Use $setup-xcuitest to prepare and verify Appium XCUITest."

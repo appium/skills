@@ -24,7 +24,7 @@ in `contexts/tools/appium/real-device/references/wda-preparation.md` before step
 
 ## Hard Constraints
 - This workflow is macOS-only; do not provide Linux/Windows alternatives.
-- Complete the iOS/tvOS + XCUITest route in `contexts/tools/appium/setup/routing.md` first.
+- Complete `skills/setup-xcuitest/SKILL.md` first.
 - Verify every locally prepared WDA signature with `codesign --verify --deep --strict`
   (step 5) before deploying. Do not require local signature evidence for a running-WDA
   URL route.

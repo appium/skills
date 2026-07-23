@@ -31,7 +31,8 @@ and local modes in one run or allow `npx` to download a missing Appium package.
 
 ## Decision Logic
 - If host OS is not macOS: stop and tell the user this workflow is macOS-only.
-- If the iOS/tvOS + XCUITest route in `contexts/tools/appium/setup/routing.md` has not been completed: require it first.
+- If `skills/setup-xcuitest/SKILL.md` has not completed its shared iOS/tvOS
+  XCUITest gates, stop and report that prerequisite first.
 - Select one runtime route before preparing WDA:
   - Default Appium-managed `xcodebuild`: let Appium build and sign WDA during the session; use step 4 only when signing needs separate validation.
   - Prebuilt or preinstalled WDA: prepare or validate the artifact in steps 4 and 5 before deployment.
@@ -70,8 +71,7 @@ and local modes in one run or allow `npx` to download a missing Appium package.
    If the installed-list command does not support `--json`, run
    `appium driver list --installed` as a separate fallback.
    Confirm `xcuitest` appears in the installed driver list before continuing. If it is
-   missing, complete the iOS/tvOS + XCUITest route in
-   `contexts/tools/appium/setup/routing.md` first.
+   missing, complete `skills/setup-xcuitest/SKILL.md` first.
 
 ### 2. Connect device and confirm visibility
 

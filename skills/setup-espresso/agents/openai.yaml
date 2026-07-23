@@ -1,0 +1,4 @@
+interface:
+  display_name: "Set Up Espresso"
+  short_description: "Prepare and verify Appium Espresso"
+  default_prompt: "Use $setup-espresso to prepare and verify Appium Espresso."
