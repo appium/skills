@@ -3,7 +3,9 @@ name: setup-chromium
 description: Prepare and verify Appium Chromium for Chrome, Chromium, or Edge desktop automation by validating Node/Appium, browser prerequisites, driver installation, doctor support, and a minimal browser-session smoke check. Use after the setup Skill selects Chromium. Do not use for an existing Chromium runtime failure after prerequisites pass.
 metadata:
   renma.id: skill.setup-chromium
+  renma.title: Chromium Setup Workflow
   renma.owner: appium
+  renma.tags: '["setup","chromium","desktop-browser"]'
   renma.requires-context: '["contexts/tools/appium/setup/profiles/chromium.md","contexts/tools/appium/setup-basics.md","contexts/browser/chromium/prereqs.md","contexts/tools/appium/setup/references/chromium/chromium-decision-logic.md","contexts/tools/appium/setup/references/chromium/chromium-driver-validation.md","contexts/tools/appium/setup/references/chromium/chromium-smoke-status.md"]'
   renma.optional-context: '["contexts/tools/appium/setup/profiles/global-appium.md","contexts/tools/appium/setup/profiles/local-npx.md","contexts/platform/linux/profile.md","contexts/platform/macos/profile.md","contexts/platform/windows/profile.md","contexts/tools/appium/setup/examples/chromium.md","contexts/tools/appium/capabilities.md"]'
   renma.security-profile: appium-local-workflows

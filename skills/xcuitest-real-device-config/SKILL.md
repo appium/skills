@@ -3,7 +3,9 @@ name: xcuitest-real-device-config
 description: Prepare real iOS or tvOS devices for Appium XCUITest by validating readiness, provisioning, signing, WebDriverAgent deployment, and connectivity. Use only after setup-xcuitest completes shared XCUITest prerequisites and continues to this Skill for a real-device target. Do not use for general XCUITest setup or later runtime failures unrelated to signing or WebDriverAgent deployment.
 metadata:
   renma.id: skill.xcuitest-real-device-config
+  renma.title: XCUITest Real-Device Configuration Workflow
   renma.owner: appium
+  renma.tags: '["real-device","xcuitest","ios","tvos"]'
   renma.requires-context: '["contexts/tools/appium/real-device/xcuitest-readiness.md","contexts/tools/appium/real-device/references/real-device-procedure.md","contexts/tools/appium/real-device/references/wda-runtime.md"]'
   renma.optional-context: '["contexts/tools/appium/capabilities.md","contexts/tools/appium/real-device/profiles/enterprise-profile.md","contexts/tools/appium/real-device/profiles/free-apple-id.md","contexts/tools/appium/real-device/profiles/paid-developer.md","contexts/tools/appium/real-device/profiles/prebuilt-wda.md","contexts/tools/appium/real-device/profiles/preinstalled-wda.md","contexts/tools/appium/real-device/profiles/running-wda-url.md","contexts/tools/appium/real-device/references/wda-preparation.md","contexts/tools/appium/real-device/examples/real-device.md"]'
   renma.security-profile: appium-real-device-workflows

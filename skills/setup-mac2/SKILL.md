@@ -3,7 +3,9 @@ name: setup-mac2
 description: Prepare and verify Appium Mac2 for native macOS automation by validating Node/Appium, macOS and Xcode tooling, driver installation, doctor output, privacy authorization boundaries, and server smoke evidence. Use after the setup Skill selects Mac2. Do not use for an existing Mac2 runtime failure after prerequisites pass.
 metadata:
   renma.id: skill.setup-mac2
+  renma.title: Mac2 Setup Workflow
   renma.owner: appium
+  renma.tags: '["setup","mac2","macos"]'
   renma.requires-context: '["contexts/platform/macos/profile.md","contexts/tools/appium/setup/profiles/mac2.md","contexts/tools/appium/setup-basics.md","contexts/platform/macos/xcode-command-line-tools.md","contexts/tools/appium/setup/references/mac2/mac2-decision-logic.md","contexts/tools/appium/setup/references/mac2/mac2-driver-doctor.md","contexts/tools/appium/setup/references/mac2/mac2-smoke-status.md"]'
   renma.optional-context: '["contexts/tools/appium/setup/profiles/global-appium.md","contexts/tools/appium/setup/profiles/local-npx.md","contexts/tools/appium/setup/examples/mac2.md","contexts/tools/appium/capabilities.md"]'
   renma.security-profile: appium-local-workflows

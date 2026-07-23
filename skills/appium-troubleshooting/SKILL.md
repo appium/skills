@@ -5,7 +5,9 @@ metadata:
   renma.id: skill.appium-troubleshooting
   renma.published-entrypoint: "true"
   renma.continues-with: '["skill.setup-uiautomator2","skill.setup-xcuitest"]'
+  renma.title: Appium Troubleshooting Workflow
   renma.owner: appium
+  renma.tags: '["troubleshooting","uiautomator2","xcuitest"]'
   renma.optional-context: '["contexts/tools/appium/troubleshooting/examples/locator-failure.md","contexts/tools/appium/troubleshooting/examples/session-startup.md","contexts/tools/appium/troubleshooting/profiles/uiautomator2.md","contexts/tools/appium/troubleshooting/profiles/xcuitest.md","contexts/tools/appium/capabilities.md","contexts/tools/appium/troubleshooting/references/community-search.md","contexts/tools/appium/troubleshooting/references/uiautomator2-locators.md","contexts/tools/appium/troubleshooting/references/uiautomator2-session-startup.md","contexts/tools/appium/troubleshooting/references/xcuitest-element-lookup.md","contexts/tools/appium/troubleshooting/references/xcuitest-locators.md","contexts/tools/appium/troubleshooting/references/xcuitest-troubleshooting.md"]'
   renma.security-profile: appium-local-workflows
 ---

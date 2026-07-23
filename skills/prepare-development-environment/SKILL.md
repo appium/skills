@@ -4,7 +4,9 @@ description: Prepare and validate this Appium Skills repository for local develo
 metadata:
   renma.id: skill.prepare-development-environment
   renma.published-entrypoint: "true"
+  renma.title: Appium Repository Development Workflow
   renma.owner: appium
+  renma.tags: '["repository-development","validation"]'
   renma.security-profile: appium-local-workflows
 ---
 

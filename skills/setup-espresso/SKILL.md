@@ -3,7 +3,9 @@ name: setup-espresso
 description: Prepare and verify Appium Espresso by validating Node/Appium, Android SDK and Java prerequisites, driver installation, doctor output, and server smoke evidence. Use after the setup Skill selects Espresso. Do not use for an existing Espresso runtime failure after prerequisites pass; this repository does not provide that troubleshooting workflow.
 metadata:
   renma.id: skill.setup-espresso
+  renma.title: Espresso Setup Workflow
   renma.owner: appium
+  renma.tags: '["setup","espresso","android"]'
   renma.requires-context: '["contexts/platform/android/profile.md","contexts/tools/appium/setup-basics.md","contexts/platform/android/emulator-setup.md","contexts/tools/appium/setup/references/espresso/espresso-decision-logic.md","contexts/tools/appium/setup/references/espresso/espresso-driver-install.md","contexts/tools/appium/setup/references/espresso/espresso-doctor-validation.md","contexts/tools/appium/setup/references/espresso/espresso-smoke-status.md"]'
   renma.optional-context: '["contexts/tools/appium/setup/profiles/global-appium.md","contexts/tools/appium/setup/profiles/local-npx.md","contexts/platform/linux/profile.md","contexts/platform/macos/profile.md","contexts/platform/windows/profile.md","contexts/tools/appium/setup/examples/espresso.md","contexts/tools/appium/capabilities.md","contexts/tools/ffmpeg/setup.md","contexts/platform/android/bundletool.md"]'
   renma.security-profile: appium-local-workflows

@@ -7,6 +7,7 @@ metadata:
   renma.continues-with: '["skill.setup-uiautomator2","skill.setup-espresso","skill.setup-chromium","skill.setup-gecko","skill.setup-mac2","skill.setup-safari","skill.setup-xcuitest"]'
   renma.title: Appium Setup Selection Workflow
   renma.owner: appium
+  renma.tags: '["setup","routing","multi-driver"]'
   renma.security-profile: appium-local-workflows
 ---
 

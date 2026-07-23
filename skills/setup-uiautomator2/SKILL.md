@@ -3,7 +3,9 @@ name: setup-uiautomator2
 description: Prepare and verify Appium UiAutomator2 by validating Node/Appium, Android SDK and Java prerequisites, driver installation, doctor output, and server smoke evidence. Use after the setup Skill selects UiAutomator2 or appium-troubleshooting hands off a UiAutomator2 prerequisite or doctor failure. Do not use for an existing runtime failure after prerequisites pass.
 metadata:
   renma.id: skill.setup-uiautomator2
+  renma.title: UiAutomator2 Setup Workflow
   renma.owner: appium
+  renma.tags: '["setup","uiautomator2","android"]'
   renma.requires-context: '["contexts/platform/android/profile.md","contexts/tools/appium/setup-basics.md","contexts/platform/android/emulator-setup.md","contexts/tools/appium/setup/references/uiautomator2/uiautomator2-decision-logic.md","contexts/tools/appium/setup/references/uiautomator2/uiautomator2-driver-install.md","contexts/tools/appium/setup/references/uiautomator2/uiautomator2-doctor-validation.md","contexts/tools/appium/setup/references/uiautomator2/uiautomator2-smoke-status.md"]'
   renma.optional-context: '["contexts/tools/appium/setup/profiles/global-appium.md","contexts/tools/appium/setup/profiles/local-npx.md","contexts/platform/linux/profile.md","contexts/platform/macos/profile.md","contexts/platform/windows/profile.md","contexts/tools/appium/setup/examples/uiautomator2.md","contexts/tools/appium/capabilities.md","contexts/tools/ffmpeg/setup.md","contexts/platform/android/bundletool.md"]'
   renma.security-profile: appium-local-workflows

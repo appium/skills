@@ -3,7 +3,9 @@ name: setup-gecko
 description: Prepare and verify Appium Gecko for Firefox desktop automation by validating Node/Appium, Firefox prerequisites, driver installation, optional GeckoDriver availability, doctor support, and server smoke evidence. Use after the setup Skill selects Gecko. Do not use for an existing Gecko runtime failure after prerequisites pass.
 metadata:
   renma.id: skill.setup-gecko
+  renma.title: Gecko Setup Workflow
   renma.owner: appium
+  renma.tags: '["setup","gecko","firefox","desktop-browser"]'
   renma.requires-context: '["contexts/tools/appium/setup/profiles/gecko.md","contexts/tools/appium/setup-basics.md","contexts/browser/firefox/prereqs.md","contexts/tools/appium/setup/references/gecko/gecko-decision-logic.md","contexts/tools/appium/setup/references/gecko/gecko-driver-validation.md","contexts/tools/appium/setup/references/gecko/gecko-smoke-status.md"]'
   renma.optional-context: '["contexts/tools/appium/setup/profiles/global-appium.md","contexts/tools/appium/setup/profiles/local-npx.md","contexts/platform/linux/profile.md","contexts/platform/macos/profile.md","contexts/platform/windows/profile.md","contexts/tools/appium/setup/examples/gecko.md","contexts/tools/appium/capabilities.md"]'
   renma.security-profile: appium-local-workflows

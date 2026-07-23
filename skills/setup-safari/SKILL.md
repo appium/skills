@@ -3,7 +3,9 @@ name: setup-safari
 description: Prepare and verify Appium Safari on macOS by validating Node/Appium, Safari and safaridriver prerequisites, driver installation, optional doctor behavior, authorization boundaries, and server smoke evidence. Use after the setup Skill selects Safari. Do not use for an existing Safari runtime failure after prerequisites pass.
 metadata:
   renma.id: skill.setup-safari
+  renma.title: Safari Setup Workflow
   renma.owner: appium
+  renma.tags: '["setup","safari","macos"]'
   renma.requires-context: '["contexts/platform/macos/profile.md","contexts/tools/appium/setup/profiles/safari.md","contexts/tools/appium/setup-basics.md","contexts/browser/safari/prereqs.md","contexts/tools/appium/setup/references/safari/safari-decision-logic.md","contexts/tools/appium/setup/references/safari/safari-driver-install.md","contexts/tools/appium/setup/references/safari/safari-smoke-status.md"]'
   renma.optional-context: '["contexts/tools/appium/setup/profiles/global-appium.md","contexts/tools/appium/setup/profiles/local-npx.md","contexts/tools/appium/setup/examples/safari.md","contexts/tools/appium/capabilities.md"]'
   renma.security-profile: appium-local-workflows

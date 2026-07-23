@@ -4,7 +4,9 @@ description: Prepare and verify Appium XCUITest for iOS or tvOS on macOS by vali
 metadata:
   renma.id: skill.setup-xcuitest
   renma.continues-with: '["skill.xcuitest-real-device-config"]'
+  renma.title: XCUITest Setup Workflow
   renma.owner: appium
+  renma.tags: '["setup","xcuitest","ios","tvos"]'
   renma.requires-context: '["contexts/platform/macos/profile.md","contexts/tools/appium/setup/profiles/xcuitest.md","contexts/tools/appium/setup-basics.md","contexts/platform/macos/xcode-prereqs.md","contexts/tools/appium/setup/references/xcuitest/xcuitest-decision-logic.md","contexts/tools/appium/setup/references/xcuitest/xcuitest-driver-doctor.md","contexts/tools/appium/setup/references/xcuitest/xcuitest-smoke-status.md"]'
   renma.optional-context: '["contexts/tools/appium/setup/profiles/global-appium.md","contexts/tools/appium/setup/profiles/local-npx.md","contexts/tools/appium/setup/examples/xcuitest.md","contexts/tools/appium/capabilities.md","contexts/tools/ffmpeg/setup.md"]'
   renma.security-profile: appium-local-workflows
