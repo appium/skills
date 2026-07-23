@@ -2,6 +2,8 @@
 name: prepare-development-environment
 description: Prepare and validate this Appium Skills repository for local development or contribution by checking the workspace, Git, Node, npm, helper scripts, Skill entrypoint structure, repository-local paths, and JavaScript syntax. Use before editing or validating repository Skills, Context Assets, examples, or tools. Do not use for Appium driver setup, existing runtime failures, or real-device signing; use setup, appium-troubleshooting, or xcuitest-real-device-config instead.
 metadata:
+  renma.id: skill.prepare-development-environment
+  renma.published-entrypoint: "true"
   renma.owner: appium
   renma.requires-context: '["contexts/tools/appium/development-environment/readiness.md"]'
   renma.security-profile: appium-local-workflows
@@ -26,7 +28,7 @@ Confirm the repository root, requested validation or edit scope, host OS and she
 5. Run the edited helper or the narrowest representative repository check when practical.
 6. Run `git diff --check`, then review the final status and diff for unintended changes.
 
-## Repository-editing safety and approval constraints
+## Hard Constraints
 
 - Preserve uncommitted user work and avoid unrelated edits.
 - If work requires Appium drivers, optional dependencies, or privileged system packages, stop repository readiness and hand that work to the appropriate setup workflow and approval gate.

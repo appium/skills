@@ -3,6 +3,8 @@ name: setup
 description: Select and set up one or more Appium drivers using the repository's shared Node.js, Android, iOS/tvOS XCUITest, Espresso, Gecko, Chromium, Safari, Mac2, and smoke-validation Context Assets and tools. Use for requests such as "set up Appium," first-time installation, configuration, prerequisite repair, and doctor readiness. Ask which driver is needed when none is named; start named driver workflows without repeating that question. Do not use for an existing failing session or real iOS or tvOS signing and WebDriverAgent deployment; use appium-troubleshooting or xcuitest-real-device-config instead.
 metadata:
   renma.id: skill.setup
+  renma.published-entrypoint: "true"
+  renma.continues-with: '["skill.xcuitest-real-device-config"]'
   renma.title: Appium Setup Workflow
   renma.owner: appium
   renma.requires-context: '["contexts/tools/appium/setup/routing.md"]'
