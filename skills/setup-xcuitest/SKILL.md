@@ -45,6 +45,21 @@ optional FFmpeg requests.
 6. If the target is a real device, continue to the real-device Skill only after
    these shared prerequisites pass.
 
+## Verification
+
+1. Run `node tools/appium/setup/scripts/check-xcuitest-env.mjs`; add
+   `--appium-mode local` only for explicitly requested local mode. Require
+   top-level `summary.requiredOk: true`.
+2. Verify the direct doctor output reports `0 required fixes needed` using
+   `appium driver doctor xcuitest`, or
+   `npx --no-install appium driver doctor xcuitest` in local mode.
+3. Start the Appium server in the selected mode, request
+   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
+   while server logs list `xcuitest` as an available driver.
+4. Stop the server and verify no Appium server process remains. For a real
+   device, record the passing shared-setup evidence before continuing to
+   `skills/xcuitest-real-device-config/SKILL.md`.
+
 ## XCUITest setup safety and approval constraints
 
 - Require macOS.

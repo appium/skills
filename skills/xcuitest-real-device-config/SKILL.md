@@ -13,7 +13,7 @@ metadata:
 
 # XCUITest Real-Device Configuration Workflow
 
-## Real-device routing and handoffs
+## Routing
 
 This workflow covers real iOS or tvOS trust, Developer Mode, signing,
 provisioning, WebDriverAgent installation, prebuilt or preinstalled WDA, and
