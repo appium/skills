@@ -13,12 +13,14 @@ metadata:
 
 # UiAutomator2 Setup Workflow
 
-## UiAutomator2 setup routing and handoffs
+## Routing
 
-Prepare only the UiAutomator2 route. Hand an already failing UiAutomator2
-session or command back to `skills/appium-troubleshooting/SKILL.md` after
-required setup checks pass. Load FFmpeg or bundletool only when the user
-explicitly requested that capability.
+Use this Skill to prepare or repair UiAutomator2 prerequisites selected by
+`skills/setup/SKILL.md` or handed off by
+`skills/appium-troubleshooting/SKILL.md`. After required setup checks pass,
+route an existing UiAutomator2 session or command failure back to
+`skills/appium-troubleshooting/SKILL.md`. Load FFmpeg or bundletool only when
+the user explicitly requested that capability.
 
 ## Required inputs
 
@@ -39,6 +41,21 @@ and optional dependency requests.
    dependency order and rerun the affected check after each fix.
 5. Run the UiAutomator2 doctor and server smoke checks. Load the matching
    example only when it clarifies execution.
+
+## Verification
+
+1. Run `node tools/appium/setup/scripts/check-uiautomator2-env.mjs`; add
+   `--appium-mode local` only for explicitly requested local mode. Verify
+   `summary.requiredOk: true`, `summary.driverInstalled: true`, a populated
+   `summary.driverVersion`, and `summary.doctorRequiredOk: true`.
+2. Verify the direct doctor output reports `0 required fixes needed` using
+   `appium driver doctor uiautomator2`, or
+   `npx --no-install appium driver doctor uiautomator2` in local mode.
+3. Start the Appium server in the selected mode, request
+   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
+   while the server log lists `uiautomator2` as an available driver.
+4. Stop the server and verify no Appium server process remains, following the
+   platform-specific cleanup check in the smoke-status reference.
 
 ## UiAutomator2 setup safety and approval constraints
 

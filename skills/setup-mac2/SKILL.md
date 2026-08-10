@@ -13,7 +13,7 @@ metadata:
 
 # Mac2 Setup Workflow
 
-## Mac2 setup routing and handoffs
+## Routing
 
 Prepare only the Appium Mac2 route on macOS. Use driver-specific official
 guidance for an existing runtime failure after setup passes.
@@ -37,6 +37,20 @@ required privacy authorization state.
    check.
 5. Run the Mac2 doctor and server smoke checks. Load the matching example only
    when it clarifies execution.
+
+## Verification
+
+1. Run `node tools/appium/setup/scripts/check-mac2-env.mjs`; add
+   `--appium-mode local` only for explicitly requested local mode. Require
+   top-level `summary.requiredOk: true`.
+2. Verify the direct doctor output reports `0 required fixes needed` using
+   `appium driver doctor mac2`, or
+   `npx --no-install appium driver doctor mac2` in local mode.
+3. Start the Appium server in the selected mode, request
+   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
+   while server logs list `mac2` as an available driver.
+4. Stop the server and verify no Appium server process remains, following the
+   cleanup check in the smoke-status reference.
 
 ## Mac2 setup safety and approval constraints
 

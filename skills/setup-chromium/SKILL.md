@@ -13,7 +13,7 @@ metadata:
 
 # Chromium Setup Workflow
 
-## Chromium setup routing and handoffs
+## Routing
 
 Prepare only the Appium Chromium route for Chrome, Chromium, or Edge desktop
 browsers. Use driver-specific official guidance for an existing runtime failure
@@ -39,6 +39,21 @@ a session-time browser-driver download is authorized.
 5. Run `/status` and
    `node tools/appium/setup/scripts/smoke-chromium-session.mjs`. Load the
    matching example only when it clarifies execution.
+
+## Verification
+
+1. Run `node tools/appium/setup/scripts/check-chromium-env.mjs`; add
+   `--appium-mode local` only for explicitly requested local mode. Require
+   top-level `summary.requiredOk: true`.
+2. Verify `appium driver doctor chromium` reports
+   `0 required fixes needed`, or record `not-supported` and require the
+   install, list, browser, and smoke gates instead. Use
+   `npx --no-install appium ...` for the direct check in local mode.
+3. Start the Appium server in the selected mode and verify `/status` indicates
+   readiness while server logs list `chromium` as an available driver.
+4. Run `node tools/appium/setup/scripts/smoke-chromium-session.mjs` and require
+   top-level `summary.requiredOk: true`, then stop the server and verify no
+   Appium server process remains.
 
 ## Chromium setup safety and approval constraints
 

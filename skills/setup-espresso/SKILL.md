@@ -13,7 +13,7 @@ metadata:
 
 # Espresso Setup Workflow
 
-## Espresso setup routing and handoffs
+## Routing
 
 Prepare only the Espresso route. Use driver-specific official guidance for an
 existing Espresso runtime failure after setup passes. Load FFmpeg or bundletool
@@ -38,6 +38,20 @@ and optional dependency requests.
    dependency order and rerun the affected check after each fix.
 5. Run the Espresso doctor and server smoke checks. Load the matching example
    only when it clarifies execution.
+
+## Verification
+
+1. Run `node tools/appium/setup/scripts/check-espresso-env.mjs`; add
+   `--appium-mode local` only for explicitly requested local mode. Require
+   top-level `summary.requiredOk: true`.
+2. Verify the direct doctor output reports `0 required fixes needed` using
+   `appium driver doctor espresso`, or
+   `npx --no-install appium driver doctor espresso` in local mode.
+3. Start the Appium server in the selected mode, request
+   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
+   while server logs list `espresso` as an available driver.
+4. Stop the server and verify no Appium server process remains, following the
+   cleanup check in the smoke-status reference.
 
 ## Espresso setup safety and approval constraints
 

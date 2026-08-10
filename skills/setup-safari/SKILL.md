@@ -13,7 +13,7 @@ metadata:
 
 # Safari Setup Workflow
 
-## Safari setup routing and handoffs
+## Routing
 
 Prepare only the Appium Safari route on macOS. Use driver-specific official
 guidance for an existing runtime failure after setup passes.
@@ -37,6 +37,21 @@ and permissions for authorization changes.
    check.
 5. Run the supported doctor and server smoke checks. Load the matching example
    only when it clarifies execution.
+
+## Verification
+
+1. Run `node tools/appium/setup/scripts/check-safari-env.mjs`; add
+   `--appium-mode local` only for explicitly requested local mode. Require
+   top-level `summary.requiredOk: true`.
+2. Verify `appium driver doctor safari` reports `0 required fixes needed`, or
+   record `not-supported` and require the install, list, Safari, and smoke
+   gates instead. Use `npx --no-install appium ...` for the direct check in
+   local mode.
+3. Start the Appium server in the selected mode, request
+   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
+   while server logs list `safari` as an available driver.
+4. Stop the server and verify no Appium server process remains, following the
+   cleanup check in the smoke-status reference.
 
 ## Safari setup safety and approval constraints
 
