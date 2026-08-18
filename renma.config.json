@@ -1,35 +1,28 @@
 {
   "fail_on": "high",
-  "layout": {
-    "tool_namespace": "appium",
-    "workflow_aliases": {
-      "appium-troubleshooting": "troubleshooting",
-      "xcuitest-real-device-config": "real-device"
-    }
-  },
   "security": {
     "profiles": {
       "appium-local-workflows": {
-        "allowedData": [
+        "allowed_data": [
           "repo-local-files",
           "skill-bundled-context",
           "public-docs",
           "disclosed-user-provided-data",
           "sanitized-ci-diagnostics"
         ],
-        "externalUploadAllowed": false,
-        "secretsAllowed": false
+        "external_upload_allowed": false,
+        "secrets_allowed": false
       },
       "appium-real-device-workflows": {
-        "allowedData": [
+        "allowed_data": [
           "repo-local-files",
           "skill-bundled-context",
           "public-docs",
           "disclosed-user-provided-data",
           "sanitized-ci-diagnostics"
         ],
-        "networkAllowed": true,
-        "externalUploadAllowed": false
+        "network_allowed": true,
+        "external_upload_allowed": false
       }
     }
   },
