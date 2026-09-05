@@ -3,17 +3,23 @@ import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { env as processEnvironment } from "node:process";
+import { commandInvocation } from "./windows-command.mjs";
 
 export const isWindows = process.platform === "win32";
 export const isMac = process.platform === "darwin";
 export const isLinux = process.platform === "linux";
 
 export function run(command, args = [], options = {}) {
-  const result = spawnSync(command, args, {
+  let invocation;
+  try { invocation = commandInvocation(command, args); }
+  catch (error) { return { command: [command, ...args].join(" "), ok: false, status: null, stdout: "", stderr: "", error: error.message }; }
+  const result = spawnSync(invocation.executable, invocation.args, {
     encoding: "utf8",
     timeout: options.timeout ?? 15000,
     maxBuffer: options.maxBuffer ?? 8 * 1024 * 1024,
     shell: false,
+    windowsHide: true,
+    windowsVerbatimArguments: invocation.windowsVerbatimArguments,
   });
   return {
     command: [command, ...args].join(" "),
@@ -125,15 +131,6 @@ export function resolveAppiumCommand(args = process.argv.slice(2)) {
   const executable = mode === "local" ? "npx" : "appium";
   const prefixArgs = mode === "local" ? ["--no-install", "appium"] : [];
   const display = [executable, ...prefixArgs].join(" ");
-
-  if (isWindows) {
-    return {
-      mode,
-      executable: processEnvironment.ComSpec || "cmd.exe",
-      prefixArgs: ["/d", "/s", "/c", executable, ...prefixArgs],
-      display,
-    };
-  }
 
   return { mode, executable, prefixArgs, display };
 }

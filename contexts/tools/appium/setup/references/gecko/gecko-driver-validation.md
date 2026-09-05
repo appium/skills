@@ -18,9 +18,19 @@ selected command profile to the commands below.
 
 Only when Appium installation is required:
 
+Bash:
+
 ```bash
 : "${APPIUM_VERSION:?Resolve exact APPIUM_VERSION using Appium Setup Basics}"
 npm install -g "appium@$APPIUM_VERSION"
+```
+
+PowerShell (set `$env:APPIUM_VERSION` to the resolved exact version):
+
+```powershell
+if ([string]::IsNullOrWhiteSpace($env:APPIUM_VERSION)) { throw "Resolve exact APPIUM_VERSION using Appium Setup Basics" }
+npm.cmd install -g "appium@$env:APPIUM_VERSION"
+if ($LASTEXITCODE -ne 0) { throw "Appium installation failed" }
 ```
 
 Only when the driver is missing:

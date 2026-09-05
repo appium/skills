@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { spawn, spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import net from "node:net";
 import path from "node:path";
 import { existsSync, readFileSync } from "node:fs";
@@ -7,6 +7,7 @@ import { pathToFileURL } from "node:url";
 import { resolveAppiumCommand } from "./env-check-helpers.mjs";
 import { reportingOptions, writeReport } from "./reporting.mjs";
 import { smokeChromiumSession } from "./smoke-chromium-session.mjs";
+import { spawnWindowsJob } from "./windows-job.mjs";
 
 const drivers = new Set(["uiautomator2", "espresso", "chromium", "gecko", "mac2", "safari", "xcuitest"]);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -91,17 +92,8 @@ function groupAlive(pid) {
 }
 
 async function stopOwned(child, timeoutMs) {
+  if (child?.stopJob) return child.stopJob();
   if (!child?.pid) return true;
-  if (process.platform === "win32") {
-    if (child.exitCode !== null || child.signalCode !== null) return false;
-    // Only the tree rooted at our own still-running child is eligible.
-    const killed = spawnSync("taskkill", ["/PID", String(child.pid), "/T", "/F"], {
-      encoding: "utf8", timeout: timeoutMs, windowsHide: true,
-    });
-    const end = Date.now() + timeoutMs;
-    while (child.exitCode === null && child.signalCode === null && Date.now() < end) await delay(25);
-    return killed.status === 0 && (child.exitCode !== null || child.signalCode !== null);
-  }
   if (!groupAlive(child.pid)) return true;
   try { process.kill(-child.pid, "SIGTERM"); } catch (error) { if (error.code !== "ESRCH") return false; }
   const end = Date.now() + timeoutMs;
@@ -133,7 +125,8 @@ export async function smokeServer(options, dependencies = {}) {
     report.serverUrl = `http://127.0.0.1:${port}/`;
     // Never attach to the occupant of a raced port. Our listener log and live
     // child are required in addition to /status readiness.
-    child = spawn(command.executable, [...command.prefixArgs, "server", "--address", "127.0.0.1", "--port", String(port)], {
+    const args = [...command.prefixArgs, "server", "--address", "127.0.0.1", "--port", String(port)];
+    child = process.platform === "win32" ? spawnWindowsJob(command.executable, args, options.cleanupTimeoutMs) : spawn(command.executable, args, {
       stdio: ["ignore", "pipe", "pipe"], detached: process.platform !== "win32", windowsHide: true,
     });
     child.once("error", (error) => { startupError = error.message; });

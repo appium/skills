@@ -5,20 +5,50 @@ import os from "node:os";
 import path from "node:path";
 import http from "node:http";
 import { spawn, spawnSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { run, doctorRequiredOk, driverDoctorStatus, parseDriverVersion } from "../appium/setup/scripts/env-check-helpers.mjs";
 import { summarizeReport, reportingOptions, writeReport } from "../appium/setup/scripts/reporting.mjs";
 import { smokeServer, parseOptions, serverCommand } from "../appium/setup/scripts/smoke-appium-server.mjs";
 import { validateRepository } from "../validate-repository.mjs";
+import { commandInvocation, windowsArgument } from "../appium/setup/scripts/windows-command.mjs";
 
 const fixture = fileURLToPath(new URL("fixtures/fake-appium.mjs", import.meta.url));
-const options = (driver = "uiautomator2") => parseOptions(["--driver", driver, "--port", "0", "--startup-timeout-ms", "600", "--cleanup-timeout-ms", "250"]);
+const windows = process.platform === "win32";
+const options = (driver = "uiautomator2") => parseOptions(["--driver", driver, "--port", "0", "--startup-timeout-ms", windows ? "10000" : "600", "--cleanup-timeout-ms", windows ? "5000" : "250"]);
 const command = (behavior = "normal") => ({ executable: process.execPath, prefixArgs: [fixture, behavior] });
 const temporary = (t) => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), "appium-helper-test-"));
-  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const dir = mkdtempSync(path.join(os.tmpdir(), "appium helper (test)-"));
+  t.after(() => rmSync(dir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }));
   return dir;
 };
+
+function launcher(dir, name, source, extension = ".cmd") {
+  const entry = path.join(dir, `${name}.mjs`);
+  writeFileSync(entry, source);
+  const shim = path.join(dir, `${name}${windows ? extension : ""}`);
+  writeFileSync(shim, windows
+    ? `@echo off\r\n"${process.execPath}" "${entry}" %*\r\n`
+    : `#!/usr/bin/env node\nimport ${JSON.stringify(pathToFileURL(entry).href)};\n`);
+  chmodSync(shim, 0o755);
+  return shim;
+}
+
+test("native Windows argument quoting preserves spaces and trailing backslashes", () => {
+  assert.equal(windowsArgument('C:\\Program Files\\folder\\'), '"C:\\Program Files\\folder\\\\"');
+  assert.equal(windowsArgument('a"b'), '"a\\"b"');
+});
+
+test("Windows batch execution resolves PATH and preserves literal path arguments", { skip: !windows }, (t) => {
+  const dir = temporary(t);
+  const shim = launcher(dir, "sdkmanager", 'console.log(JSON.stringify(process.argv.slice(2)));', ".bat");
+  const args = ["--list_installed", "C:\\Program Files (x86)\\SDK & Tools\\", ""];
+  const result = run(shim, args);
+  assert.equal(result.ok, true, JSON.stringify(result));
+  assert.deepEqual(JSON.parse(result.stdout), args);
+  assert.throws(() => commandInvocation(shim, ["%PATH%"]), /Unsupported/);
+  const npm = run("npm", ["--version"]);
+  assert.equal(npm.ok, true, JSON.stringify(npm));
+});
 
 test("checks parse evidence beyond the old truncation boundary", () => {
   const doctor = run(process.execPath, ["-e", 'console.log("x".repeat(30000)); console.log("0 required fixes needed")']);
@@ -37,11 +67,11 @@ test("capture overflow is explicit and cannot pass", () => {
     { supported: true, requiredOk: false });
 });
 
-for (const driver of ["xcuitest", "espresso", "mac2", "uiautomator2"]) {
-test(`${driver} summary accepts doctor evidence from either stream only on success`, { skip: process.platform === "win32" }, (t) => {
+for (const driver of ["xcuitest", "espresso", "mac2", "uiautomator2", "chromium", "gecko"]) {
+test(`${driver} summary accepts doctor evidence from either stream only on success`, { skip: windows && ["xcuitest", "mac2"].includes(driver) }, (t) => {
   const dir = temporary(t);
   const shim = `#!/usr/bin/env node
-const name = process.argv[1].split("/").pop();
+const name = process.argv[1].split(/[\\\\/]/).pop().replace(/\\.mjs$/, "");
 if (name === "appium") {
   if (process.argv[2] === "-v") console.log("3.5.2");
   else if (process.argv[3] === "list") console.log(JSON.stringify({[process.env.TEST_DRIVER]: {version: "12.8.2"}}));
@@ -56,11 +86,10 @@ else if (name === "java" || name === "javac") console.log("21.0.1");
 else if (name === "adb") console.log("List of devices attached");
 else if (name === "emulator") console.log("fixture-avd");
 else if (name === "sdkmanager") console.log("platform-tools | installed\\nemulator | installed\\nplatforms;android-35 | installed\\nbuild-tools;35.0.0 | installed");
+else console.log("fixture version 1.0");
 `;
-  for (const name of ["appium", "xcodebuild", "xcode-select", "xcrun", "java", "javac", "adb", "emulator", "sdkmanager"]) {
-    const target = path.join(dir, name);
-    writeFileSync(target, shim);
-    chmodSync(target, 0o755);
+  for (const name of ["appium", "xcodebuild", "xcode-select", "xcrun", "java", "javac", "adb", "emulator", "sdkmanager", "firefox", "geckodriver", "google-chrome", "google-chrome-stable", "chromium", "chromium-browser", "microsoft-edge", "msedge"]) {
+    launcher(dir, name, shim, name === "sdkmanager" ? ".bat" : ".cmd");
   }
   const cli = fileURLToPath(new URL(`../appium/setup/scripts/check-${driver}-env.mjs`, import.meta.url));
   for (const stream of ["stdout", "stderr"]) {
@@ -70,7 +99,7 @@ else if (name === "sdkmanager") console.log("platform-tools | installed\\nemulat
       [0, "1 required fixes needed\n", false],
     ]) {
       const result = spawnSync(process.execPath, [cli, "--format", "summary"], {
-        cwd: dir, encoding: "utf8", timeout: 10000,
+        cwd: dir, encoding: "utf8", timeout: 30000,
         env: { ...process.env, PATH: `${dir}${path.delimiter}${process.env.PATH}`,
           ANDROID_HOME: dir, ANDROID_SDK_ROOT: dir, TEST_DRIVER: driver,
           TEST_DOCTOR_STREAM: stream, TEST_DOCTOR_OUTPUT: output, TEST_DOCTOR_EXIT: String(exitCode) },
@@ -139,7 +168,7 @@ for (const behavior of ["exit", "not-ready", "wrong-driver", "invalid-json"]) {
   test(`server ${behavior} blocks and still cleans up`, async () => {
     const report = await smokeServer(options(), { command: command(behavior) });
     assert.equal(report.summary.requiredOk, false);
-    assert.equal(report.checks.cleanupOk, process.platform === "win32" && behavior === "exit" ? false : true);
+    assert.equal(report.checks.cleanupOk, true);
     assert.match(report.summary.error, behavior === "exit" ? /exited/ : /timed out/);
   });
 }
@@ -147,10 +176,10 @@ for (const behavior of ["exit", "not-ready", "wrong-driver", "invalid-json"]) {
 test("missing command blocks without unhandled spawn errors", async () => {
   const report = await smokeServer(options(), { command: { executable: "/missing/appium", prefixArgs: [] } });
   assert.equal(report.summary.requiredOk, false);
-  assert.equal(report.checks.cleanupOk, true);
+  assert.equal(report.checks.cleanupOk, !windows); // Windows startup errors lack a verified job result.
 });
 
-test("owned child processes exit and stubborn servers are terminated", { skip: process.platform === "win32" }, async () => {
+test("owned child processes exit and stubborn servers are terminated", async () => {
   for (const behavior of ["child", "ignore-term"]) {
     const report = await smokeServer(options(), { command: command(behavior) });
     assert.equal(report.summary.requiredOk, true, JSON.stringify(report.summary));
@@ -159,11 +188,56 @@ test("owned child processes exit and stubborn servers are terminated", { skip: p
   }
 });
 
+test("cleanup removes descendants after the server parent exits", async () => {
+  const report = await smokeServer(options(), { command: command("orphan") });
+  assert.equal(report.summary.requiredOk, false);
+  assert.equal(report.checks.cleanupOk, true, JSON.stringify(report));
+  const worker = report.logs.match(/worker-pid=(\d+)/)?.[1];
+  assert.ok(worker, report.logs);
+  assert.throws(() => process.kill(Number(worker), 0), /ESRCH/);
+});
+
+test("Windows job survives Node supervisor death long enough to clean its tree", { skip: !windows, timeout: 30000 }, async (t) => {
+  const dir = temporary(t);
+  const entry = path.join(dir, "owner.mjs");
+  const jobModule = new URL("../appium/setup/scripts/windows-job.mjs", import.meta.url).href;
+  writeFileSync(entry, `import {spawnWindowsJob} from ${JSON.stringify(jobModule)};
+const child = spawnWindowsJob(process.execPath, ${JSON.stringify([fixture, "child", "--port", "0"])}, 5000);
+child.stdout.pipe(process.stdout); child.stderr.pipe(process.stderr);
+`);
+  const owner = spawn(process.execPath, [entry]);
+  t.after(() => { if (owner.exitCode === null && owner.signalCode === null) owner.kill(); });
+  let output = "";
+  let worker;
+  owner.stdout.on("data", (chunk) => {
+    output += chunk;
+    worker = output.match(/worker-pid=(\d+)/)?.[1];
+    if (worker && owner.signalCode === null) owner.kill();
+  });
+  owner.stderr.on("data", (chunk) => { output += chunk; });
+  await new Promise((resolve, reject) => { owner.once("close", resolve); owner.once("error", reject); });
+  assert.ok(worker, output);
+  const deadline = Date.now() + 6000;
+  while (Date.now() < deadline) {
+    try { process.kill(Number(worker), 0); }
+    catch (error) { if (error.code === "ESRCH") break; throw error; }
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  }
+  assert.throws(() => process.kill(Number(worker), 0), /ESRCH/);
+});
+
 test("Chromium creates/deletes a session and keeps downloads disabled", async () => {
-  const report = await smokeServer(options("chromium"), { command: command() });
+  const report = await smokeServer({ ...options("chromium"), browser: "edge",
+    browserBinary: "C:\\Program Files (x86)\\Microsoft\\Edge\\msedge.exe",
+    driverExecutable: "C:\\Web Drivers\\msedgedriver.exe" }, { command: command() });
   assert.equal(report.summary.requiredOk, true, JSON.stringify(report.summary));
   assert.match(report.logs, /autodownload=false/);
   assert.match(report.logs, /session-deleted/);
+  const caps = JSON.parse(report.logs.match(/capabilities=(.*)/)[1]);
+  assert.equal(caps.platformName, { darwin: "mac", linux: "linux", win32: "windows" }[process.platform]);
+  assert.equal(caps.browserName, "MicrosoftEdge");
+  assert.equal(caps["ms:edgeOptions"].binary, "C:\\Program Files (x86)\\Microsoft\\Edge\\msedge.exe");
+  assert.equal(caps["appium:executable"], "C:\\Web Drivers\\msedgedriver.exe");
   for (const behavior of ["session-failure", "delete-failure"]) {
     const failed = await smokeServer(options("chromium"), { command: command(behavior) });
     assert.equal(failed.summary.requiredOk, false);
@@ -195,20 +269,18 @@ test("local mode resolves a real dependency and never falls back globally", (t) 
   assert.throws(() => parseOptions(["--driver", "gecko", "--allow-driver-download"]));
 });
 
-test("smoke CLI uses global mode by default and supports an explicit local dependency", { skip: process.platform === "win32" }, async (t) => {
+test("smoke CLI uses global mode by default and supports an explicit local dependency", async (t) => {
   const dir = temporary(t);
-  const shim = path.join(dir, "appium");
   const fixtureUrl = JSON.stringify(new URL("fixtures/fake-appium.mjs", import.meta.url).href);
   const fakeImport = `import ${fixtureUrl};\n`;
-  writeFileSync(shim, `#!/usr/bin/env node\nimport(${fixtureUrl});\n`);
-  chmodSync(shim, 0o755);
+  launcher(dir, "appium", fakeImport);
   const packageDir = path.join(dir, "node_modules/appium");
   mkdirSync(packageDir, { recursive: true });
   writeFileSync(path.join(packageDir, "package.json"), '{"bin":{"appium":"main.mjs"}}');
   writeFileSync(path.join(packageDir, "main.mjs"), fakeImport);
   const cli = fileURLToPath(new URL("../appium/setup/scripts/smoke-appium-server.mjs", import.meta.url));
-  for (const mode of ["global", "local"]) {
-    const args = [cli, "--driver", "uiautomator2", "--port", "0"];
+  for (const [mode, driver] of [["global", "uiautomator2"], ["local", "uiautomator2"], ["global", "espresso"], ["global", "gecko"], ["global", "chromium"]]) {
+    const args = [cli, "--driver", driver, "--port", "0"];
     if (mode === "local") args.push("--appium-mode", "local");
     const child = spawn(process.execPath, args, { cwd: dir, env: { ...process.env, PATH: `${dir}${path.delimiter}${process.env.PATH}` } });
     let output = "";
