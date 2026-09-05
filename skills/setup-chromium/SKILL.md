@@ -25,35 +25,28 @@ Confirm the browser and executable when non-default, global `appium` mode or
 explicitly requested local `npx appium` mode, host OS, permissions, and whether
 a session-time browser-driver download is authorized.
 
-## Workflow outline
+## Workflow
 
 1. Load the global command profile by default or the local profile only when
    explicitly requested.
 2. Load the Chromium profile, shared Appium setup basics, browser prerequisites,
    and Chromium decision, driver-validation, and smoke references.
-3. Run `node tools/appium/setup/scripts/check-chromium-env.mjs`; pass
-   `--appium-mode local` only for local mode. Use top-level
-   `summary.requiredOk` as the read-only gate.
-4. Apply required fixes in technical dependency order and rerun the affected
-   check.
-5. Run `/status` and
-   `node tools/appium/setup/scripts/smoke-chromium-session.mjs`. Load the
-   matching example only when it clarifies execution.
-
-## Verification
-
-1. Run `node tools/appium/setup/scripts/check-chromium-env.mjs`; add
+3. Run `node tools/appium/setup/scripts/check-chromium-env.mjs`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
-2. Verify `appium driver doctor chromium` reports
+   Apply required fixes in technical dependency order and rerun affected checks.
+   If the gate remains unresolved, report `blocked` with evidence and the next
+   action. Load the matching example only when needed.
+4. Verify `appium driver doctor chromium` reports
    `0 required fixes needed`, or record `not-supported` and require the
    install, list, browser, and smoke gates instead. Use
    `npx --no-install appium ...` for the direct check in local mode.
-3. Start the Appium server in the selected mode and verify `/status` indicates
+5. Start the Appium server in the selected mode and verify `/status` indicates
    readiness while server logs list `chromium` as an available driver.
-4. Run `node tools/appium/setup/scripts/smoke-chromium-session.mjs` and require
-   top-level `summary.requiredOk: true`, then stop the server and verify no
-   Appium server process remains.
+6. Run `node tools/appium/setup/scripts/smoke-chromium-session.mjs` and require
+   top-level `summary.requiredOk: true`, then stop only the server started for
+   this check and verify its process exits, following the smoke-status reference.
+   Preserve pre-existing servers.
 
 ## Chromium setup safety and approval constraints
 

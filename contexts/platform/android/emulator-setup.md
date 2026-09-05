@@ -23,20 +23,32 @@ Prepare Android automation by validating Java, Android SDK command-line tools, S
 
 ## Routing
 
-Load these references in order:
-
-1. `contexts/platform/android/decision-logic.md` for supported hosts, preservation rules, optional dependency boundaries, and install triggers.
-2. `contexts/platform/android/references/detect-base-tooling.md` for OS, Java, Android SDK, ADB, and emulator binary detection.
-3. `contexts/platform/android/references/sdk-commandline-tools.md` for platform default SDK paths and command-line tools bootstrap.
-4. `contexts/platform/android/references/java-configuration.md` for Java setup only when `java` or `javac` is missing.
-5. `contexts/platform/android/references/sdk-packages-and-path.md` for `ANDROID_HOME`, `PATH`, licenses, and required SDK packages.
-6. `contexts/platform/android/references/device-emulator-validation.md` for device inventory, emulator creation, final validation, and evidence.
-
-For deterministic read-only validation, run:
+Start with read-only validation, or reuse equivalent current-run evidence from
+the calling driver helper:
 
 ```bash
 node tools/appium/setup/scripts/check-android-env.mjs
 ```
+
+Load `contexts/platform/android/decision-logic.md` before any environment change.
+Then load only references needed for failed or unresolved checks, applying fixes
+in technical dependency order:
+
+- `contexts/platform/android/references/detect-base-tooling.md` when host, Java,
+  SDK, ADB, or emulator detection needs interpretation.
+- `contexts/platform/android/references/sdk-commandline-tools.md` when the SDK
+  path or command-line tools are missing.
+- `contexts/platform/android/references/java-configuration.md` only when `java`
+  or `javac` is missing.
+- `contexts/platform/android/references/sdk-packages-and-path.md` when SDK
+  variables, PATH entries, licenses, or required packages need changes.
+- `contexts/platform/android/references/device-emulator-validation.md` when
+  device visibility is unresolved, no device or AVD exists, or inventory fails
+  under a managed sandbox. Read it before creating an emulator.
+
+Preserve working installations. SDK license changes and emulator creation retain
+the calling Skill's approval gates. Optional FFmpeg and bundletool remain outside
+this workflow unless explicitly requested.
 
 ## Completion Criteria
 

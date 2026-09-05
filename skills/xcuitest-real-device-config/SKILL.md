@@ -52,7 +52,15 @@ Confirm the iOS or tvOS device, global `appium` or explicitly requested local `n
 
 ## Completion criteria
 
-Complete build or install routes only when their applicable device, signing, provisioning, code-signature, deployment, and connectivity checks pass or are isolated as explicit manual blockers. After the shared macOS, XCUITest-driver, and device-visibility prerequisites pass, complete a running-WDA URL route when the endpoint is reachable and an Appium session attaches successfully; local WDA preparation, signing, and installation evidence is not required for that route. In every route, keep privileged or optional actions user-approved and report the validated configuration, sanitized evidence, and remaining manual actions.
+Report build or install routes as `passed` only when their applicable device,
+signing, provisioning, code-signature, deployment, and connectivity checks pass.
+After the shared macOS, XCUITest-driver, and device-visibility prerequisites pass,
+report a running-WDA URL route as `passed` when the endpoint is reachable and an
+Appium session attaches successfully; local WDA preparation, signing, and
+installation evidence is not required for that route. If any required check
+cannot be completed, report `blocked` with sanitized evidence and the exact next
+action. Keep privileged or optional actions user-approved and report only the
+configuration actually validated.
 
 ## Evidence
 

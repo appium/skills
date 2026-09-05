@@ -25,34 +25,27 @@ Confirm the Firefox channel or executable when non-default, global `appium`
 mode or explicitly requested local `npx appium` mode, host OS, and permissions
 for browser or package-manager changes.
 
-## Workflow outline
+## Workflow
 
 1. Load the global command profile by default or the local profile only when
    explicitly requested.
 2. Load the Gecko profile, shared Appium setup basics, Firefox prerequisites,
    and Gecko decision, driver-validation, and smoke references.
-3. Run `node tools/appium/setup/scripts/check-gecko-env.mjs`; pass
-   `--appium-mode local` only for local mode. Use
-   `summary.requiredOk: true` as the read-only setup gate.
-4. Apply required fixes in technical dependency order and rerun the affected
-   check.
-5. Run the supported doctor and server smoke checks. Load the matching example
-   only when it clarifies execution.
-
-## Verification
-
-1. Run `node tools/appium/setup/scripts/check-gecko-env.mjs`; add
+3. Run `node tools/appium/setup/scripts/check-gecko-env.mjs`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
-2. Verify `appium driver doctor gecko` reports `0 required fixes needed`, or
+   Apply required fixes in technical dependency order and rerun affected checks.
+   If the gate remains unresolved, report `blocked` with evidence and the next
+   action. Load the matching example only when needed.
+4. Verify `appium driver doctor gecko` reports `0 required fixes needed`, or
    record `not-supported` and require the install, list, Firefox, and smoke
    gates instead. Use `npx --no-install appium ...` for the direct check in
    local mode.
-3. Start the Appium server in the selected mode, request
+5. Start the Appium server in the selected mode, request
    `http://127.0.0.1:4723/status`, and verify the response indicates readiness
    while server logs list `gecko` as an available driver.
-4. Stop the server and verify no Appium server process remains, following the
-   cleanup check in the smoke-status reference.
+6. Stop only the server started for this check and verify its process exits,
+   following the smoke-status reference. Preserve pre-existing servers.
 
 ## Gecko setup safety and approval constraints
 

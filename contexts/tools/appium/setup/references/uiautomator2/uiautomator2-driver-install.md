@@ -13,9 +13,21 @@ description: "Install and verify the Appium UiAutomator2 driver in global comman
 
 Use global Appium mode unless the user explicitly asks for local `npx` mode:
 
+When Appium is missing or needs a required upgrade, resolve `APPIUM_VERSION`
+using Appium Version Selection in `contexts/tools/appium/setup-basics.md`.
+Skip installs for compatible Appium and already installed drivers; apply the
+selected command profile to the commands below.
+
+Only when Appium installation is required:
+
 ```bash
-: "${APPIUM_VERSION:?Set APPIUM_VERSION to the project's approved exact Appium 3.x version}"
+: "${APPIUM_VERSION:?Resolve exact APPIUM_VERSION using Appium Setup Basics}"
 npm install -g "appium@$APPIUM_VERSION"
+```
+
+Only when the driver is missing:
+
+```bash
 appium driver install uiautomator2
 ```
 

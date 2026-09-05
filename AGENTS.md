@@ -55,7 +55,11 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
   Skill body and applicable handoff conditions. Do not infer execution order
   from Renma declaration order.
 - Run commands step-by-step; avoid very long chained command blocks.
-- Re-run checks after each fix.
+- Re-run affected checks after each fix. Reuse passing evidence from the current
+  run, including across Skill handoffs, unless a relevant environment change
+  invalidates it. A repeated command in a reference is not an additional gate.
+  Raw doctor output captured by a helper satisfies the direct-output evidence
+  requirement when it contains the required pass result.
 - Use Appium doctor required fixes as the pass/fail gate:
   - Pass: `0 required fixes needed`
   - Optional warnings are non-blocking.
@@ -73,6 +77,9 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
 
 Use the selected skill file's explicit checklist as the completion gate.
 
+- Report `passed` only when all applicable required checks pass. Report
+  `blocked` when a required check cannot be completed, with evidence and the
+  next action; identifying a blocker does not establish readiness.
 - Required doctor checks must pass.
 - Optional doctor warnings do not block completion.
 - Validate global command mode (`appium`) as the default completion path.

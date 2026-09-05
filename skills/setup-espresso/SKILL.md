@@ -25,7 +25,7 @@ Confirm Android as the target, global `appium` mode or explicitly requested
 local `npx appium` mode, host OS, device or emulator expectations, permissions,
 and optional dependency requests.
 
-## Workflow outline
+## Workflow
 
 1. Load the global command profile by default or the local profile only when
    explicitly requested.
@@ -33,25 +33,20 @@ and optional dependency requests.
    setup Context.
 3. Load the Espresso decision, installation, doctor, and smoke references in
    that order.
-4. Run `node tools/appium/setup/scripts/check-espresso-env.mjs`; pass
-   `--appium-mode local` only for local mode. Apply required fixes in technical
-   dependency order and rerun the affected check after each fix.
-5. Run the Espresso doctor and server smoke checks. Load the matching example
-   only when it clarifies execution.
-
-## Verification
-
-1. Run `node tools/appium/setup/scripts/check-espresso-env.mjs`; add
+4. Run `node tools/appium/setup/scripts/check-espresso-env.mjs`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
-2. Verify the direct doctor output reports `0 required fixes needed` using
+   Apply required fixes in technical dependency order and rerun affected checks.
+   If the gate remains unresolved, report `blocked` with evidence and the next
+   action. Load the matching example only when needed.
+5. Verify the direct doctor output reports `0 required fixes needed` using
    `appium driver doctor espresso`, or
    `npx --no-install appium driver doctor espresso` in local mode.
-3. Start the Appium server in the selected mode, request
+6. Start the Appium server in the selected mode, request
    `http://127.0.0.1:4723/status`, and verify the response indicates readiness
    while server logs list `espresso` as an available driver.
-4. Stop the server and verify no Appium server process remains, following the
-   cleanup check in the smoke-status reference.
+7. Stop only the server started for this check and verify its process exits,
+   following the smoke-status reference. Preserve pre-existing servers.
 
 ## Espresso setup safety and approval constraints
 
@@ -68,8 +63,8 @@ and optional dependency requests.
 - The installed driver list includes `espresso`.
 - `appium driver doctor espresso` reports `0 required fixes needed`; optional
   warnings are non-blocking.
-- `/status` succeeds, server logs list `espresso`, and cleanup leaves no Appium
-  server process.
+- `/status` succeeds, server logs list `espresso`, and the server
+  started for verification has exited.
 
 ## Evidence boundary
 
