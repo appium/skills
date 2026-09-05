@@ -60,6 +60,12 @@ Before executing a skill, confirm the target platform, Appium driver, command mo
   invalidates it. A repeated command in a reference is not an additional gate.
   Raw doctor output captured by a helper satisfies the direct-output evidence
   requirement when it contains the required pass result.
+- Invoke environment helpers with `--format summary --report auto`: parse all
+  captured output, print compact JSON, and save full diagnostics to a new private
+  temporary file. Read only the relevant check from `diagnosticsPath` on failure.
+  `doctorEvidence` preserves the raw pass line and command success; unsuccessful
+  optional probes do not override `summary.requiredOk`. Use `--format full` only
+  when full stdout is needed by another program. These flags do not change gates.
 - Use Appium doctor required fixes as the pass/fail gate:
   - Pass: `0 required fixes needed`
   - Optional warnings are non-blocking.

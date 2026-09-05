@@ -30,7 +30,7 @@ required privacy authorization state.
    explicitly requested.
 2. Load the macOS and Mac2 profiles, shared Appium setup basics, Xcode
    command-line-tools Context, and Mac2 decision, doctor, and smoke references.
-3. Run `node tools/appium/setup/scripts/check-mac2-env.mjs`; add
+3. Run `node tools/appium/setup/scripts/check-mac2-env.mjs --format summary --report auto`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
    Apply required fixes in technical dependency order and rerun affected checks.
@@ -39,11 +39,10 @@ required privacy authorization state.
 4. Verify the direct doctor output reports `0 required fixes needed` using
    `appium driver doctor mac2`, or
    `npx --no-install appium driver doctor mac2` in local mode.
-5. Start the Appium server in the selected mode, request
-   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
-   while server logs list `mac2` as an available driver.
-6. Stop only the server started for this check and verify its process exits,
-   following the smoke-status reference. Preserve pre-existing servers.
+5. Run `node tools/appium/setup/scripts/smoke-appium-server.mjs --driver mac2 --report auto`;
+   add `--appium-mode local` only in local mode. Require
+   `summary.requiredOk: true` for server readiness, driver evidence, and
+   cleanup. The smoke reference documents target-specific options.
 
 ## Mac2 setup safety and approval constraints
 

@@ -30,7 +30,7 @@ and permissions for authorization changes.
    explicitly requested.
 2. Load the macOS and Safari profiles, shared Appium setup basics, Safari
    prerequisites, and Safari decision, installation, and smoke references.
-3. Run `node tools/appium/setup/scripts/check-safari-env.mjs`; add
+3. Run `node tools/appium/setup/scripts/check-safari-env.mjs --format summary --report auto`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
    Apply required fixes in technical dependency order and rerun affected checks.
@@ -40,11 +40,10 @@ and permissions for authorization changes.
    record `not-supported` and require the install, list, Safari, and smoke
    gates instead. Use `npx --no-install appium ...` for the direct check in
    local mode.
-5. Start the Appium server in the selected mode, request
-   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
-   while server logs list `safari` as an available driver.
-6. Stop only the server started for this check and verify its process exits,
-   following the smoke-status reference. Preserve pre-existing servers.
+5. Run `node tools/appium/setup/scripts/smoke-appium-server.mjs --driver safari --report auto`;
+   add `--appium-mode local` only in local mode. Require
+   `summary.requiredOk: true` for server readiness, driver evidence, and
+   cleanup. The smoke reference documents target-specific options.
 
 ## Safari setup safety and approval constraints
 

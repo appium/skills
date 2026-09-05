@@ -35,7 +35,7 @@ optional FFmpeg requests.
    explicitly requested.
 2. Load the macOS and XCUITest profiles, shared Appium setup basics, Xcode
    prerequisites, and XCUITest decision, driver-doctor, and smoke references.
-3. Run `node tools/appium/setup/scripts/check-xcuitest-env.mjs`; add
+3. Run `node tools/appium/setup/scripts/check-xcuitest-env.mjs --format summary --report auto`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
    Apply required fixes in technical dependency order and rerun affected checks.
@@ -44,13 +44,12 @@ optional FFmpeg requests.
 4. Verify the direct doctor output reports `0 required fixes needed` using
    `appium driver doctor xcuitest`, or
    `npx --no-install appium driver doctor xcuitest` in local mode.
-5. Start the Appium server in the selected mode, request
-   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
-   while server logs list `xcuitest` as an available driver.
-6. Stop only the server started for this check and verify its process exits,
-   following the smoke-status reference. Preserve pre-existing servers. For a real
-   device, record the passing shared-setup evidence before continuing to
-   `skills/xcuitest-real-device-config/SKILL.md`.
+5. Run `node tools/appium/setup/scripts/smoke-appium-server.mjs --driver xcuitest --report auto`;
+   add `--appium-mode local` only in local mode. Require
+   `summary.requiredOk: true` for server readiness, driver evidence, and
+   cleanup. The smoke reference documents target-specific options.
+6. For a real device, record passing shared-setup evidence before continuing
+   to `skills/xcuitest-real-device-config/SKILL.md`.
 
 ## XCUITest setup safety and approval constraints
 

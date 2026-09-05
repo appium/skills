@@ -33,7 +33,7 @@ and optional dependency requests.
    setup Context.
 3. Load the Espresso decision, installation, doctor, and smoke references in
    that order.
-4. Run `node tools/appium/setup/scripts/check-espresso-env.mjs`; add
+4. Run `node tools/appium/setup/scripts/check-espresso-env.mjs --format summary --report auto`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
    Apply required fixes in technical dependency order and rerun affected checks.
@@ -42,11 +42,10 @@ and optional dependency requests.
 5. Verify the direct doctor output reports `0 required fixes needed` using
    `appium driver doctor espresso`, or
    `npx --no-install appium driver doctor espresso` in local mode.
-6. Start the Appium server in the selected mode, request
-   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
-   while server logs list `espresso` as an available driver.
-7. Stop only the server started for this check and verify its process exits,
-   following the smoke-status reference. Preserve pre-existing servers.
+6. Run `node tools/appium/setup/scripts/smoke-appium-server.mjs --driver espresso --report auto`;
+   add `--appium-mode local` only in local mode. Require
+   `summary.requiredOk: true` for server readiness, driver evidence, and
+   cleanup. The smoke reference documents target-specific options.
 
 ## Espresso setup safety and approval constraints
 

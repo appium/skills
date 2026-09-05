@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { reportingOptions, writeReport } from "./reporting.mjs";
+const outputOptions = reportingOptions();
 
 import {
   appiumDriverChecks,
@@ -47,4 +49,4 @@ const report = {
   },
 };
 
-process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+writeReport(report, outputOptions);

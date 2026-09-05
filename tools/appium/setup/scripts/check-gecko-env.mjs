@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { reportingOptions, writeReport } from "./reporting.mjs";
+const outputOptions = reportingOptions();
 
 import os from "node:os";
 import {
@@ -54,7 +56,7 @@ const firefoxVersion = selectedFirefox
   : { command: "firefox --version", ok: false, stdout: "", stderr: "No Firefox executable found" };
 const geckodriverCommand = commandExists("geckodriver");
 const geckodriverVersion = geckodriverCommand.ok
-  ? run(geckodriverCommand.path, ["--version"], { timeout: 10000, maxOutput: 4000 })
+  ? run(geckodriverCommand.path, ["--version"], { timeout: 10000 })
   : { command: "geckodriver --version", ok: false, stdout: "", stderr: "No geckodriver executable found" };
 const appium = appiumDriverChecks("gecko");
 const doctor = driverDoctorStatus(appium.checks.doctor);
@@ -97,4 +99,4 @@ const report = {
   },
 };
 
-process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+writeReport(report, outputOptions);

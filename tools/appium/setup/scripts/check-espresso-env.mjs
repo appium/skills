@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { reportingOptions, writeReport } from "./reporting.mjs";
+const outputOptions = reportingOptions();
 import os from "node:os";
 import { existsSync } from "node:fs";
 import {
@@ -86,7 +88,7 @@ const report = {
   },
 };
 
-process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+writeReport(report, outputOptions);
 
 function parseDeviceCount(output) {
   return output

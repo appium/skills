@@ -11,23 +11,14 @@ description: "Run Appium server smoke status checks and verify cleanup for Espre
 
 ## Smoke Check
 
-Record the process or terminal-job identity of the server started for this
-check. Preserve any pre-existing server. If port 4723 is occupied, select an
-unused port with `--port` and use that port for all status/session requests.
-
-Start `appium server` in one terminal, then run:
+Run the shared lifecycle helper after the driver prerequisite and doctor gates:
 
 ```bash
-curl -s http://127.0.0.1:4723/status
+node tools/appium/setup/scripts/smoke-appium-server.mjs --driver espresso --report auto
 ```
 
-The response must indicate readiness. Server logs should include `Available drivers:` and `espresso`.
-
-## Cleanup
-
-Stop only the server started for this check, using `Ctrl+C` in its owning
-terminal or the recorded process handle. Confirm that process and any child
-server it started have exited. On macOS/Linux, inspect the recorded PID with
-`ps -p <server-pid> -o pid=,command=`; on Windows, use
-`Get-Process -Id <server-pid> -ErrorAction SilentlyContinue`. A remaining
-unrelated Appium process is not a cleanup failure; do not stop it.
+Add `--appium-mode local` only for explicitly selected local mode. The helper
+uses loopback, chooses a free port if 4723 is occupied, verifies readiness and
+the selected driver in its own server logs, and cleans up its owned process
+tree on success, failure, or interruption. Require `summary.requiredOk: true`;
+inspect `diagnosticsPath` for failed evidence instead of repeating the workflow.

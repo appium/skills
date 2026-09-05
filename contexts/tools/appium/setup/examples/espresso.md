@@ -19,10 +19,9 @@ Rules:
 
 Smoke test:
 
-If port 4723 is occupied, use an unused port with `--port` and update the
-status/session URLs below. Follow the driver smoke reference for process checks.
+```bash
+node tools/appium/setup/scripts/smoke-appium-server.mjs --driver espresso --report auto
+```
 
-- Terminal A: start the server with `appium server`; record its PID or terminal-job identity.
-- Terminal B: run `curl -s http://127.0.0.1:4723/status` and confirm success.
-- Terminal A logs: confirm `Available drivers:` contains `espresso`.
-- Cleanup: stop this server with `Ctrl+C` in Terminal A and verify its recorded process exits. Preserve pre-existing servers.
+Use `--appium-mode local` only when requested. Require
+`summary.requiredOk: true`; inspect the saved report on failure.

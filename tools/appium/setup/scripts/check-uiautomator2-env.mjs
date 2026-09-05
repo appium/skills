@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { reportingOptions, writeReport } from "./reporting.mjs";
+const outputOptions = reportingOptions();
 import { fileURLToPath } from "node:url";
 import {
   doctorRequiredOk,
@@ -20,7 +22,6 @@ function appiumHomeBlocked(...results) {
 const androidScript = fileURLToPath(new URL("./check-android-env.mjs", import.meta.url));
 const android = run(process.execPath, [androidScript], {
   timeout: 180000,
-  maxOutput: 250000,
 });
 
 let androidSummary = {};
@@ -43,7 +44,7 @@ const doctor = runAppium(appiumCommand, ["driver", "doctor", "uiautomator2"], {
 
 const doctorText = `${doctor.stdout}\n${doctor.stderr}`;
 const driverOutput = `${driversText.stdout}\n${driversText.stderr}`;
-const isDriverInstalled = driverInstalled(driversText.stdout, "uiautomator2");
+const isDriverInstalled = driversText.ok && driverInstalled(driversText.stdout, "uiautomator2");
 const homeBlocked = appiumHomeBlocked(driversJson, driversText, doctor);
 
 const report = {
@@ -82,4 +83,4 @@ const report = {
   },
 };
 
-process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+writeReport(report, outputOptions);

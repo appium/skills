@@ -31,7 +31,7 @@ for browser or package-manager changes.
    explicitly requested.
 2. Load the Gecko profile, shared Appium setup basics, Firefox prerequisites,
    and Gecko decision, driver-validation, and smoke references.
-3. Run `node tools/appium/setup/scripts/check-gecko-env.mjs`; add
+3. Run `node tools/appium/setup/scripts/check-gecko-env.mjs --format summary --report auto`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
    Apply required fixes in technical dependency order and rerun affected checks.
@@ -41,11 +41,10 @@ for browser or package-manager changes.
    record `not-supported` and require the install, list, Firefox, and smoke
    gates instead. Use `npx --no-install appium ...` for the direct check in
    local mode.
-5. Start the Appium server in the selected mode, request
-   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
-   while server logs list `gecko` as an available driver.
-6. Stop only the server started for this check and verify its process exits,
-   following the smoke-status reference. Preserve pre-existing servers.
+5. Run `node tools/appium/setup/scripts/smoke-appium-server.mjs --driver gecko --report auto`;
+   add `--appium-mode local` only in local mode. Require
+   `summary.requiredOk: true` for server readiness, driver evidence, and
+   cleanup. The smoke reference documents target-specific options.
 
 ## Gecko setup safety and approval constraints
 

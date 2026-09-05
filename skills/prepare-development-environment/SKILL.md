@@ -31,22 +31,25 @@ preserved.
 1. Load `AGENTS.md` and inspect the workspace without changing it:
    `git status --short`, repository file inventory, `node --version`,
    `npm --version`, and `npm config get registry`.
-2. Run `node tools/appium/setup/scripts/check-node-env.mjs`. Require top-level
+2. Run `node tools/appium/setup/scripts/check-node-env.mjs --format summary --report auto`. Require top-level
    `summary.requiredOk: true`; report `summary.npmConnectivityOk` separately
    and gate it only when the requested work needs network access.
 3. Identify the changed or explicitly in-scope files. Read each affected Skill
    and Context Asset and verify every changed repository-relative target.
 4. Make only the requested repository changes, preserving repository-first
    shared `contexts/` and `tools/` boundaries and unrelated user work.
-5. For every changed Skill, verify required `name` and `description`
-   frontmatter, explicit Context relationships, and provider UI metadata when
-   present. Use an already installed platform validator only as optional
-   evidence.
-6. Run `node --check` for every changed JavaScript module. For repository-wide
-   helper edits, check every module under `tools/`.
-7. Run the edited helper or narrowest representative helper when practical.
-8. Run `git diff --check`, then review `git status --short` and the final diff
-   for unintended changes.
+5. Run `node tools/validate-repository.mjs`; use `--all` for a repository-wide
+   review. It checks all Skill names/descriptions, declared Context paths, UI
+   metadata, and repository references (including callers of deleted targets).
+   Changed tool files trigger syntax checks for every module under `tools/`.
+   Whitespace checks include staged, unstaged, and in-scope untracked files.
+   Require `summary.requiredOk: true`. This validates the repository's metadata
+   contract, not arbitrary YAML or behavioral correctness.
+6. Run the edited helper or narrowest representative helper. For shared helper,
+   reporting, server-lifecycle, or validator changes, run
+   `node --test tools/tests/helpers.test.mjs`. Tests use temporary fixtures and
+   loopback servers; they require localhost listen permission but no Appium install.
+7. Review `git status --short` and the final diff for unintended changes.
 
 ## Hard constraints
 

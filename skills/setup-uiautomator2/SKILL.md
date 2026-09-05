@@ -36,7 +36,7 @@ and optional dependency requests.
    setup Context.
 3. Load the UiAutomator2 decision, installation, doctor, and smoke references
    in that order.
-4. Run `node tools/appium/setup/scripts/check-uiautomator2-env.mjs`; add
+4. Run `node tools/appium/setup/scripts/check-uiautomator2-env.mjs --format summary --report auto`; add
    `--appium-mode local` only for explicitly requested local mode. Verify
    `summary.requiredOk: true`, `summary.driverInstalled: true`, a populated
    `summary.driverVersion`, and `summary.doctorRequiredOk: true`.
@@ -46,11 +46,10 @@ and optional dependency requests.
 5. Verify the direct doctor output reports `0 required fixes needed` using
    `appium driver doctor uiautomator2`, or
    `npx --no-install appium driver doctor uiautomator2` in local mode.
-6. Start the Appium server in the selected mode, request
-   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
-   while the server log lists `uiautomator2` as an available driver.
-7. Stop only the server started for this check and verify its process exits,
-   following the smoke-status reference. Preserve pre-existing servers.
+6. Run `node tools/appium/setup/scripts/smoke-appium-server.mjs --driver uiautomator2 --report auto`;
+   add `--appium-mode local` only in local mode. Require
+   `summary.requiredOk: true` for server readiness, driver evidence, and
+   cleanup. The smoke reference documents target-specific options.
 
 ## UiAutomator2 setup safety and approval constraints
 

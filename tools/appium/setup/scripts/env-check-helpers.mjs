@@ -12,21 +12,20 @@ export function run(command, args = [], options = {}) {
   const result = spawnSync(command, args, {
     encoding: "utf8",
     timeout: options.timeout ?? 15000,
+    maxBuffer: options.maxBuffer ?? 8 * 1024 * 1024,
     shell: false,
   });
   return {
     command: [command, ...args].join(" "),
-    ok: result.status === 0,
+    ok: result.status === 0 && !result.error,
     status: result.status,
     signal: result.signal,
-    stdout: trim(result.stdout, options.maxOutput),
-    stderr: trim(result.stderr, options.maxOutput),
+    // Consumers must parse the captured output before presentation is shortened.
+    stdout: (result.stdout || "").trim(),
+    stderr: (result.stderr || "").trim(),
     error: result.error?.message,
+    ...(result.error?.code === "ENOBUFS" ? { outputLimitExceeded: true } : {}),
   };
-}
-
-export function trim(value, max = 20000) {
-  return (value || "").trim().slice(0, max);
 }
 
 export function commandPath(name) {
@@ -101,8 +100,8 @@ export function driverDoctorStatus(result) {
     .filter(Boolean)
     .join("\n");
   return {
-    supported: !/not supported|does not support(?: the)? doctor|unknown command|unrecognized command/i.test(output),
-    requiredOk: doctorRequiredOk(output),
+    supported: Boolean(result.error) || !/not supported|does not support(?: the)? doctor|unknown command|unrecognized command/i.test(output),
+    requiredOk: result.ok && doctorRequiredOk(output),
   };
 }
 
@@ -163,7 +162,7 @@ export function appiumDriverChecks(driverName, options = {}) {
     timeout: options.doctorTimeout ?? 60000,
   });
   const version = parseDriverVersion(driverList.stdout, driverName);
-  const installed = driverInstalled(driverList.stdout, driverName);
+  const installed = driverList.ok && driverInstalled(driverList.stdout, driverName);
   const doctorStatus = driverDoctorStatus(doctor);
 
   return {

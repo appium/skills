@@ -18,3 +18,5 @@ Use this profile only when the user explicitly requests local Appium execution. 
 - Validate with `npx --no-install appium -v`, `npx --no-install appium driver list --installed`, and the matching local driver doctor or smoke check.
 - Run repository read-only helpers with `--appium-mode local`; helpers must use the existing project-local Appium installation without downloading a package or falling back to global Appium.
 - Keep local mode separate from global mode; do not mix driver installs unless the user asks.
+- The server smoke helper's `--appium-mode local` resolves the project's installed
+  Appium Node entrypoint directly, avoiding `npx` download or global-binary fallback.
