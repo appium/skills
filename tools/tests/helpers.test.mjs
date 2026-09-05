@@ -37,6 +37,55 @@ test("capture overflow is explicit and cannot pass", () => {
     { supported: true, requiredOk: false });
 });
 
+for (const driver of ["xcuitest", "espresso", "mac2", "uiautomator2"]) {
+test(`${driver} summary accepts doctor evidence from either stream only on success`, { skip: process.platform === "win32" }, (t) => {
+  const dir = temporary(t);
+  const shim = `#!/usr/bin/env node
+const name = process.argv[1].split("/").pop();
+if (name === "appium") {
+  if (process.argv[2] === "-v") console.log("3.5.2");
+  else if (process.argv[3] === "list") console.log(JSON.stringify({[process.env.TEST_DRIVER]: {version: "12.8.2"}}));
+  else if (process.argv[3] === "doctor") {
+    process[process.env.TEST_DOCTOR_STREAM].write(process.env.TEST_DOCTOR_OUTPUT);
+    process.exitCode = Number(process.env.TEST_DOCTOR_EXIT);
+  } else process.exitCode = 1;
+} else if (name === "xcodebuild") console.log("Xcode 26.6");
+else if (name === "xcode-select") console.log("/fixture/Xcode.app/Contents/Developer");
+else if (name === "xcrun") console.log("== Devices ==");
+else if (name === "java" || name === "javac") console.log("21.0.1");
+else if (name === "adb") console.log("List of devices attached");
+else if (name === "emulator") console.log("fixture-avd");
+else if (name === "sdkmanager") console.log("platform-tools | installed\\nemulator | installed\\nplatforms;android-35 | installed\\nbuild-tools;35.0.0 | installed");
+`;
+  for (const name of ["appium", "xcodebuild", "xcode-select", "xcrun", "java", "javac", "adb", "emulator", "sdkmanager"]) {
+    const target = path.join(dir, name);
+    writeFileSync(target, shim);
+    chmodSync(target, 0o755);
+  }
+  const cli = fileURLToPath(new URL(`../appium/setup/scripts/check-${driver}-env.mjs`, import.meta.url));
+  for (const stream of ["stdout", "stderr"]) {
+    for (const [exitCode, output, expected] of [
+      [0, "0 required fixes needed, 2 optional fixes possible.\n", true],
+      [1, "0 required fixes needed\n", false],
+      [0, "1 required fixes needed\n", false],
+    ]) {
+      const result = spawnSync(process.execPath, [cli, "--format", "summary"], {
+        cwd: dir, encoding: "utf8", timeout: 10000,
+        env: { ...process.env, PATH: `${dir}${path.delimiter}${process.env.PATH}`,
+          ANDROID_HOME: dir, ANDROID_SDK_ROOT: dir, TEST_DRIVER: driver,
+          TEST_DOCTOR_STREAM: stream, TEST_DOCTOR_OUTPUT: output, TEST_DOCTOR_EXIT: String(exitCode) },
+      });
+      assert.equal(result.status, 0, result.stderr);
+      const report = JSON.parse(result.stdout);
+      assert.equal(report.summary.doctorRequiredOk, expected, `${stream}, exit ${exitCode}, ${output}`);
+      if (driver !== "uiautomator2") assert.equal(report.appium.strictDoctorGateOk, expected);
+      const hostSupported = !["xcuitest", "mac2"].includes(driver) || process.platform === "darwin";
+      assert.equal(report.summary.requiredOk, expected && hostSupported);
+    }
+  }
+});
+}
+
 test("summary preserves gates and doctor evidence while reducing output", () => {
   const report = { checks: {
     doctor: { ok: true, stdout: `${"noise\n".repeat(8000)}0 required fixes needed`, stderr: "" },

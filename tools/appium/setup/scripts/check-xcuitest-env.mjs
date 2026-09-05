@@ -4,7 +4,7 @@ const outputOptions = reportingOptions();
 
 import {
   appiumDriverChecks,
-  doctorRequiredOk,
+  driverDoctorStatus,
   hostReport,
   isMac,
   run,
@@ -41,7 +41,7 @@ const report = {
     simulatorInventoryOk: xcode.checks.simctlList.ok,
     appiumMajorAtLeast3: appium.appiumMajor !== null && appium.appiumMajor >= 3,
     driverInstalled: appium.installed,
-    doctorRequiredOk: doctorRequiredOk(appium.checks.doctor.stdout),
+    doctorRequiredOk: driverDoctorStatus(appium.checks.doctor).requiredOk,
   },
 };
 

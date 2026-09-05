@@ -6,6 +6,7 @@ import { existsSync } from "node:fs";
 import {
   appiumDriverChecks,
   commandPath,
+  driverDoctorStatus,
   environmentValues,
   executable,
   hostReport,
@@ -84,7 +85,7 @@ const report = {
     deviceInventoryOk: devices.ok,
     sdkInventoryOk: sdkPackages.ok,
     driverInstalled: appium.installed,
-    doctorRequiredOk: /0 required fixes needed/i.test(appium.checks.doctor.stdout),
+    doctorRequiredOk: driverDoctorStatus(appium.checks.doctor).requiredOk,
   },
 };
 

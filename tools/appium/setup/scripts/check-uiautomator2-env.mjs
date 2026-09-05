@@ -3,7 +3,7 @@ import { reportingOptions, writeReport } from "./reporting.mjs";
 const outputOptions = reportingOptions();
 import { fileURLToPath } from "node:url";
 import {
-  doctorRequiredOk,
+  driverDoctorStatus,
   driverInstalled,
   parseDriverVersion,
   parseMajor,
@@ -43,6 +43,7 @@ const doctor = runAppium(appiumCommand, ["driver", "doctor", "uiautomator2"], {
 });
 
 const doctorText = `${doctor.stdout}\n${doctor.stderr}`;
+const doctorStatus = driverDoctorStatus(doctor);
 const driverOutput = `${driversText.stdout}\n${driversText.stderr}`;
 const isDriverInstalled = driversText.ok && driverInstalled(driversText.stdout, "uiautomator2");
 const homeBlocked = appiumHomeBlocked(driversJson, driversText, doctor);
@@ -68,12 +69,11 @@ const report = {
       appiumMajor !== null &&
       appiumMajor >= 3 &&
       isDriverInstalled &&
-      doctor.ok &&
-      doctorRequiredOk(doctorText),
+      doctorStatus.requiredOk,
     appiumMajorAtLeast3: appiumMajor !== null && appiumMajor >= 3,
     driverInstalled: isDriverInstalled,
     driverVersion: parseDriverVersion(driverOutput, "uiautomator2"),
-    doctorRequiredOk: doctorRequiredOk(doctorText),
+    doctorRequiredOk: doctorStatus.requiredOk,
     optionalWarningsPresent: /optional fix possible|optional manual fixes|WARN Doctor/i.test(doctorText),
     appiumHomeAccessBlocked: homeBlocked,
     needsUnsandboxedAppiumHome: homeBlocked && !isDriverInstalled,
