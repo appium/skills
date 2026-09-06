@@ -24,33 +24,25 @@ Confirm macOS as the host and target, global `appium` mode or explicitly
 requested local `npx appium` mode, Xcode tooling state, permissions, and any
 required privacy authorization state.
 
-## Workflow outline
+## Workflow
 
 1. Load the global command profile by default or the local profile only when
    explicitly requested.
 2. Load the macOS and Mac2 profiles, shared Appium setup basics, Xcode
    command-line-tools Context, and Mac2 decision, doctor, and smoke references.
-3. Run `node tools/appium/setup/scripts/check-mac2-env.mjs`; pass
-   `--appium-mode local` only for local mode. Use
-   `summary.requiredOk: true` as the read-only setup gate.
-4. Apply required fixes in technical dependency order and rerun the affected
-   check.
-5. Run the Mac2 doctor and server smoke checks. Load the matching example only
-   when it clarifies execution.
-
-## Verification
-
-1. Run `node tools/appium/setup/scripts/check-mac2-env.mjs`; add
+3. Run `node tools/appium/setup/scripts/check-mac2-env.mjs --format summary --report auto`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
-2. Verify the direct doctor output reports `0 required fixes needed` using
+   Apply required fixes in technical dependency order and rerun affected checks.
+   If the gate remains unresolved, report `blocked` with evidence and the next
+   action. Load the matching example only when needed.
+4. Verify the direct doctor output reports `0 required fixes needed` using
    `appium driver doctor mac2`, or
    `npx --no-install appium driver doctor mac2` in local mode.
-3. Start the Appium server in the selected mode, request
-   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
-   while server logs list `mac2` as an available driver.
-4. Stop the server and verify no Appium server process remains, following the
-   cleanup check in the smoke-status reference.
+5. Run `node tools/appium/setup/scripts/smoke-appium-server.mjs --driver mac2 --report auto`;
+   add `--appium-mode local` only in local mode. Require
+   `summary.requiredOk: true` for server readiness, driver evidence, and
+   cleanup. The smoke reference documents target-specific options.
 
 ## Mac2 setup safety and approval constraints
 

@@ -13,7 +13,9 @@ and completion criteria; this example only illustrates the smoke check.
 
 Smoke test:
 
-1. Start Appium server in Terminal A: `appium server`.
-2. In Terminal B run `curl -s http://127.0.0.1:4723/status` and confirm success.
-3. In Terminal A logs confirm `Available drivers:` contains `uiautomator2`.
-4. Stop Appium with `Ctrl+C`, then run `pgrep -fl "appium.*server" || echo "no appium server process"`.
+```bash
+node tools/appium/setup/scripts/smoke-appium-server.mjs --driver uiautomator2 --report auto
+```
+
+Use `--appium-mode local` only when requested. Require
+`summary.requiredOk: true`; inspect the saved report on failure.

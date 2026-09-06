@@ -18,11 +18,22 @@ appium -v
 appium driver list --installed --json
 ```
 
-If Appium is missing or needs an approved upgrade, install its approved exact version:
+If Appium is missing or needs a required upgrade, resolve its exact version using
+Appium Version Selection in `contexts/tools/appium/setup-basics.md`, then install:
+
+Bash:
 
 ```bash
-: "${APPIUM_VERSION:?Set APPIUM_VERSION to the project's approved exact Appium 3.x version}"
+: "${APPIUM_VERSION:?Resolve exact APPIUM_VERSION using Appium Setup Basics}"
 npm install -g "appium@$APPIUM_VERSION"
+```
+
+PowerShell (set `$env:APPIUM_VERSION` to the resolved exact version):
+
+```powershell
+if ([string]::IsNullOrWhiteSpace($env:APPIUM_VERSION)) { throw "Resolve exact APPIUM_VERSION using Appium Setup Basics" }
+npm.cmd install -g "appium@$env:APPIUM_VERSION"
+if ($LASTEXITCODE -ne 0) { throw "Appium installation failed" }
 ```
 
 If the installed list does not include `chromium`, install the driver, then list again:
@@ -40,12 +51,22 @@ npx --no-install appium -v
 npx --no-install appium driver list --installed --json
 ```
 
-If local Appium is missing or needs an approved upgrade, change the project dependency
-only when that change is authorized:
+If local Appium is missing or needs a required upgrade, resolve its exact version
+using the same policy. Change the project dependency only when authorized:
+
+Bash:
 
 ```bash
-: "${APPIUM_VERSION:?Set APPIUM_VERSION to the project's approved exact Appium 3.x version}"
+: "${APPIUM_VERSION:?Resolve exact APPIUM_VERSION using Appium Setup Basics}"
 npm install --save-dev "appium@$APPIUM_VERSION"
+```
+
+PowerShell (set `$env:APPIUM_VERSION` to the resolved exact version):
+
+```powershell
+if ([string]::IsNullOrWhiteSpace($env:APPIUM_VERSION)) { throw "Resolve exact APPIUM_VERSION using Appium Setup Basics" }
+npm.cmd install --save-dev "appium@$env:APPIUM_VERSION"
+if ($LASTEXITCODE -ne 0) { throw "Appium installation failed" }
 ```
 
 If the local installed list does not include `chromium`, install it through the local

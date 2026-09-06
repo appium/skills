@@ -29,36 +29,27 @@ Confirm iOS or tvOS, simulator or real device, macOS host, global `appium` mode
 or explicitly requested local `npx appium` mode, Xcode state, permissions, and
 optional FFmpeg requests.
 
-## Workflow outline
+## Workflow
 
 1. Load the global command profile by default or the local profile only when
    explicitly requested.
 2. Load the macOS and XCUITest profiles, shared Appium setup basics, Xcode
    prerequisites, and XCUITest decision, driver-doctor, and smoke references.
-3. Run `node tools/appium/setup/scripts/check-xcuitest-env.mjs`; pass
-   `--appium-mode local` only for local mode. Use
-   `summary.requiredOk: true` as the read-only setup gate.
-4. Apply required fixes in technical dependency order and rerun the affected
-   check.
-5. Run the XCUITest doctor and server smoke checks. Load the matching example
-   only when it clarifies execution.
-6. If the target is a real device, continue to the real-device Skill only after
-   these shared prerequisites pass.
-
-## Verification
-
-1. Run `node tools/appium/setup/scripts/check-xcuitest-env.mjs`; add
+3. Run `node tools/appium/setup/scripts/check-xcuitest-env.mjs --format summary --report auto`; add
    `--appium-mode local` only for explicitly requested local mode. Require
    top-level `summary.requiredOk: true`.
-2. Verify the direct doctor output reports `0 required fixes needed` using
+   Apply required fixes in technical dependency order and rerun affected checks.
+   If the gate remains unresolved, report `blocked` with evidence and the next
+   action. Load the matching example only when needed.
+4. Verify the direct doctor output reports `0 required fixes needed` using
    `appium driver doctor xcuitest`, or
    `npx --no-install appium driver doctor xcuitest` in local mode.
-3. Start the Appium server in the selected mode, request
-   `http://127.0.0.1:4723/status`, and verify the response indicates readiness
-   while server logs list `xcuitest` as an available driver.
-4. Stop the server and verify no Appium server process remains. For a real
-   device, record the passing shared-setup evidence before continuing to
-   `skills/xcuitest-real-device-config/SKILL.md`.
+5. Run `node tools/appium/setup/scripts/smoke-appium-server.mjs --driver xcuitest --report auto`;
+   add `--appium-mode local` only in local mode. Require
+   `summary.requiredOk: true` for server readiness, driver evidence, and
+   cleanup. The smoke reference documents target-specific options.
+6. For a real device, record passing shared-setup evidence before continuing
+   to `skills/xcuitest-real-device-config/SKILL.md`.
 
 ## XCUITest setup safety and approval constraints
 

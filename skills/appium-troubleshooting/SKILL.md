@@ -91,11 +91,11 @@ reproduction, and permissions for rerunning checks.
 
 ## Completion criteria
 
-Complete a fix request when the failing check passes after a verified fix, or
-when an exact manual blocker is isolated with command evidence and a concrete
-next action. Complete a diagnosis-only request when matching evidence isolates
-the cause and the smallest proposed fix or discriminating next check is
-reported without changing state.
+Report a fix request as `passed` when the failing check passes after a verified
+fix. Otherwise report `blocked` with command evidence and a concrete next action;
+isolating a manual blocker does not mean the failure is fixed. Complete a
+diagnosis-only request when matching evidence isolates the cause and the smallest
+proposed fix or discriminating next check is reported without changing state.
 
 ## Evidence boundary
 

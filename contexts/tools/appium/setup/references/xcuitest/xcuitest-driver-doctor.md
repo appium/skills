@@ -11,9 +11,21 @@ description: "Install and validate Appium XCUITest driver and doctor required fi
 
 ## Install And List
 
+When Appium is missing or needs a required upgrade, resolve `APPIUM_VERSION`
+using Appium Version Selection in `contexts/tools/appium/setup-basics.md`.
+Skip installs for compatible Appium and already installed drivers; apply the
+selected command profile to the commands below.
+
+Only when Appium installation is required:
+
 ```bash
-: "${APPIUM_VERSION:?Set APPIUM_VERSION to the project's approved exact Appium 3.x version}"
+: "${APPIUM_VERSION:?Resolve exact APPIUM_VERSION using Appium Setup Basics}"
 npm install -g "appium@$APPIUM_VERSION"
+```
+
+Only when the driver is missing:
+
+```bash
 appium driver install xcuitest
 appium driver list --installed --json
 ```

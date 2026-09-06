@@ -11,14 +11,14 @@ description: "Run Appium server smoke status checks and verify cleanup for Safar
 
 ## Smoke Check
 
-Start `appium server`, then run:
+Run the shared lifecycle helper after the driver prerequisite and doctor gates:
 
 ```bash
-curl -s http://127.0.0.1:4723/status
+node tools/appium/setup/scripts/smoke-appium-server.mjs --driver safari --report auto
 ```
 
-The response must indicate readiness. Logs should include `Available drivers:` and `safari`.
-
-## Cleanup
-
-Stop the server and verify no leftover Appium server process.
+Add `--appium-mode local` only for explicitly selected local mode. The helper
+uses loopback, chooses a free port if 4723 is occupied, verifies readiness and
+the selected driver in its own server logs, and cleans up its owned process
+tree on success, failure, or interruption. Require `summary.requiredOk: true`;
+inspect `diagnosticsPath` for failed evidence instead of repeating the workflow.

@@ -15,8 +15,8 @@ metadata:
 
 ## Setup routing and selection
 
-Select only the driver or drivers requested by the user. Treat each
-`renma.continues-with` item as a possible child Skill, not as execution order,
+Select only the drivers named by the user or uniquely implied by their target.
+Treat each `renma.continues-with` item as a possible child Skill, not as execution order,
 priority, or automatic invocation.
 
 | Intended target | Child Skill |
@@ -30,9 +30,10 @@ priority, or automatic invocation.
 | iOS or tvOS with XCUITest | `skills/setup-xcuitest/SKILL.md` |
 
 Normalize common names such as `uia2` to UiAutomator2. If no driver is named,
-pause before environment changes and ask which driver or drivers are needed.
-If one or more drivers are named, preserve every explicit selection and hand
-off without asking the user to choose again.
+infer it when the target maps uniquely in the table (for example, Firefox to
+Gecko or iOS to XCUITest). Ask before environment changes only when the target
+is missing or multiple routes remain plausible, such as an unspecified Android
+driver. Preserve every explicit selection without asking the user to choose again.
 
 ## Required inputs
 
@@ -56,7 +57,7 @@ dependencies.
 
 - Use global npm/Appium commands by default and local `npx --no-install appium`
   only when explicitly requested.
-- Install only explicitly selected drivers.
+- Install only drivers selected from the user's named drivers or unambiguous target.
 - Ask before optional FFmpeg or bundletool setup, third-party real-device
   tooling, privileged commands, browser installation, or authorization
   changes.
@@ -64,10 +65,10 @@ dependencies.
 
 ## Completion criteria
 
-Complete a single-driver request only after the selected child Skill reaches
-its completion criteria. Complete a multi-driver request only after every
-selected child Skill reaches its own completion criteria or reports an exact
-manual blocker. Optional warnings remain non-blocking.
+Report `passed` only after every selected child Skill reaches its completion
+criteria. Otherwise report `blocked`, retaining each child's individual result,
+the evidence for every unresolved required check, and its next action. Optional
+warnings remain non-blocking.
 
 ## Evidence boundary
 
@@ -86,5 +87,8 @@ Report the asset path and proposed wording. Leave unrelated files unchanged.
 - Input: `Set up Appium.` Ask which driver or drivers are needed.
 - Input: `Set up UiAutomator2.` Continue with
   `skills/setup-uiautomator2/SKILL.md`.
+- Input: `Set up Appium for Firefox.` Infer Gecko and continue with
+  `skills/setup-gecko/SKILL.md` without asking for a driver name.
+- Input: `Set up Appium for Android.` Ask whether UiAutomator2 or Espresso is needed.
 - Input: `Set up UiAutomator2 and XCUITest.` Continue with both selected child
   Skills and verify each independently.

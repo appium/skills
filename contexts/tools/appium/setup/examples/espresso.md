@@ -19,7 +19,9 @@ Rules:
 
 Smoke test:
 
-- Terminal A: start the server with `appium server`.
-- Terminal B: run `curl -s http://127.0.0.1:4723/status` and confirm success.
-- Terminal A logs: confirm `Available drivers:` contains `espresso`.
-- Cleanup: stop Appium with `Ctrl+C`, then run `pgrep -fl "appium.*server" || echo "no appium server process"`.
+```bash
+node tools/appium/setup/scripts/smoke-appium-server.mjs --driver espresso --report auto
+```
+
+Use `--appium-mode local` only when requested. Require
+`summary.requiredOk: true`; inspect the saved report on failure.

@@ -20,18 +20,44 @@ Prepare the shared Appium setup baseline by validating the active Node.js runtim
 
 ## Routing
 
-Load these references in order:
-
-1. `contexts/tools/appium/setup/references/node/node-decision-logic.md` for version, package-manager, and install triggers.
-2. `contexts/tools/appium/setup/references/node/node-version-manager-setup.md` for `nvm`, `fnm`, `asdf`, and Windows `winget` setup.
-3. `contexts/tools/appium/setup/references/node/node-npm-health.md` for npm availability, registry checks, and PowerShell policy repair.
-4. `contexts/tools/appium/setup/references/node/node-validation-evidence.md` for final evidence and completion criteria.
-
-For deterministic read-only validation, run:
+Start with the read-only readiness helper, or reuse equivalent current-run
+evidence from the calling driver helper:
 
 ```bash
 node tools/appium/setup/scripts/check-node-env.mjs
 ```
+
+If Node is missing and the helper cannot run, use shell detection as evidence.
+Load only the references needed for failed or unresolved checks:
+
+- `contexts/tools/appium/setup/references/node/node-decision-logic.md` when Node,
+  npm, or engine compatibility needs repair; read it before making changes.
+- `contexts/tools/appium/setup/references/node/node-version-manager-setup.md`
+  when Node must be installed or switched.
+- `contexts/tools/appium/setup/references/node/node-npm-health.md` for npm,
+  registry, or Windows PowerShell policy failures.
+- `contexts/tools/appium/setup/references/node/node-validation-evidence.md`
+  when the helper's evidence needs interpretation.
+
+## Appium Version Selection
+
+Keep an existing compatible Appium installation. When installation or an upgrade
+is needed, resolve `APPIUM_VERSION` to an exact version before running an install:
+
+1. Honor an explicit user version or project policy. Inspect the target project's
+   dependency manifest, lockfile, and setup documentation for an Appium pin; do
+   not treat this skills repository as the target project by default.
+2. If a project range is specified, use its compatible locked version, or resolve
+   an exact version within that range from npm package metadata.
+3. If there is no pin or project approval requirement, select the latest stable
+   Appium 3.x version compatible with the selected driver and host Node/npm engine
+   ranges using current package metadata. Record the exact version and source.
+4. If pins conflict, compatibility cannot be established, or project policy
+   requires an approval not yet given, report the specific blocker and needed
+   decision. Do not invent an approved version or silently replace a pin.
+
+In local mode, dependency-file changes still require authorization under the
+local command profile. Resolving a version does not authorize an unrelated upgrade.
 
 ## Completion Criteria
 

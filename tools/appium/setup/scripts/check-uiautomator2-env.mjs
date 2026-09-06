@@ -1,7 +1,9 @@
 #!/usr/bin/env node
+import { reportingOptions, writeReport } from "./reporting.mjs";
+const outputOptions = reportingOptions();
 import { fileURLToPath } from "node:url";
 import {
-  doctorRequiredOk,
+  driverDoctorStatus,
   driverInstalled,
   parseDriverVersion,
   parseMajor,
@@ -20,7 +22,6 @@ function appiumHomeBlocked(...results) {
 const androidScript = fileURLToPath(new URL("./check-android-env.mjs", import.meta.url));
 const android = run(process.execPath, [androidScript], {
   timeout: 180000,
-  maxOutput: 250000,
 });
 
 let androidSummary = {};
@@ -42,8 +43,9 @@ const doctor = runAppium(appiumCommand, ["driver", "doctor", "uiautomator2"], {
 });
 
 const doctorText = `${doctor.stdout}\n${doctor.stderr}`;
+const doctorStatus = driverDoctorStatus(doctor);
 const driverOutput = `${driversText.stdout}\n${driversText.stderr}`;
-const isDriverInstalled = driverInstalled(driversText.stdout, "uiautomator2");
+const isDriverInstalled = driversText.ok && driverInstalled(driversText.stdout, "uiautomator2");
 const homeBlocked = appiumHomeBlocked(driversJson, driversText, doctor);
 
 const report = {
@@ -67,12 +69,11 @@ const report = {
       appiumMajor !== null &&
       appiumMajor >= 3 &&
       isDriverInstalled &&
-      doctor.ok &&
-      doctorRequiredOk(doctorText),
+      doctorStatus.requiredOk,
     appiumMajorAtLeast3: appiumMajor !== null && appiumMajor >= 3,
     driverInstalled: isDriverInstalled,
     driverVersion: parseDriverVersion(driverOutput, "uiautomator2"),
-    doctorRequiredOk: doctorRequiredOk(doctorText),
+    doctorRequiredOk: doctorStatus.requiredOk,
     optionalWarningsPresent: /optional fix possible|optional manual fixes|WARN Doctor/i.test(doctorText),
     appiumHomeAccessBlocked: homeBlocked,
     needsUnsandboxedAppiumHome: homeBlocked && !isDriverInstalled,
@@ -82,4 +83,4 @@ const report = {
   },
 };
 
-process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+writeReport(report, outputOptions);

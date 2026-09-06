@@ -19,8 +19,9 @@ Rules:
 
 Smoke test:
 
-1. Start Appium server in Terminal A: `appium server`.
-2. In Terminal B run `curl -s http://127.0.0.1:4723/status`.
-3. In Terminal A logs confirm `Available drivers:` contains `safari`.
-4. Stop Appium with `Ctrl+C`.
-5. Run `pgrep -fl "appium.*server" || echo "no appium server process"`.
+```bash
+node tools/appium/setup/scripts/smoke-appium-server.mjs --driver safari --report auto
+```
+
+Use `--appium-mode local` only when requested. Require
+`summary.requiredOk: true`; inspect the saved report on failure.

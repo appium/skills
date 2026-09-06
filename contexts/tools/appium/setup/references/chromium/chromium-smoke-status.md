@@ -11,37 +11,20 @@ description: "Run Appium server smoke status checks and verify cleanup for Chrom
 
 ## Smoke Check
 
-Start the server with `appium server` in global mode or, from the project root,
-`npx --no-install appium server` in local mode. Then run:
+Run the shared lifecycle helper after the driver prerequisite and doctor gates:
 
 ```bash
-curl -s http://127.0.0.1:4723/status
+node tools/appium/setup/scripts/smoke-appium-server.mjs --driver chromium --report auto
 ```
 
-The response must indicate readiness. Logs should include `Available drivers:` and `chromium`.
+Add `--appium-mode local` only for explicitly selected local mode. The helper
+uses loopback, chooses a free port if 4723 is occupied, verifies readiness and
+the selected driver in its own server logs, and cleans up its owned process
+tree on success, failure, or interruption. Require `summary.requiredOk: true`;
+inspect `diagnosticsPath` for failed evidence instead of repeating the workflow.
 
-## Minimal Browser Session
-
-With the server still running, execute the deterministic smoke helper:
-
-```bash
-node tools/appium/setup/scripts/smoke-chromium-session.mjs
-```
-
-Use `--browser edge` for Edge. Use `--browser-binary <path>` to select a particular
-browser and `--driver-executable <path>` to select an existing compatible
-`chromedriver` or `msedgedriver`. The helper sends W3C `POST /session`, extracts the
-session ID, and sends `DELETE /session/:sessionId`. It sets
-`appium:autodownloadEnabled` to `false` by default, so a missing compatible driver
-fails without downloading. Pass `--allow-driver-download` only after explicit approval
-for that session-time download. Require the helper's top-level
-`summary.requiredOk: true`; a passing `/status` alone does not prove browser
-compatibility.
-
-## Cleanup
-
-Stop the server and verify:
-
-```bash
-pgrep -fl "appium.*server" || echo "no appium server process"
-```
+The helper also calls `tools/appium/setup/scripts/smoke-chromium-session.mjs`
+to create and delete one browser session. Pass `--browser edge`,
+`--browser-binary <path>`, or `--driver-executable <path>` when needed.
+Downloads remain disabled unless `--allow-driver-download` is explicitly
+approved. Require `summary.sessionRequiredOk: true` as well as server cleanup.
