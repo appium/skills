@@ -11,6 +11,7 @@ import { summarizeReport, reportingOptions, writeReport } from "../appium/setup/
 import { smokeServer, parseOptions, serverCommand } from "../appium/setup/scripts/smoke-appium-server.mjs";
 import { validateRepository } from "../validate-repository.mjs";
 import { commandInvocation, windowsArgument } from "../appium/setup/scripts/windows-command.mjs";
+import { windowsJobScript } from "../appium/setup/scripts/windows-job.mjs";
 
 const fixture = fileURLToPath(new URL("fixtures/fake-appium.mjs", import.meta.url));
 const windows = process.platform === "win32";
@@ -21,6 +22,37 @@ const temporary = (t) => {
   t.after(() => rmSync(dir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }));
   return dir;
 };
+
+const powershell = process.env.APPIUM_TEST_POWERSHELL || (windows ? "powershell.exe" : "");
+test("PowerShell supervisor reads environment paths and runs its configured entrypoint", { skip: !powershell }, (t) => {
+  const dir = temporary(t);
+  const source = path.join(dir, "fixture source.cs");
+  const config = path.join(dir, "command.json");
+  const resultFile = path.join(dir, "result.json");
+  // Exercise the real PowerShell bootstrap without invoking Windows APIs.
+  writeFileSync(source, `public static class AppiumWindowsJob {
+    public static bool OwnerExited { get { return false; } }
+    public static bool Run(string executable, string commandLine, int parentId, string stopFile, int timeoutMs) {
+      return executable == "fixture.exe" && commandLine == "space argument" && parentId == 123 && timeoutMs == 5000;
+    }
+  }`);
+  writeFileSync(config, JSON.stringify({ executable: "fixture.exe", commandLine: "space argument",
+    parentId: 123, stopFile: path.join(dir, "stop"), timeoutMs: 5000, resultFile }));
+  const result = spawnSync(powershell, ["-NoProfile", "-NonInteractive", "-Command", windowsJobScript], {
+    encoding: "utf8", timeout: 30000,
+    env: { ...process.env, APPIUM_JOB_SOURCE: source, APPIUM_JOB_CONFIG: config },
+  });
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(JSON.parse(readFileSync(resultFile, "utf8")), { cleanupOk: true });
+  // Also execute the environment-path read used when the owner has exited.
+  writeFileSync(source, readFileSync(source, "utf8").replace("return false;", "return true;"));
+  const orphan = spawnSync(powershell, ["-NoProfile", "-NonInteractive", "-Command", windowsJobScript], {
+    encoding: "utf8", timeout: 30000,
+    env: { ...process.env, APPIUM_JOB_SOURCE: source, APPIUM_JOB_CONFIG: config },
+  });
+  assert.equal(orphan.status, 0, orphan.stderr);
+  assert.throws(() => statSync(dir), { code: "ENOENT" });
+});
 
 function launcher(dir, name, source, extension = ".cmd") {
   const entry = path.join(dir, `${name}.mjs`);
