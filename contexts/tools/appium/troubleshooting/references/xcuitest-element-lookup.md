@@ -8,7 +8,7 @@ id: appium.troubleshooting.references.xcuitest-element-lookup
 # XCUITest Element Lookup Troubleshooting
 
 ## Official Reference
-- `https://appium.github.io/appium-xcuitest-driver/latest/guides/elements-lookup-troubleshooting/`
+- `https://appium.github.io/appium-xcuitest-driver/latest/troubleshooting/element-lookup/`
 
 ## When To Read This
 - elements visible to a human are missing in Appium Inspector

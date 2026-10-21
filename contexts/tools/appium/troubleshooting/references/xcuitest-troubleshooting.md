@@ -8,8 +8,9 @@ id: appium.troubleshooting.references.xcuitest-troubleshooting
 # XCUITest Troubleshooting
 
 ## Official References
-- `https://appium.github.io/appium-xcuitest-driver/latest/guides/troubleshooting/`
-- `https://github.com/appium/appium-xcuitest-driver`
+- `https://appium.github.io/appium-xcuitest-driver/latest/troubleshooting/`
+- `https://appium.github.io/appium-xcuitest-driver/latest/troubleshooting/element-lookup/`
+- `https://appium.github.io/appium-xcuitest-driver/latest/troubleshooting/wda-slowness/`
 
 ## When To Read This
 - WebDriverAgent does not build, install, or stay reachable

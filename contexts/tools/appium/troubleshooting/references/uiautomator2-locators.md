@@ -8,7 +8,7 @@ id: appium.troubleshooting.references.uiautomator2-locators
 # UiAutomator2 Locators
 
 ## Official Reference
-- `https://github.com/appium/appium-uiautomator2-driver?tab=readme-ov-file#element-location`
+- `https://appium.github.io/appium-uiautomator2-driver/latest/reference/locator-strategies/`
 
 Use the driver docs for the full strategy list and performance tradeoffs. Keep this page for the extra triage that is easy to miss during debugging.
 
