@@ -8,8 +8,8 @@ id: appium.troubleshooting.references.uiautomator2-session-startup
 # UiAutomator2 Session Startup
 
 ## Official References
-- `https://github.com/appium/appium-uiautomator2-driver/blob/master/docs/activity-startup.md`
-- `https://github.com/appium/appium-uiautomator2-driver?tab=readme-ov-file#troubleshooting`
+- `https://appium.github.io/appium-uiautomator2-driver/latest/guides/activity-startup/`
+- `https://appium.github.io/appium-uiautomator2-driver/latest/troubleshooting/`
 
 ## When To Read This
 - `Activity never started`

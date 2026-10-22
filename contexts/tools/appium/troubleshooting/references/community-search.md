@@ -13,11 +13,11 @@ id: appium.troubleshooting.references.community-search
 ## Official-First Rule
 Use community search only after checking the matching official Appium reference first:
 
-- UiAutomator2 startup: `https://github.com/appium/appium-uiautomator2-driver/blob/master/docs/activity-startup.md`
-- UiAutomator2 locators: `https://github.com/appium/appium-uiautomator2-driver?tab=readme-ov-file#element-location`
-- XCUITest element lookup: `https://appium.github.io/appium-xcuitest-driver/latest/guides/elements-lookup-troubleshooting/`
+- UiAutomator2 startup: `https://appium.github.io/appium-uiautomator2-driver/latest/guides/activity-startup/`
+- UiAutomator2 locators: `https://appium.github.io/appium-uiautomator2-driver/latest/reference/locator-strategies/`
+- XCUITest element lookup: `https://appium.github.io/appium-xcuitest-driver/latest/troubleshooting/element-lookup/`
 - XCUITest locators: `https://appium.github.io/appium-xcuitest-driver/latest/reference/locator-strategies/`
-- XCUITest general failures: `https://appium.github.io/appium-xcuitest-driver/latest/guides/troubleshooting/`
+- XCUITest general failures: `https://appium.github.io/appium-xcuitest-driver/latest/troubleshooting/`
 
 ## Search Pattern
 - Search the exact error string in quotes.
