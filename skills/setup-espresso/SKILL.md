@@ -1,6 +1,6 @@
 ---
 name: setup-espresso
-description: Prepare and verify Appium Espresso by validating Node/Appium, Android SDK and Java prerequisites, driver installation, doctor output, and server smoke evidence. Use after the setup Skill selects Espresso. Do not use for an existing Espresso runtime failure after prerequisites pass; this repository does not provide that troubleshooting workflow.
+description: Prepare and verify Appium Espresso by validating Node/Appium, Android SDK and Java prerequisites, driver installation, doctor output, and server smoke evidence. Use after the setup Skill selects Espresso or appium-troubleshooting hands off an Espresso prerequisite or doctor failure. Do not use for an existing runtime failure after prerequisites pass.
 metadata:
   renma.id: skill.setup-espresso
   renma.title: Espresso Setup Workflow
@@ -15,9 +15,12 @@ metadata:
 
 ## Routing
 
-Prepare only the Espresso route. Use driver-specific official guidance for an
-existing Espresso runtime failure after setup passes. Load FFmpeg or bundletool
-only when the user explicitly requested that capability.
+Use this Skill to prepare or repair Espresso prerequisites selected by
+`skills/setup/SKILL.md` or handed off by
+`skills/appium-troubleshooting/SKILL.md`. After required setup checks pass,
+route an existing Espresso session or command failure back to
+`skills/appium-troubleshooting/SKILL.md`. Load FFmpeg or bundletool only when
+the user explicitly requested that capability.
 
 ## Required inputs
 

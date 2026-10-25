@@ -1,14 +1,14 @@
 ---
 name: appium-troubleshooting
-description: Diagnose existing UiAutomator2 session-startup, app-activity, adb transport, helper-server, native or hybrid locator failures, and XCUITest WebDriverAgent, session-startup, app install or launch, device or simulator state, alert, element-source, or locator failures. Use when a session or command under one of those drivers already fails. Do not use for first-time setup, pre-failure real-device provisioning, or Espresso, Chromium, Gecko, Safari, or Mac2 failures.
+description: Diagnose existing UiAutomator2 session-startup, app-activity, adb transport, helper-server, native or hybrid locator failures, Espresso server-build, Compose alignment, session-startup, subdriver, or locator failures, and XCUITest WebDriverAgent, session-startup, app install or launch, device or simulator state, alert, element-source, or locator failures. Use when a session or command under one of those drivers already fails. Do not use for first-time setup, pre-failure real-device provisioning, or Chromium, Gecko, Safari, or Mac2 failures.
 metadata:
   renma.id: skill.appium-troubleshooting
   renma.published-entrypoint: "true"
-  renma.continues-with: '["skill.setup-uiautomator2","skill.setup-xcuitest"]'
+  renma.continues-with: '["skill.setup-uiautomator2","skill.setup-espresso","skill.setup-xcuitest"]'
   renma.title: Appium Troubleshooting Workflow
   renma.owner: appium
-  renma.tags: '["troubleshooting","uiautomator2","xcuitest"]'
-  renma.optional-context: '["contexts/tools/appium/troubleshooting/examples/locator-failure.md","contexts/tools/appium/troubleshooting/examples/session-startup.md","contexts/tools/appium/troubleshooting/profiles/uiautomator2.md","contexts/tools/appium/troubleshooting/profiles/xcuitest.md","contexts/tools/appium/capabilities.md","contexts/tools/appium/troubleshooting/references/community-search.md","contexts/tools/appium/troubleshooting/references/uiautomator2-locators.md","contexts/tools/appium/troubleshooting/references/uiautomator2-session-startup.md","contexts/tools/appium/troubleshooting/references/xcuitest-element-lookup.md","contexts/tools/appium/troubleshooting/references/xcuitest-locators.md","contexts/tools/appium/troubleshooting/references/xcuitest-troubleshooting.md"]'
+  renma.tags: '["troubleshooting","uiautomator2","espresso","xcuitest"]'
+  renma.optional-context: '["contexts/tools/appium/troubleshooting/examples/locator-failure.md","contexts/tools/appium/troubleshooting/examples/session-startup.md","contexts/tools/appium/troubleshooting/profiles/uiautomator2.md","contexts/tools/appium/troubleshooting/profiles/espresso.md","contexts/tools/appium/troubleshooting/profiles/xcuitest.md","contexts/tools/appium/capabilities.md","contexts/tools/appium/troubleshooting/references/community-search.md","contexts/tools/appium/troubleshooting/references/uiautomator2-locators.md","contexts/tools/appium/troubleshooting/references/uiautomator2-session-startup.md","contexts/tools/appium/troubleshooting/references/espresso-locators.md","contexts/tools/appium/troubleshooting/references/espresso-session-startup.md","contexts/tools/appium/troubleshooting/references/xcuitest-element-lookup.md","contexts/tools/appium/troubleshooting/references/xcuitest-locators.md","contexts/tools/appium/troubleshooting/references/xcuitest-troubleshooting.md"]'
   renma.security-profile: appium-local-workflows
 ---
 
@@ -16,7 +16,7 @@ metadata:
 
 ## Troubleshooting routing and handoffs
 
-Lock each run to UiAutomator2 or XCUITest. If the driver is unknown, capture
+Lock each run to UiAutomator2, Espresso, or XCUITest. If the driver is unknown, capture
 capabilities or the Appium log line that identifies it before proceeding. For
 another driver, stop and report that this repository has no implemented
 troubleshooting route for it.
@@ -26,6 +26,7 @@ finish the current troubleshooting handoff and continue with the exact setup
 Skill:
 
 - UiAutomator2: `skills/setup-uiautomator2/SKILL.md`
+- Espresso: `skills/setup-espresso/SKILL.md`
 - XCUITest: `skills/setup-xcuitest/SKILL.md`
 
 For real-device signing, provisioning, or WDA deployment, the XCUITest setup
@@ -46,6 +47,12 @@ reproduction, and permissions for rerunning checks.
   session-startup reference.
 - UiAutomator2 native or hybrid locator symptoms use the declared
   UiAutomator2 locator reference.
+- Espresso session startup, server build/signing, `appium:espressoBuildConfig`
+  or Jetpack Compose alignment, ProGuard, or activity-launch symptoms use the
+  declared Espresso session-startup reference.
+- Espresso native, DataMatcher/ViewMatcher, Compose subdriver (`driver`
+  setting), or hybrid locator symptoms use the declared Espresso locator
+  reference.
 - XCUITest WDA startup, install, reachability, app launch, or device/simulator
   state symptoms use the declared XCUITest troubleshooting reference.
 - XCUITest element lookup or locator symptoms use the declared XCUITest
