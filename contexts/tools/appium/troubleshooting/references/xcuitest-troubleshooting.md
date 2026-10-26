@@ -37,6 +37,7 @@ xcode-select -p
 appium driver doctor xcuitest
 xcrun simctl list devices
 xcrun simctl list runtimes
+node tools/appium/troubleshooting/scripts/collect-wda-diagnostics.mjs --appium-log <appium-server-log-file> --format summary --report auto
 grep -i "WebDriverAgent\|Proxying\|timed out" <appium-server-log-file>
 ```
 

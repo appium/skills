@@ -12,6 +12,7 @@ import { smokeServer, parseOptions, serverCommand } from "../appium/setup/script
 import { validateRepository } from "../validate-repository.mjs";
 import { commandInvocation, windowsArgument } from "../appium/setup/scripts/windows-command.mjs";
 import { windowsJobScript } from "../appium/setup/scripts/windows-job.mjs";
+import { collectWdaDiagnostics, parseWdaDiagnosticArgs, sanitizeDiagnosticText } from "../appium/troubleshooting/scripts/collect-wda-diagnostics.mjs";
 
 const fixture = fileURLToPath(new URL("fixtures/fake-appium.mjs", import.meta.url));
 const windows = process.platform === "win32";
@@ -353,4 +354,68 @@ test("repository validator detects broken links, metadata, syntax, and whitespac
   writeFileSync(path.join(dir, "tools/check.mjs"), "export const = ;\n");
   const report = validateRepository(dir);
   for (const check of ["metadata", "syntax", "whitespace"]) assert.ok(report.errors.some((item) => item.check === check), check);
+});
+
+test("WDA diagnostics helper collects sanitized Appium and DerivedData logs and probes WDA status", async (t) => {
+  const dir = temporary(t);
+  const derivedRoot = path.join(dir, "DerivedData");
+  const wdaDir = path.join(derivedRoot, "WebDriverAgent-abc123/Logs/Test");
+  mkdirSync(path.join(wdaDir, "Run.xcresult"), { recursive: true });
+  const runnerLog = path.join(wdaDir, "StandardOutputAndStandardError-WebDriverAgentRunner.txt");
+  writeFileSync(
+    runnerLog,
+    [
+      "2026-10-26 ServerURLHere->http://user:pass@127.0.0.1:8100<-ServerURLHere",
+      'Signing for "WebDriverAgentRunner" requires a development team. DEVELOPMENT_TEAM=ABC1234567',
+      "Apple Development: dev@example.com (ABC1234567) on 00008110-0011223344556677",
+    ].join("\n"),
+  );
+  const appiumLog = path.join(dir, "appium.log");
+  writeFileSync(
+    appiumLog,
+    [
+      `[XCUITest] Using DerivedData at ${path.join(derivedRoot, "WebDriverAgent-abc123")}`,
+      "[WD Proxy] Proxying [GET /status] to [GET http://127.0.0.1:8100/status] with no body",
+      "[WD Proxy] connect ECONNREFUSED 127.0.0.1:8100",
+      "[Xcode] xcodebuild failed with code 65",
+    ].join("\n"),
+  );
+
+  const wdaServer = http.createServer((req, res) => {
+    if (req.url === "/status") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ value: { state: "success", os: { name: "iOS" } } }));
+      return;
+    }
+    res.writeHead(404);
+    res.end("not found");
+  });
+  await new Promise((resolve) => wdaServer.listen(0, "127.0.0.1", resolve));
+  t.after(() => wdaServer.close());
+  const wdaPort = wdaServer.address().port;
+
+  const parsed = parseWdaDiagnosticArgs([
+    "--appium-log", appiumLog,
+    "--derived-data", derivedRoot,
+    "--wda-url", `http://127.0.0.1:${wdaPort}`,
+    "--max-lines", "10",
+  ]);
+  const report = await collectWdaDiagnostics(parsed);
+  assert.equal(report.summary.requiredOk, true);
+  assert.equal(report.summary.appiumLogInspected, true);
+  assert.equal(report.summary.wdaLogFilesFound, 1);
+  assert.equal(report.summary.xcresultBundlesFound, 1);
+  assert.equal(report.summary.wdaStatusOk, true);
+  assert.deepEqual(report.summary.failureSignals, {
+    signingError: true,
+    xcodebuildFailed: true,
+    proxyFailure: true,
+  });
+  assert.ok(report.summary.discoveredWdaUrls.includes("http://127.0.0.1:8100"));
+  const serialized = JSON.stringify(report);
+  assert.doesNotMatch(serialized, /ABC1234567|00008110-0011223344556677|user:pass|dev@example\.com/);
+  assert.equal(
+    sanitizeDiagnosticText("xcodeOrgId: ZYX9876543 udid 0123456789abcdef0123456789abcdef01234567"),
+    "xcodeOrgId=<redacted-team-id> udid <redacted-udid>",
+  );
 });
